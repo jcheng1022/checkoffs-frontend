@@ -70,7 +70,7 @@ const ActivityItem = ({activity, type = 'image'}) => {
             <Spin spinning={isLoading}>
 
                 <FlexBox justify={'space-between'} className={'activity-meta'}>
-                    <div className={'name'}> {activity?.user?.name}</div>
+                    <div className={'name'}> {activity?.user?.username ? activity.user.username : user?.name}</div>
 
                     <FlexBox justify={'flex-end'} gap={8}>
                         <div className={'date'}> {dayjs(activity?.date).format('MMM Do YYYY')}</div>

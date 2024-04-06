@@ -4,6 +4,7 @@ import {AuthContextProvider} from "@/context/AuthContext";
 import Providers from "@/app/providers";
 import dayjs from "dayjs";
 import {CookiesProvider} from 'next-client-cookies/server';
+import {AppContextProvider} from "@/context/AppContext";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
@@ -32,11 +33,11 @@ export default function AuthedLayout({ children }) {
             <Providers>
                 <CookiesProvider>
                     <AuthContextProvider>
-                        <Header />
-                        {children}
-                        {/*{ (isFetching || isLoading) ? <DotLoader color="#36D7B7" size={25} />  : <>*/}
-                        {/*    <Header />*/}
-                        {/*    {children}</> }*/}
+                       <AppContextProvider>
+                           <Header />
+                           {children}
+                       </AppContextProvider>
+
                     </AuthContextProvider>
                 </CookiesProvider>
             </Providers>

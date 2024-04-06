@@ -76,7 +76,7 @@ const Header = () => {
                 {
                     initializingAuth ? <div> Loading... </div> : user ? <div onClick={() =>  {
                         router.push(`/user/${user?.id}`)}
-                    }> {user.name} </div> : <Button onClick={handleSignIn}>
+                    }> {user?.username ? user.username : user.name} </div> : <Button onClick={handleSignIn}>
                         Sign in
                     </Button>
                 }
