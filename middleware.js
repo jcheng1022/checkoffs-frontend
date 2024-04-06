@@ -30,7 +30,7 @@ export async function middleware(request, response) {
     if (request.nextUrl.pathname.startsWith('/user')) {
         const data = await responseAPI.json()
         if (data.user) {
-            const responsek = await fetch(`http://localhost:8080/user/me?isAdmin=true`, {
+            const responsek = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}user/me?isAdmin=true`, {
                 headers: {
                     Authorization: `Bearer ${session?.value}`,
                 },
