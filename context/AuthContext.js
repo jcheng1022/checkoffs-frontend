@@ -19,6 +19,12 @@ export const AuthContextProvider = ({
 
     const [loading, setLoading] = useState(true);
 
+    const logOut = async () => {
+        await auth.signOut()
+        return window.location.reload()
+        }
+
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -34,6 +40,7 @@ export const AuthContextProvider = ({
 
     const settings = {
         user: currentUser,
+        logOut,
         initializingAuth: loading
     }
     return (

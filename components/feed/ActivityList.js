@@ -3,7 +3,6 @@ import {FlexBox} from "@/components/core";
 import ActivityItem from "@/components/feed/ActivityItem";
 
 const ActivityList = ({list = []}) => {
-    console.log(list, 444)
     return (
         <Container direction={'column'}>
             {list?.map((activity, index) => <ActivityItem type={!!activity?.mediaUrl ? 'image' : 'text'} key={`activity-item-${index}`} activity={activity}/>)

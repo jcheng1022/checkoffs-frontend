@@ -1,6 +1,6 @@
 'use client'
 
-import {Button} from "antd";
+import {Button, Dropdown} from "antd";
 import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup} from "firebase/auth";
 // import {googleAuthProvider} from "@/app/firebase";
 import {FlexBox} from "@/components/core";
@@ -10,14 +10,16 @@ import {useEffect, useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import NewActivityModal from "@/components/modals/NewActivityModal";
 import styled from 'styled-components'
+import {MoreVertical} from "react-feather";
+import {useQueryClient} from "@tanstack/react-query";
 
 const Header = () => {
-    const {user, initializingAuth } = useAuthContext()
+    const {user, initializingAuth, logOut } = useAuthContext()
     const router = useRouter();
     const pathname = usePathname()
     const [creatingNewActivity, setCreatingNewActivity] = useState(false)
 
-
+    const client = useQueryClient();
 
     useEffect(() => {
          onAuthStateChanged(auth, async (user) => {
@@ -40,6 +42,13 @@ const Header = () => {
 
 
     }, [auth]);
+
+    // const handleSignOut = () => {
+    //     auth.signOut().then(() => {
+    //         router.replace('/')
+    //         // client.refetchQueries({queryKey: ['currentUser']})
+    //     });
+    // }
     const handleSignIn = () => {
         const provider = new GoogleAuthProvider()
 
@@ -56,6 +65,29 @@ const Header = () => {
             // Handle Errors here.
 
         })}
+
+    const items = [
+        {
+            key: 'account',
+            label: (
+                <div onClick={() => router.push(`/user/${user?.id}`)}>
+                    My Account
+                </div>
+            ),
+        },
+        {
+            key: 'sign-out',
+            label: (
+
+                <div onClick={logOut} >
+                    Sign Out
+                </div>
+
+            ),
+        }
+    ]
+
+
 
     return (
         <Container justify={'space-between'}>
@@ -74,9 +106,21 @@ const Header = () => {
 
 
                 {
-                    initializingAuth ? <div> Loading... </div> : user ? <div onClick={() =>  {
-                        router.push(`/user/${user?.id}`)}
-                    }> {user?.username ? user.username : user.name} </div> : <Button onClick={handleSignIn}>
+                    initializingAuth ? <div> Loading... </div> : user ?
+
+                        <Dropdown
+                            trigger={['hover']}
+
+                            menu={{
+                                items
+                            }}
+                        >
+                            <div  > {user?.username ? user.username : user.name} </div>
+                        </Dropdown>
+
+
+
+                        : <Button onClick={handleSignIn}>
                         Sign in
                     </Button>
                 }
