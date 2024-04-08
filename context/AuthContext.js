@@ -31,8 +31,8 @@ export const AuthContextProvider = ({
         //     },
         // })
         // await auth.signOut()
-
-        return window.location.reload()
+        return window.location.href = window.location.href
+        // return window.location.reload()
         }
 
     //

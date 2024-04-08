@@ -151,7 +151,7 @@ const Header = () => {
                                 items
                             }}
                         >
-                            <div  > {user?.username ? user.username : user.name} </div>
+                            <div  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>
                         </Dropdown>
 
 
