@@ -3,6 +3,8 @@
 // We can not useState or useRef in a server component, which is why we are
 // extracting this part out into it's own file with 'use client' on top
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+// import {AppContextProvider} from "@/context/AppContext";
+// import {AuthContextProvider} from "@/context/AuthContext";
 
 export const defaultQueryProps = {
     retry: false,
@@ -47,6 +49,12 @@ export default function Providers({ children }) {
     const queryClient = getQueryClient()
 
     return (
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+            {/*<AuthContextProvider>*/}
+            {/*    <AppContextProvider>*/}
+                    {children}
+            {/*    </AppContextProvider>*/}
+            {/*</AuthContextProvider>*/}
+        </QueryClientProvider>
     )
 }

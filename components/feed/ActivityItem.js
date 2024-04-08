@@ -4,12 +4,12 @@ import styled from "styled-components";
 import {FlexBox} from "@/components/core";
 import dayjs from "dayjs";
 import {Dropdown, Spin} from "antd";
-import {useAuthContext} from "@/context/AuthContext";
 import {MoreVertical} from "react-feather";
 import APIClient from '@/services/api'
 import {useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import ConfirmDelete from "@/components/feed/ConfirmDelete";
+import {useCurrentUser} from "@/hooks/user.hook";
 
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
@@ -61,7 +61,8 @@ const ActivityItem = ({activity, type = 'image'}) => {
             ),
         }
     ]
-    const {user} = useAuthContext();
+    const {data: user} = useCurrentUser();
+    // const {user} = useAuthContext();
     const isOwner = user?.id === activity?.user?.id;
 
 

@@ -1,7 +1,6 @@
 import UserActivity from "@/components/UserActivity";
 
 
-
 const Page =  async ({}) => {
 
 

@@ -1,6 +1,5 @@
 'use client'
 
-import {useAuthContext} from "@/context/AuthContext";
 import {useActivitiesByUser} from "@/hooks/activity.hook";
 import CoreTable from "@/components/CoreTable";
 import {useMemo, useState} from "react";
@@ -9,11 +8,14 @@ import styled from "styled-components";
 import {FlexBox} from "@/components/core";
 import {createColumnHelper} from "@tanstack/react-table";
 import ImageViewerModal from "@/components/modals/ImageViewerModal";
+import {useCurrentUser} from "@/hooks/user.hook";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
 const UserHistoryTable = () => {
-    const { user } = useAuthContext()
+    // const { user } = useAuthContext()
+    const { data: user } = useCurrentUser();
+
     const [openImageModal, setOpenImageModal] = useState(null)
 
 

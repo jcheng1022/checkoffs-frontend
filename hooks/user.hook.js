@@ -20,9 +20,14 @@ export const useCurrentUser = ( props = {})  => {
 
 
     const queryKey = ['currentUser'];
+    // console.log(auth.currentUser, 'user')
+    // const uid = auth.currentUser?.uid
+    // console.log(uid, 'uid')
+
     // let isLoggedIn;
     onAuthStateChanged(auth,  (user) => {
         if (user) {
+            console.log(user?.uid)
             setIsLoggedIn(true)
         } else {
             return;

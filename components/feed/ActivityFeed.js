@@ -2,12 +2,12 @@
 
 import styled from 'styled-components'
 import {useActivityFeed} from "@/hooks/activity.hook";
-import {useAuthContext} from "@/context/AuthContext";
 import {FlexBox} from "@/components/core";
 import ActivityList from "@/components/feed/ActivityList";
+import {useCurrentUser} from "@/hooks/user.hook";
 
 const ActivityFeed = () => {
-    const {user} = useAuthContext();
+    const {data: user } = useCurrentUser();
     const {data: feed} = useActivityFeed(user?.id)
     return (
         <Container justify={'center'}>

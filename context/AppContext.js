@@ -1,24 +1,21 @@
 'use client'
 
-import {getAuth, onAuthStateChanged,} from 'firebase/auth';
-import {createContext, useContext, useEffect, useState} from "react";
-import {firebaseApp} from "@/lib/firebase/firebase";
-import {useCurrentUser} from "@/hooks/user.hook";
+import {createContext, useEffect, useState} from "react";
 import FinishUserInfoModal from "@/components/modals/FinishUserInfoModal";
-import {useAuthContext} from "@/context/AuthContext";
+import {useCurrentUser} from "@/hooks/user.hook";
 
-const auth = getAuth(firebaseApp);
 
 export const AppContext = createContext({});
 
-export const useAppContext = () => useContext(AppContext);
+// export const useAppContext = () => useContext(AppContext);
 
 export const AppContextProvider = ({
                                         children,
                                     }) => {
     const [userModal, setUserModal] = useState(false)
+    const {data: user} = useCurrentUser();
 
-    const {user} = useAuthContext();
+    // const {user} = useAuthContext();
 
     useEffect(() => {
         if (user && !user?.username) {

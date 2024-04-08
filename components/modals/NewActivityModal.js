@@ -8,8 +8,8 @@ import dayjs from "dayjs";
 import {useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import APIClient from '../../services/api'
-import {useAuthContext} from "@/context/AuthContext";
 import {usePathname, useRouter} from 'next/navigation';
+import {useCurrentUser} from "@/hooks/user.hook";
 
 const {TextArea} = Input;
 
@@ -22,7 +22,8 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
         formState: { errors },
     } = useForm()
     const client = useQueryClient();
-    const {user } = useAuthContext();
+    const {data: user} = useCurrentUser()
+    // const {user } = useAuthContext();
     const pathname = usePathname();
 
     const [loading, setLoading] = useState(false)
@@ -48,6 +49,8 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
             }
         }).then(() => {
             setLoading(false)
+
+            console.log(user?.id)
             if (pathname === '/feed') {
                 client.refetchQueries({queryKey: ['feed', user?.id]})
             }

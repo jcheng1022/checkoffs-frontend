@@ -6,8 +6,9 @@ import {NextResponse} from "next/server";
 customInitApp();
 
 export async function POST(request, response) {
-
     const authorization = headers().get("Authorization");
+    console.log(`post hit`, authorization)
+
 
     if (authorization?.startsWith("Bearer ")) {
         const idToken = authorization.split("Bearer ")[1];

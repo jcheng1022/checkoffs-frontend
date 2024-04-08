@@ -1,7 +1,7 @@
 'use client'
 
 import {Button, Dropdown} from "antd";
-import {GoogleAuthProvider, onAuthStateChanged, signInWithPopup} from "firebase/auth";
+import {GoogleAuthProvider, signInWithPopup} from "firebase/auth";
 // import {googleAuthProvider} from "@/app/firebase";
 import {FlexBox} from "@/components/core";
 import {useAuthContext} from "@/context/AuthContext";
@@ -10,11 +10,12 @@ import {useEffect, useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import NewActivityModal from "@/components/modals/NewActivityModal";
 import styled from 'styled-components'
-import {MoreVertical} from "react-feather";
 import {useQueryClient} from "@tanstack/react-query";
+import {useCurrentUser} from "@/hooks/user.hook";
 
 const Header = () => {
-    const {user, initializingAuth, logOut } = useAuthContext()
+    const { data: user } = useCurrentUser();
+    const {logOut } = useAuthContext()
     const router = useRouter();
     const pathname = usePathname()
     const [creatingNewActivity, setCreatingNewActivity] = useState(false)
@@ -22,49 +23,83 @@ const Header = () => {
     const client = useQueryClient();
 
     useEffect(() => {
-         onAuthStateChanged(auth, async (user) => {
-            console.log(pathname, 'sgsdsd PATH')
-            if (user && pathname.includes('/user')  ) {
+        //  onAuthStateChanged(auth, async (user) => {
+        //     console.log(pathname, 'sgsdsd PATH')
+        //
+        //     if (user && pathname.includes('/user')  ) {
+        //         fetch("/api/auth", {
+        //             method: "POST",
+        //             headers: {
+        //                 Authorization: `Bearer ${await user.getIdToken()}`,
+        //             },
+        //         }).then((response) => {
+        //             // if (response.status === 200) {
+        //             //     router.push("/user/1");
+        //             // }
+        //         });
+        //
+        //     }
+        // });
 
-                fetch("/api/auth", {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${await user.getIdToken()}`,
-                    },
-                }).then((response) => {
-                    // if (response.status === 200) {
-                    //     router.push("/user/1");
-                    // }
-                });
 
-            }
-        });
+    }, [auth, user]);
 
 
-    }, [auth]);
-
-    // const handleSignOut = () => {
-    //     auth.signOut().then(() => {
-    //         router.replace('/')
-    //         // client.refetchQueries({queryKey: ['currentUser']})
-    //     });
-    // }
-    const handleSignIn = () => {
+    const handleSignIn = async () => {
         const provider = new GoogleAuthProvider()
+        console.log(`signing in`)
+        // await setPersistence(auth, firebase.auth.Auth.Persistence.NONE);
+
+        // await signInWithRedirect(auth, provider).then(user => {
+        //
+        //     return user.getIdToken().then(idToken => {
+        //         // Session login endpoint is queried and the session cookie is set.
+        //         // CSRF protection should be taken into account.
+        //         // ...
+        //         const csrfToken = getCookie('csrfToken')
+        //         console.log(`should fetch now`)
+        //         return fetch('/api/auth/login', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'CSRF-Token': csrfToken
+        //             },
+        //             body: JSON.stringify({idToken, csrfToken})
+        //         });
+        // })
+        //
+        // }).then(() => {
+        //     window.location.assign('/profile');
+        // });
 
         signInWithPopup(auth, provider)
-            .then((result) => {
+            .then(async (result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
+                // const idToken = await user.getIdToken();
+
                 // IdP data available using getAdditionalUserInfo(result)
                 // ...
+                //         const csrfToken = getCookie('csrfToken')
+                // console.log(idToken, token, user, csrfToken, 'POPUP SHII')
+
+                // return fetch('/api/auth/login', {
+                //                 method: 'POST',
+                //                 headers: {
+                //                     // 'Content-Type': 'application/json',
+                //                     'CSRF-Token': csrfToken
+                //                 },
+                //                 body: JSON.stringify({idToken: idToken, csrfToken})
+                //             });
+
             }).catch((error) => {
             // Handle Errors here.
 
         })}
+
 
     const items = [
         {
@@ -106,7 +141,8 @@ const Header = () => {
 
 
                 {
-                    initializingAuth ? <div> Loading... </div> : user ?
+                    // initializingAuth ? <div> Loading... </div> :
+                        user ?
 
                         <Dropdown
                             trigger={['hover']}
