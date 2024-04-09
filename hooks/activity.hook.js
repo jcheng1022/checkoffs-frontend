@@ -15,6 +15,19 @@ export const useActivitiesByUser = (userId,  props = {})  => {
 
 
 }
+export const useActivitiesStatsByUser = (userId,  props = {})  => {
+
+    const queryKey = ['stats', userId, props];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled: !!userId,
+        queryFn: () => APIClient.api.get(`/activity/stats`, { params: props})
+    })
+
+
+}
 
 export const useActivityFeed = (userId,  props = {})  => {
 

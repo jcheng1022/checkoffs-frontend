@@ -5,21 +5,11 @@ import Providers from "@/app/providers";
 import dayjs from "dayjs";
 import {CookiesProvider} from 'next-client-cookies/server';
 import {AppContextProvider} from "@/context/AppContext";
+import NavigationProgressBar from "@/components/NavigationProgressBar";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
 export default function AuthedLayout({ children }) {
-    // const {data: user, isFetching, isLoading } = useCurrentUser()
-    // const router = useRouter();
-    // console.log(`re`)
-    //
-    // useEffect(() => {
-    //     if (!isFetching && !isLoading) {
-    //         if (!user) {
-    //             router.replace('/')
-    //         }
-    //     }
-    // }, [])
 
     return (
         <html>
@@ -29,11 +19,11 @@ export default function AuthedLayout({ children }) {
         </head>
         <body>
         <StyledComponentsRegistry>
-            {/*<QueryClientProvider client={client}>*/}
             <Providers>
                 <CookiesProvider>
                     <AuthContextProvider>
                        <AppContextProvider>
+                           <NavigationProgressBar />
                            <Header />
                            {children}
                        </AppContextProvider>
@@ -41,7 +31,6 @@ export default function AuthedLayout({ children }) {
                     </AuthContextProvider>
                 </CookiesProvider>
             </Providers>
-            {/*</QueryClientProvider>*/}
         </StyledComponentsRegistry>
         </body>
         </html>

@@ -10,16 +10,10 @@ export const useCurrentUser = ( props = {})  => {
 
 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    // const session = getCookie('session')
-    //
-    // console.log(`session`, session)
-    //
-    // if (session) {
-    //     return session;
-    // }
 
 
-    const queryKey = ['currentUser'];
+
+    const queryKey = ['currentUser', props];
     // console.log(auth.currentUser, 'user')
     // const uid = auth.currentUser?.uid
     // console.log(uid, 'uid')
@@ -27,7 +21,6 @@ export const useCurrentUser = ( props = {})  => {
     // let isLoggedIn;
     onAuthStateChanged(auth,  (user) => {
         if (user) {
-            console.log(user?.uid)
             setIsLoggedIn(true)
         } else {
             return;
@@ -42,6 +35,23 @@ export const useCurrentUser = ( props = {})  => {
 
 
 }
+
+export const useUserFriends = ( userId = null, type = 'ACCEPTED')  => {
+
+    const queryKey = ['friends', userId, type];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled: !!userId,
+        retry: 5,
+        queryFn: () => APIClient.api.get(`/user/friends`, { params: {
+                status: type
+            }})
+    })
+
+};
+
 export const useUserMenuData = (user,  props = {})  => {
 
     const queryKey = ['menu'];
@@ -51,6 +61,20 @@ export const useUserMenuData = (user,  props = {})  => {
         ...defaultQueryProps,
         enabled: !!user,
         queryFn: () => APIClient.api.get(`/test`, { params: props})
+    })
+
+
+}
+
+export const usePeopleSearch = (userId,   props = {})  => {
+
+    const queryKey = ['search'];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled: !!userId,
+        queryFn: () => APIClient.api.post(`/user/find`, {})
     })
 
 

@@ -58,7 +58,7 @@ const UserHistoryTable = () => {
         }
     }, [activities])
     return (
-        <Container align={'center'} direction={'column'}>
+        <Container >
 
             <CoreTable initialData={tableData} columns={columns}/>
             {!!openImageModal && <ImageViewerModal image={openImageModal} onCancel={() => setOpenImageModal(null)} open={!!openImageModal} /> }
@@ -70,7 +70,7 @@ const UserHistoryTable = () => {
 export default UserHistoryTable;
 
 
-const Container = styled(FlexBox)`
+const Container = styled.div`
 
 `
 

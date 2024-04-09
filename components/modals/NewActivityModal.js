@@ -74,12 +74,14 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
                <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
 
                    <Controller
+                       defaultValue={dayjs()} // Provide defaultValue here
+
                        control={control}
                        name='date'
                        render={({ field }) => (
                            <DatePicker
-                               defaultValue={dayjs()}
                                placeholderText='Select date'
+
                                onChange={(date) => field.onChange(date)}
                                selected={field.value}
                                {...field}

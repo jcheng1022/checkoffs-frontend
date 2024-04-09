@@ -36,7 +36,6 @@ class APIClient {
 
                 // console.log(user, 'gsds USERRR')
                 if (user) {
-                    console.log(user, 222)
                     const idToken = await user.getIdToken();
                     config.headers['Authorization'] = `Bearer ${idToken}`;
                 }

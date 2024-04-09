@@ -6,10 +6,8 @@ import {useMemo} from "react";
 import {useCurrentUser} from "@/hooks/user.hook";
 
 const UserActivityGraph = () => {
-    console.log(`graph rerendering`)
-    // const { user } = useAuthContext()
+
     const { data: user } = useCurrentUser();
-    // const {data: user} = useCurrentUser();
 
     const {data: activities } = useActivitiesByUser( user?.id,{
         dateOnly: true
@@ -20,6 +18,7 @@ const UserActivityGraph = () => {
 
     return (
         <>
+
             <ActivityGraph activity={graphData}/>
         </>
     )

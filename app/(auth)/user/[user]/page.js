@@ -5,7 +5,10 @@ const Page =  async ({}) => {
 
 
   return (
-      <UserActivity />
+      <>
+        <UserActivity />
+
+      </>
   )
 }
 
