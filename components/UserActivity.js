@@ -5,6 +5,7 @@ import {FlexBox, Gap} from "@/components/core";
 import UserHistoryTable from "@/components/profile/UserHistory"
 import UserActivityGraph from "@/components/profile/UserActivityGraph";
 import UserActivityStats from "@/components/profile/UserActivityStats";
+import FriendsList from "@/components/profile/FriendsList";
 
 
 const UserActivity = () => {
