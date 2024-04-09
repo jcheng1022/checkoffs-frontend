@@ -14,7 +14,8 @@ const PeopleList = ({list = []}) => {
 export default PeopleList;
 
 const Container = styled.div`
+  margin: 24px;
   //width: 1100px;
-  max-width: 1100px;
+  //max-width: 1100px;
 
 `

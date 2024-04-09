@@ -50,7 +50,7 @@ const FriendItem = ({friend}) => {
                     <div className={'activity-text'}>{isOnline ? 'Active now' : 'Offline'}</div>
                 </div>
             </FlexBox>
-            <FlexBox justify={'flex-end'} align={'center'}>
+            <FlexBox justify={'flex-end'} align={'center'} style={{cursor: 'pointer'}}>
                 <MoreVertical/>
             </FlexBox>
         </Container>

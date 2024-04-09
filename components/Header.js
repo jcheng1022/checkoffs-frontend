@@ -14,6 +14,7 @@ import {useQueryClient} from "@tanstack/react-query";
 import {useCurrentUser, useUserFriends} from "@/hooks/user.hook";
 import {Globe} from "react-feather";
 import APIClient from '@/services/api'
+import {theme} from '@/styles/themes'
 
 const Header = () => {
     const { data: user } = useCurrentUser();
@@ -30,79 +31,23 @@ const Header = () => {
     const client = useQueryClient();
 
     useEffect(() => {
-        //  onAuthStateChanged(auth, async (user) => {
-        //     console.log(pathname, 'sgsdsd PATH')
-        //
-        //     if (user && pathname.includes('/user')  ) {
-        //         fetch("/api/auth", {
-        //             method: "POST",
-        //             headers: {
-        //                 Authorization: `Bearer ${await user.getIdToken()}`,
-        //             },
-        //         }).then((response) => {
-        //             // if (response.status === 200) {
-        //             //     router.push("/user/1");
-        //             // }
-        //         });
-        //
-        //     }
-        // });
+        setShowNotifications(false)
 
-
-    }, [auth, user]);
+    }, []);
 
 
     const handleSignIn = async () => {
         const provider = new GoogleAuthProvider()
-        console.log(`signing in`)
-        // await setPersistence(auth, firebase.auth.Auth.Persistence.NONE);
-
-        // await signInWithRedirect(auth, provider).then(user => {
-        //
-        //     return user.getIdToken().then(idToken => {
-        //         // Session login endpoint is queried and the session cookie is set.
-        //         // CSRF protection should be taken into account.
-        //         // ...
-        //         const csrfToken = getCookie('csrfToken')
-        //         console.log(`should fetch now`)
-        //         return fetch('/api/auth/login', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'CSRF-Token': csrfToken
-        //             },
-        //             body: JSON.stringify({idToken, csrfToken})
-        //         });
-        // })
-        //
-        // }).then(() => {
-        //     window.location.assign('/profile');
-        // });
-
-        signInWithPopup(auth, provider)
+     signInWithPopup(auth, provider)
             .then(async (result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
-                // const idToken = await user.getIdToken();
-
-                // IdP data available using getAdditionalUserInfo(result)
-                // ...
-                //         const csrfToken = getCookie('csrfToken')
-                // console.log(idToken, token, user, csrfToken, 'POPUP SHII')
-
-                // return fetch('/api/auth/login', {
-                //                 method: 'POST',
-                //                 headers: {
-                //                     // 'Content-Type': 'application/json',
-                //                     'CSRF-Token': csrfToken
-                //                 },
-                //                 body: JSON.stringify({idToken: idToken, csrfToken})
-                //             });
+                window.location.href = window.location.href
 
             }).catch((error) => {
+                console.log(`Error signing in: ${error}`)
             // Handle Errors here.
 
         })}
@@ -129,27 +74,35 @@ const Header = () => {
         }
     ]
 
+    const handleRouterPush = (path) => () => {
+        if (!path) return;
+        router.push(path)
+    }
+
 
 
     return (
         <Container justify={'space-between'}>
             <FlexBox justify={'flex-start'} gap={18}>
-                <div className={'app-name'}  onClick={() =>  {
-                    router.push(`/`)}}>GymFriends</div>
+                <div className={'app-name'}  onClick={handleRouterPush(`/`)}>GymFriends</div>
+
                 {pathname !== '/feed' && !!user && (
-                    <div className={'feature-link'} onClick={() =>  {
-                        router.push(`/feed`)}
-                    }> Feed </div>
+                    <div className={'feature-link'} onClick={handleRouterPush('/feed')}>
+                        Feed
+                    </div>
                 )}
-                <div className={'feature-link'} onClick={() =>  {
-                    router.push(`/people`)}
-                }> People </div>
+
+                {pathname !== '/people' && (
+                    <div className={'feature-link'} onClick={handleRouterPush('/people')}>
+                        People
+                    </div>
+                )}
             </FlexBox>
-            <FlexBox justify={'flex-end'} gap={12}>
-                { !!user && <Button  onClick={() => setCreatingNewActivity(true)}> New </Button>}
+            <FlexBox justify={'flex-end'} gap={18}>
+                { !!user && <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>}
 
 
-                <Globe color={'black'} size={20} onClick={() => setShowNotifications(prev => !prev)} />
+                <Globe className={'notification'} color={'black'} size={20} onClick={() => setShowNotifications(prev => !prev)} />
 
                 <div className={'notification-list'} style={{
                     display: showNotifications ? 'block' : 'none',
@@ -185,7 +138,6 @@ const Header = () => {
                                             <List.Item>
                                                 <FlexBox>
                                                     <div style={{color: 'black'}} className={'buddy-name'}> {item?.username}</div>
-                                                    {/*<div className={'buddy-email'}> {item?.friendEmail}</div>*/}
                                                 </FlexBox>
 
                                                 <FlexBox justify={'flex-end'} wrap={'no-wrap'} gap={6}>
@@ -208,76 +160,11 @@ const Header = () => {
                             </>
                         )
                     }
-                    {/*<div className={'notif-headers'}> Notifications</div>*/}
-                    {/* <Gap gap={12}/>*/}
-                    {/*<FlexBox justify={'space-between'}>*/}
-                    {/*    <div className={'notif-headers'}> Notifications</div>*/}
-                    {/*    <Button>*/}
-                    {/*        Mark all as read*/}
-                    {/*    </Button>*/}
-                    {/*</FlexBox>*/}
-                    {/*<List*/}
 
-
-                    {/*    // className="notification-list"*/}
-                    {/*    itemLayout="horizontal"*/}
-                    {/*    dataSource={notifications?.results}*/}
-                    {/*    renderItem={(item, index) => {*/}
-                    {/*        const handlePlanResponse = (response) => () => {*/}
-                    {/*            return APIClient.api.patch(`/planner/plan/${item?.meta?.planId}/user`, {*/}
-                    {/*                status: response,*/}
-                    {/*                notificationId: item?.id*/}
-
-                    {/*            }).then(async () => {*/}
-                    {/*                await client.refetchQueries(['notifications', user?.id])*/}
-                    {/*            })*/}
-                    {/*        }*/}
-                    {/*        return (*/}
-                    {/*            <List.Item>*/}
-                    {/*                <div className={'read-section'}>*/}
-                    {/*                    {!item?.isRead ? <div className={'read-icon'} /> : null}*/}
-                    {/*                </div>*/}
-                    {/*                <FlexBox direction={'column'} align={'start'}>*/}
-                    {/*                    <div className={'notification-message'}> {item?.message}</div>*/}
-                    {/*                    <div className={'timestamp'}> {dayjs(item?.createdAt).format('MMMM Do YYYY h:ss a')} </div>*/}
-                    {/*                    /!*<List.Item.Meta*!/*/}
-                    {/*                    /!*    // avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}*!/*/}
-                    {/*                    /!*    // title={<a href="https://ant.design">{item.title}</a>}*!/*/}
-                    {/*                    /!*    description={item.message}*!/*/}
-
-                                        {/*/>*/}
-                    {/*                    {item?.type === 'friend-request' ? (*/}
-                    {/*                        <FlexBox justify={'flex-end'} wrap={'no-wrap'} gap={6}>*/}
-                    {/*                            <Button className={'invite-accept-btn'} type={'primary'}>*/}
-                    {/*                                Accept*/}
-                    {/*                            </Button>*/}
-                    {/*                            <Button>*/}
-                    {/*                                Decline*/}
-                    {/*                            </Button>*/}
-                    {/*                        </FlexBox>*/}
-                    {/*                    ) : (item?.type === 'plan-invite' && item?.status === 'PENDING') ? (*/}
-                    {/*                        <>*/}
-                    {/*                            <Gap gap={8}/>*/}
-                    {/*                            <FlexBox direction={'row'} gap={18}>*/}
-                    {/*                                <Button onClick={handlePlanResponse('ACCEPTED')} type={'primary'}>*/}
-                    {/*                                    Accept*/}
-                    {/*                                </Button>*/}
-                    {/*                                <Button onClick={handlePlanResponse('DECLINED')}>*/}
-                    {/*                                    Decline*/}
-                    {/*                                </Button>*/}
-                    {/*                            </FlexBox>*/}
-                    {/*                        </>*/}
-                    {/*                    ) : null}*/}
-                    {/*                </FlexBox>*/}
-                    {/*            </List.Item>*/}
-                    {/*        )*/}
-                    {/*    }}*/}
-                    {/*/>*/}
                 </div>
 
 
                 {
-                    // initializingAuth ? <div> Loading... </div> :
                         user ?
 
                         <Dropdown
@@ -287,7 +174,7 @@ const Header = () => {
                                 items
                             }}
                         >
-                            <div  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>
+                            <div className={'username'}  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>
                         </Dropdown>
 
 
@@ -307,14 +194,46 @@ export default Header
 
 
 const Container = styled(FlexBox)`
+  width: 100%;
+  background-color: ${theme.WHITE};
+  padding: 8px;
+  margin: 0px;
   .app-name {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 20px;
+    //font-weight: 600;
     cursor: pointer;
+    color: ${theme.darkBlue_1};
+    letter-spacing: 1.1px;
   }
+  
+  // .app-name:hover {
+  //   color: ${theme.lightBlue_1};
+  // }
   
   .feature-link {
     font-size: 16px;
     cursor: pointer;
+    //height: 100%;
+    color: ${theme.lightBlue_2};
+  }
+  
+  .feature-link:hover {
+    color: ${theme.softBlue_1};
+  }
+  
+  .new-btn {
+    background-color: ${theme.lightBlue_2};
+    color: white;
+    font-weight: 600;
+    height: 36px;
+  }
+  
+  .notification {
+    cursor: pointer;
+  }
+  
+  .username {
+    cursor: pointer;
+    letter-spacing: 1.01px;
   }
 `

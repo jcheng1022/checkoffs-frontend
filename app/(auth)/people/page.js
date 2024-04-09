@@ -7,6 +7,7 @@ import {useMemo, useState} from "react";
 import {useCurrentUser, usePeopleSearch} from "@/hooks/user.hook";
 import APIClient from '@/services/api'
 import PeopleList from "@/components/people/PeopleList";
+import {theme} from "@/styles/themes";
 
 const Page =   ({}) => {
     const { data: user} = useCurrentUser({
@@ -54,8 +55,13 @@ const Page =   ({}) => {
     return (
         <Container>
             <FlexBox className={'input-field-container'} wrap={'no-wrap'} gap={24}>
-                <Input onChange={(e) => setUserInfo(e.target.value)}/>
-                <Button onClick={handleSubmit}> Search</Button>
+                <Input
+                    className={'search-input'}
+                    placeholder={'Search using username or email'}
+                    value={userInfo}
+                    onChange={(e) => setUserInfo(e.target.value)}
+                />
+                <Button className={'search-btn'} onClick={handleSubmit}> Search</Button>
             </FlexBox>
 
             <Spin spinning={isLoading}>
@@ -73,6 +79,22 @@ export default Page;
 const Container = styled.div`
   
     .input-field-container {
-      margin: 24px 12px;
+      margin: 24px;
+    }
+  
+  .search-input {
+    padding: 12px;
+  }
+  
+  .search-btn {
+    //padding: 12px 24px;
+    height: 48px;
+    color: white;
+    font-weight: 600;
+    background-color: ${theme.darkBlue_1};
+  }
+  
+    .search-btn:hover {
+        background-color: ${theme.lightBlue_1};
     }
 `

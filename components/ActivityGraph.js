@@ -24,7 +24,7 @@ const ActivityGraph = ({ activity = []}) => {
     //     }
     //     return monthHeaders;
     // };
-    for (let i = 0; i < 365; i++) {
+    for (let i = 0; i < 364; i++) {
         let dayGridDate = dayjs()
             .subtract(i, "days").format()
 
@@ -42,16 +42,15 @@ const ActivityGraph = ({ activity = []}) => {
     const containerRef = useRef(null); // Create a ref for the container div
 
 
-    // useEffect(() => {
-    //     if (containerRef.current) {
-    //         containerRef.current.scrollLeft = containerRef.current.scrollWidth;
-    //     }
-    // }, []);
     return (
         <Container  ref={containerRef}>
 
             <div className="days" >
                 {dayGrids}
+            </div>
+
+            <div className={'learn-more'}>
+                Every day with an activity is marked with a blue square. Keep tracking days to build a streak!
             </div>
         </Container>
     )
@@ -83,8 +82,13 @@ const Container = styled.div`
   }
 
 
+  
 
-
+  .learn-more {
+    font-size: 12px;
+    margin: 12px 24px;
+    padding: 8px;
+  }
 
   .days {
     margin: 24px;
@@ -106,6 +110,6 @@ const Container = styled.div`
   }
 
   .day--active {
-    background-color: #a5c6e8;
+    background-color: #0aebff;
   }
 `

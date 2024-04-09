@@ -4,6 +4,8 @@ import ActivityGraph from "@/components/ActivityGraph";
 import {useActivitiesByUser} from "@/hooks/activity.hook";
 import {useMemo} from "react";
 import {useCurrentUser} from "@/hooks/user.hook";
+import styled from 'styled-components'
+import {theme} from "@/styles/themes";
 
 const UserActivityGraph = () => {
 
@@ -17,11 +19,22 @@ const UserActivityGraph = () => {
     }, [activities])
 
     return (
-        <>
-
+        <Container>
+            <div style={{
+                marginLeft: 24,
+                marginBottom: 12,
+                fontWeight: 500
+            }}> My Activity</div>
             <ActivityGraph activity={graphData}/>
-        </>
+        </Container>
     )
 }
 
 export default UserActivityGraph;
+
+
+const Container = styled.div`
+  
+  background-color: ${theme.WHITE};
+  padding: 24px;
+`

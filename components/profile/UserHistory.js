@@ -9,6 +9,7 @@ import {FlexBox} from "@/components/core";
 import {createColumnHelper} from "@tanstack/react-table";
 import ImageViewerModal from "@/components/modals/ImageViewerModal";
 import {useCurrentUser} from "@/hooks/user.hook";
+import {theme} from "@/styles/themes";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
@@ -71,6 +72,10 @@ export default UserHistoryTable;
 
 
 const Container = styled.div`
+    
+    background-color: ${theme.WHITE};
+  padding: 24px;
+  
 
 `
 

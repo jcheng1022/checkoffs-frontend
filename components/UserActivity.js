@@ -11,15 +11,18 @@ import FriendsList from "@/components/profile/FriendsList";
 const UserActivity = () => {
     return (
         <Container>
-            <UserActivityStats />
+            <FlexBox className={'top-section'} justify={'center'} gap={50}  align={'flex-start'}>
+                <FriendsList />
+                <UserActivityStats />
+            </FlexBox>
             <UserActivityGraph />
 
             <Gap gap={24}/>
 
-            <FlexBox justify={'space-between'} align={'flex-start'}>
-                <FriendsList />
+            {/*<FlexBox justify={'center'} gap={200}  align={'flex-start'}>*/}
+            {/*    <FriendsList />*/}
                 <UserHistoryTable />
-            </FlexBox>
+            {/*</FlexBox>*/}
         </Container>
     )
 }
@@ -28,6 +31,9 @@ const UserActivity = () => {
 export default UserActivity;
 
 const Container = styled.div`
+    .top-section {
+      margin: 24px;
+    }
   
 `
 

@@ -59,6 +59,7 @@ const Container = styled.div`
 
   table {
     //min-width: 800px;
+    min-width: 100%;
     max-width: 100%;
     border: 1px solid lightgray;
   }

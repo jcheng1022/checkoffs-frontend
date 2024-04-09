@@ -6,6 +6,7 @@ import {useMemo} from "react";
 import {useCurrentUser} from "@/hooks/user.hook";
 import styled from 'styled-components'
 import {FlexBox} from "@/components/core";
+import {theme} from "@/styles/themes";
 
 const UserActivityStats = () => {
 
@@ -17,7 +18,7 @@ const UserActivityStats = () => {
     // }, [activities])
 
     return (
-        <Container justify={'center'}>
+        <Container justify={'center'} align={'flex-start'}>
             Coming soon ( stats)
         </Container>
     )
@@ -26,7 +27,9 @@ const UserActivityStats = () => {
 export default UserActivityStats;
 
 const Container = styled(FlexBox)`
-  height: 150px;
-  margin: 12px 0px;
-  background-color: #f5f5f5;
+  height: 300px;
+  min-width: 100px;
+  padding: 24px;
+  border-radius: 12px;
+  background-color: ${theme.WHITE};
 `
