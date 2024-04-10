@@ -3,6 +3,7 @@ import {theme} from "@/styles/themes";
 import dayjs from "dayjs";
 import {createColumnHelper} from "@tanstack/react-table";
 import CoreTable from "@/components/CoreTable";
+import {Spin} from "antd";
 
 const TableSkeleton = () => {
 
@@ -66,7 +67,9 @@ const TableSkeleton = () => {
 
     return (
         <Container>
-            <CoreTable initialData={fakeData} columns={columns()}/>
+           <Spin>
+               <CoreTable initialData={fakeData} columns={columns()}/>
+           </Spin>
 
         </Container>
     )
