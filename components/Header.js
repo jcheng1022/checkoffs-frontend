@@ -1,18 +1,16 @@
 'use client'
 
 import {Button, Dropdown, List} from "antd";
-import {GoogleAuthProvider, signInWithPopup} from "firebase/auth";
 // import {googleAuthProvider} from "@/app/firebase";
 import {FlexBox} from "@/components/core";
 import {useAuthContext} from "@/context/AuthContext";
-import {auth} from "@/lib/firebase/firebase";
 import {useEffect, useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import NewActivityModal from "@/components/modals/NewActivityModal";
 import styled from 'styled-components'
 import {useQueryClient} from "@tanstack/react-query";
 import {useCurrentUser, useUserFriends} from "@/hooks/user.hook";
-import {Globe, Menu} from "react-feather";
+import {Globe, Menu, X} from "react-feather";
 import APIClient from '@/services/api'
 import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
@@ -21,7 +19,7 @@ import MobileMenu from "@/components/MobileMenu";
 const Header = () => {
     const { data: user } = useCurrentUser();
 
-    const { setMobileMenuIsOpen, handleSignIn } = useAppContext();
+    const { mobileMenuIsOpen, setMobileMenuIsOpen, handleSignIn } = useAppContext();
     const {logOut } = useAuthContext()
     const router = useRouter();
     const pathname = usePathname()
@@ -73,7 +71,11 @@ const Header = () => {
         router.push(path)
     }
 
-
+    const menuProps = {
+        color: 'black',
+        className: 'menu-icon',
+        onClick: () => setMobileMenuIsOpen(prev => !prev)
+    }
 
     return (
         <>
@@ -81,7 +83,7 @@ const Header = () => {
                 <FlexBox justify={'flex-start'} gap={18}>
 
                     {isMobile && (
-                        <Menu color={'black'} className={'menu-icon'} onClick={() => setMobileMenuIsOpen(prev => !prev)} />
+                        mobileMenuIsOpen ? <X {...menuProps} /> : <Menu {...menuProps} />
                     )}
                     <div className={'app-name'}  onClick={handleRouterPush(`/`)}>GymFriends</div>
 

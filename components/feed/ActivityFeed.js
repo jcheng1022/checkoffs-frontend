@@ -5,13 +5,17 @@ import {useActivityFeed} from "@/hooks/activity.hook";
 import {FlexBox} from "@/components/core";
 import ActivityList from "@/components/feed/ActivityList";
 import {useCurrentUser} from "@/hooks/user.hook";
+import LoadingFeed from "@/components/skeletons/LoadingFeed";
 
 const ActivityFeed = () => {
     const {data: user } = useCurrentUser();
-    const {data: feed} = useActivityFeed(user?.id)
+    const {data: feed, isFetching, isLoading} = useActivityFeed(user?.id)
     return (
         <Container justify={'center'}>
-            <ActivityList list={feed}/>
+            {(isFetching || isLoading) ?
+                <LoadingFeed/> :
+                <ActivityList list={feed}/>
+            }
         </Container>
     )
 }

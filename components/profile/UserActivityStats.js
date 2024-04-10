@@ -1,9 +1,5 @@
 'use client'
 
-import ActivityGraph from "@/components/ActivityGraph";
-import {useActivitiesByUser, useActivitiesStatsByUser} from "@/hooks/activity.hook";
-import {useMemo} from "react";
-import {useCurrentUser} from "@/hooks/user.hook";
 import styled from 'styled-components'
 import {FlexBox} from "@/components/core";
 import {theme} from "@/styles/themes";

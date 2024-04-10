@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import {FlexBox} from "@/components/core";
 import PeopleItem from "@/components/people/PeopleItem";
 
 const PeopleList = ({list = []}) => {

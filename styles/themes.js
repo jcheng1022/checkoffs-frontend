@@ -8,6 +8,7 @@ export const theme = {
     lightBlue_2:"#759eb8",
     darkBlue_1:"#7392b7",
     softBlue_1:"#b3c5d7",
-    softBlue_2:"#d8e1e9"
+    softBlue_2:"#d8e1e9",
+    skeleton: 'rgba(0, 0, 0, 0.06)'
 
 }

@@ -6,12 +6,13 @@ import {useMemo} from "react";
 import {useCurrentUser} from "@/hooks/user.hook";
 import styled from 'styled-components'
 import {theme} from "@/styles/themes";
+import ActivityGraphSkeleton from "@/components/skeletons/ActivityGraphSkeleton";
 
 const UserActivityGraph = () => {
 
     const { data: user } = useCurrentUser();
 
-    const {data: activities } = useActivitiesByUser( user?.id,{
+    const {data: activities, isFetching, isLoading } = useActivitiesByUser( user?.id,{
         dateOnly: true
     })
     const graphData = useMemo(() => {
@@ -25,7 +26,10 @@ const UserActivityGraph = () => {
                 marginBottom: 12,
                 fontWeight: 500
             }}> My Activity</div>
-            <ActivityGraph activity={graphData}/>
+            {(isFetching || isLoading) ?
+                <ActivityGraphSkeleton /> :
+                <ActivityGraph activity={graphData}/>
+            }
         </Container>
     )
 }

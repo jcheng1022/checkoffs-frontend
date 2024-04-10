@@ -5,11 +5,11 @@ import CoreTable from "@/components/CoreTable";
 import {useMemo, useState} from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";
-import {FlexBox} from "@/components/core";
 import {createColumnHelper} from "@tanstack/react-table";
 import ImageViewerModal from "@/components/modals/ImageViewerModal";
 import {useCurrentUser} from "@/hooks/user.hook";
 import {theme} from "@/styles/themes";
+import TableSkeleton from "@/components/skeletons/TableSkeleton";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
@@ -18,9 +18,9 @@ const UserHistoryTable = () => {
     const { data: user } = useCurrentUser();
 
     const [openImageModal, setOpenImageModal] = useState(null)
+    const [initializingData, setInitializingData] = useState(true)
 
-
-    const {data: activities } = useActivitiesByUser( user?.id,{
+    const {data: activities, isFetching, isLoading } = useActivitiesByUser( user?.id,{
     })
     const {data: tableData, columns} = useMemo(() => {
         const data =  activities?.map(o => {
@@ -53,6 +53,7 @@ const UserHistoryTable = () => {
             })
         ]
 
+
         return {
             data,
             columns
@@ -60,8 +61,12 @@ const UserHistoryTable = () => {
     }, [activities])
     return (
         <Container >
+            {(isFetching || isLoading) ?
+                <TableSkeleton />  :
+                <CoreTable initialData={tableData} columns={columns}/>
 
-            <CoreTable initialData={tableData} columns={columns}/>
+            }
+            {/*<CoreTable initialData={tableData} columns={columns}/>*/}
             {!!openImageModal && <ImageViewerModal image={openImageModal} onCancel={() => setOpenImageModal(null)} open={!!openImageModal} /> }
 
         </Container>
