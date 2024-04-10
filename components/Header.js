@@ -12,13 +12,16 @@ import NewActivityModal from "@/components/modals/NewActivityModal";
 import styled from 'styled-components'
 import {useQueryClient} from "@tanstack/react-query";
 import {useCurrentUser, useUserFriends} from "@/hooks/user.hook";
-import {Globe} from "react-feather";
+import {Globe, Menu} from "react-feather";
 import APIClient from '@/services/api'
 import {theme} from '@/styles/themes'
+import {useAppContext} from "@/context/AppContext";
+import MobileMenu from "@/components/MobileMenu";
 
 const Header = () => {
     const { data: user } = useCurrentUser();
 
+    const { setMobileMenuIsOpen, handleSignIn } = useAppContext();
     const {logOut } = useAuthContext()
     const router = useRouter();
     const pathname = usePathname()
@@ -26,7 +29,12 @@ const Header = () => {
     const [showNotifications, setShowNotifications] = useState(false)
     const {data: pendingFriends} = useUserFriends(user?.id, 'PENDING')
 
+    let isMobile = false;
 
+    if (window) {
+         isMobile = window.matchMedia("(max-width: 600px)").matches;
+
+    }
 
     const client = useQueryClient();
 
@@ -36,21 +44,7 @@ const Header = () => {
     }, []);
 
 
-    const handleSignIn = async () => {
-        const provider = new GoogleAuthProvider()
-     signInWithPopup(auth, provider)
-            .then(async (result) => {
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                window.location.href = window.location.href
 
-            }).catch((error) => {
-                console.log(`Error signing in: ${error}`)
-            // Handle Errors here.
-
-        })}
 
 
     const items = [
@@ -82,111 +76,121 @@ const Header = () => {
 
 
     return (
-        <Container justify={'space-between'}>
-            <FlexBox justify={'flex-start'} gap={18}>
-                <div className={'app-name'}  onClick={handleRouterPush(`/`)}>GymFriends</div>
+        <>
+            <Container justify={'space-between'}>
+                <FlexBox justify={'flex-start'} gap={18}>
 
-                {pathname !== '/feed' && !!user && (
-                    <div className={'feature-link'} onClick={handleRouterPush('/feed')}>
-                        Feed
+                    {isMobile && (
+                        <Menu color={'black'} className={'menu-icon'} onClick={() => setMobileMenuIsOpen(prev => !prev)} />
+                    )}
+                    <div className={'app-name'}  onClick={handleRouterPush(`/`)}>GymFriends</div>
+
+                    {!isMobile && pathname !== '/feed' && !!user && (
+                        <div className={'feature-link'} onClick={handleRouterPush('/feed')}>
+                            Feed
+                        </div>
+                    )}
+
+                    {!isMobile && pathname !== '/people' && (
+                        <div className={'feature-link'} onClick={handleRouterPush('/people')}>
+                            People
+                        </div>
+                    )}
+                </FlexBox>
+                <FlexBox justify={'flex-end'} gap={18}>
+                    { !!user && !isMobile && <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>}
+
+
+                    <Globe className={'notification'} color={'black'} size={20} onClick={() => setShowNotifications(prev => !prev)} />
+
+                    <div className={'notification-list'} style={{
+                        display: showNotifications ? 'block' : 'none',
+                        width: 400,
+                        position: 'absolute',
+                        top: 50,
+                        right: 40,
+                        zIndex: 100,
+                        backgroundColor: 'white',
+                        padding: 12,
+                        borderRadius: 12,  }
+                    }>
+
+                        {
+                            pendingFriends?.length > 0 && (
+                                <>
+                                    <div className={'notif-headers'}> Buddy Requests</div>
+                                    <List
+
+                                        itemLayout="horizontal"
+                                        dataSource={pendingFriends}
+                                        renderItem={(item, index) => {
+
+                                            const handleRespond = (response) => () => {
+                                                return APIClient.api.patch(`/user/friends`, {
+                                                    requestId: item?.id,
+                                                    status: response,
+                                                }).then(async () => {
+                                                    await client.refetchQueries({queryKey: ['friends', user?.id, 'PENDING']})
+                                                })
+                                            }
+                                            return (
+                                                <List.Item>
+                                                    <FlexBox>
+                                                        <div style={{color: 'black'}} className={'buddy-name'}> {item?.username}</div>
+                                                    </FlexBox>
+
+                                                    <FlexBox justify={'flex-end'} wrap={'no-wrap'} gap={6}>
+                                                        <Button className={'invite-accept-btn'}
+                                                                onClick={handleRespond('ACCEPTED')}
+                                                                type={'primary'}>
+                                                            Accept
+                                                        </Button>
+                                                        <Button
+                                                            onClick={handleRespond('DECLINED')}
+                                                        >
+                                                            Decline
+                                                        </Button>
+                                                    </FlexBox>
+
+                                                </List.Item>
+                                            )
+                                        }}
+                                    />
+                                </>
+                            )
+                        }
+
                     </div>
-                )}
 
-                {pathname !== '/people' && (
-                    <div className={'feature-link'} onClick={handleRouterPush('/people')}>
-                        People
-                    </div>
-                )}
-            </FlexBox>
-            <FlexBox justify={'flex-end'} gap={18}>
-                { !!user && <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>}
-
-
-                <Globe className={'notification'} color={'black'} size={20} onClick={() => setShowNotifications(prev => !prev)} />
-
-                <div className={'notification-list'} style={{
-                    display: showNotifications ? 'block' : 'none',
-                    width: 400,
-                    position: 'absolute',
-                    top: 50,
-                    right: 40,
-                    zIndex: 100,
-                    backgroundColor: 'white',
-                    padding: 12,
-                    borderRadius: 12,  }
-                }>
 
                     {
-                        pendingFriends?.length > 0 && (
-                            <>
-                                <div className={'notif-headers'}> Buddy Requests</div>
-                                <List
+                        (!isMobile && user) ?
 
-                                    itemLayout="horizontal"
-                                    dataSource={pendingFriends}
-                                    renderItem={(item, index) => {
+                            <Dropdown
+                                trigger={['hover']}
 
-                                        const handleRespond = (response) => () => {
-                                            return APIClient.api.patch(`/user/friends`, {
-                                                requestId: item?.id,
-                                                status: response,
-                                            }).then(async () => {
-                                                await client.refetchQueries({queryKey: ['friends', user?.id, 'PENDING']})
-                                            })
-                                        }
-                                        return (
-                                            <List.Item>
-                                                <FlexBox>
-                                                    <div style={{color: 'black'}} className={'buddy-name'}> {item?.username}</div>
-                                                </FlexBox>
+                                menu={{
+                                    items
+                                }}
+                            >
+                                <div className={'username'}  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>
+                            </Dropdown>
 
-                                                <FlexBox justify={'flex-end'} wrap={'no-wrap'} gap={6}>
-                                                    <Button className={'invite-accept-btn'}
-                                                            onClick={handleRespond('ACCEPTED')}
-                                                            type={'primary'}>
-                                                        Accept
-                                                    </Button>
-                                                    <Button
-                                                        onClick={handleRespond('DECLINED')}
-                                                    >
-                                                        Decline
-                                                    </Button>
-                                                </FlexBox>
 
-                                            </List.Item>
-                                        )
-                                    }}
-                                />
-                            </>
-                        )
+
+                            : (!isMobile && !user) ? <Button onClick={handleSignIn}>
+                                Sign in
+                            </Button> : (
+                                <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>
+
+                            )
                     }
+                </FlexBox>
 
-                </div>
-
-
-                {
-                        user ?
-
-                        <Dropdown
-                            trigger={['hover']}
-
-                            menu={{
-                                items
-                            }}
-                        >
-                            <div className={'username'}  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>
-                        </Dropdown>
-
-
-
-                        : <Button onClick={handleSignIn}>
-                        Sign in
-                    </Button>
-                }
-            </FlexBox>
-            {!!creatingNewActivity && <NewActivityModal open={creatingNewActivity} onCancel={() => setCreatingNewActivity(false)}/> }
-
-        </Container>
+                {!!creatingNewActivity && <NewActivityModal open={creatingNewActivity} onCancel={() => setCreatingNewActivity(false)}/> }
+            </Container>
+            <MobileMenu />
+        </>
     )
 }
 
@@ -204,6 +208,10 @@ const Container = styled(FlexBox)`
     cursor: pointer;
     color: ${theme.darkBlue_1};
     letter-spacing: 1.1px;
+  }
+  
+  .menu-icon {
+    margin: 8px;
   }
   
   // .app-name:hover {

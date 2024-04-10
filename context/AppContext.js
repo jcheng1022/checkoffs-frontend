@@ -1,6 +1,6 @@
 'use client'
 
-import {createContext, useEffect, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import FinishUserInfoModal from "@/components/modals/FinishUserInfoModal";
 import {useCurrentUser} from "@/hooks/user.hook";
 
@@ -10,13 +10,15 @@ import dayjs from "dayjs";
 
 export const AppContext = createContext({});
 
-// export const useAppContext = () => useContext(AppContext);
+export const useAppContext = () => useContext(AppContext);
 
 export const AppContextProvider = ({
                                         children,
                                     }) => {
     const [userModal, setUserModal] = useState(false)
     const {data: user} = useCurrentUser();
+
+    const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
 
     // const {user} = useAuthContext();
 
@@ -66,7 +68,11 @@ export const AppContextProvider = ({
         // })
     }, [user])
 
+
+
     const settings = {
+        mobileMenuIsOpen,
+        setMobileMenuIsOpen,
 
     }
     return (

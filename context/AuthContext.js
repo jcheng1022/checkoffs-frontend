@@ -3,6 +3,7 @@
 // import {getAuth, onAuthStateChanged,} from 'firebase/auth';
 import {createContext, useContext, useState} from "react";
 import {auth} from "@/lib/firebase/firebase";
+import {GoogleAuthProvider, signInWithPopup} from "firebase/auth";
 // import {firebaseApp} from "@/lib/firebase/firebase";
 // import {useCurrentUser} from "@/hooks/user.hook";
 
@@ -49,7 +50,24 @@ export const AuthContextProvider = ({
     //     return () => unsubscribe();
     // }, []);
 
+    const handleSignIn = async () => {
+        const provider = new GoogleAuthProvider()
+        signInWithPopup(auth, provider)
+            .then(async (result) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                window.location.href = window.location.href
+
+            }).catch((error) => {
+            console.log(`Error signing in: ${error}`)
+            // Handle Errors here.
+
+        })}
+
     const settings = {
+        handleSignIn,
         // user: currentUser,
         logOut,
         initializingAuth: loading
