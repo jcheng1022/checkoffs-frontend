@@ -108,7 +108,7 @@ const Header = () => {
                         width: 400,
                         position: 'absolute',
                         top: 50,
-                        right: 40,
+                        right: isMobile ? 0 : 40,
                         zIndex: 100,
                         backgroundColor: 'white',
                         padding: 12,
@@ -116,7 +116,7 @@ const Header = () => {
                     }>
 
                         {
-                            pendingFriends?.length > 0 && (
+                            pendingFriends?.length > 0 ? (
                                 <>
                                     <div className={'notif-headers'}> Buddy Requests</div>
                                     <List
@@ -157,6 +157,10 @@ const Header = () => {
                                         }}
                                     />
                                 </>
+                            ) : (
+                                <div className={'no-notifications'}>
+                                    No Notifications
+                                </div>
                             )
                         }
 
@@ -243,5 +247,11 @@ const Container = styled(FlexBox)`
   .username {
     cursor: pointer;
     letter-spacing: 1.01px;
+  }
+  
+  
+  .no-notifications {
+    height: 100px;
+    width: 200px;
   }
 `
