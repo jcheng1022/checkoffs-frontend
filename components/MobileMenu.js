@@ -63,7 +63,7 @@ const MobileMenu = () => {
             {
                 menuItems.map((navItem, index) => {
                     return (
-                        <div onClick={navItem.onClick} className={'mobile-nav-item'}>
+                        <div key={`mobile-nav-item-${index}`} onClick={navItem.onClick} className={'mobile-nav-item'}>
                             {navItem.label}
                         </div>
                     )
