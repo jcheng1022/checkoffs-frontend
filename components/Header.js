@@ -80,7 +80,7 @@ const Header = () => {
     return (
         <>
             <Container justify={'space-between'}>
-                <FlexBox justify={'flex-start'} gap={18}>
+                <FlexBox justify={'flex-start'} gap={18} wrap={'no-wrap'}>
 
                     {isMobile && (
                         mobileMenuIsOpen ? <X {...menuProps} /> : <Menu {...menuProps} />

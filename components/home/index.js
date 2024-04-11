@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components'
+import {FlexBox} from "@/components/core";
 
 const HomePage = () => {
     //
@@ -32,9 +33,18 @@ const HomePage = () => {
     //     }
     // }, [user])
     return (
-            <Container>
+            <Container direction={'column'} align={'center'} justify={'center'}>
 
-                home page
+                <div style={{margin: '24px 0px'}}>
+                    [IGNORE THIS PAGE FOR NOW]
+                </div>
+                <div>
+                     This is a placeholder for the home page. This page will be replaced with the actual home page.
+                </div>
+
+                <div style={{margin: '24px 0px'}}>
+                    Get started by signing in with your google account
+                </div>
                 {/*<Spin spinning={isFetching || isLoading}>*/}
                 {/*{!showLoader && !user && <NotLoggedIn />}*/}
                 {/*{showLoader && <DotLoader color="#36D7B7" size={25} /> }*/}
@@ -48,4 +58,6 @@ const HomePage = () => {
 
 export default HomePage;
 
-const Container = styled.div``
+const Container = styled(FlexBox)`
+  height: 500px;
+`
