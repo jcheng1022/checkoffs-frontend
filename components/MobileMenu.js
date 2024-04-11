@@ -24,6 +24,14 @@ const MobileMenu = () => {
                 }
             },
             {
+                key: 'people',
+                label: 'Find People',
+                onClick: () => {
+                    router.push('/people')
+                    setMobileMenuIsOpen(false)
+                }
+            },
+            {
                 key: 'account',
                 label: 'Account',
                 onClick: () => {
@@ -87,7 +95,7 @@ const Container = styled.div`
   padding: 12px;
 
   .mobile-nav-item {
-    padding: 12px;
+    padding: 8px 12px;
     
   }
   

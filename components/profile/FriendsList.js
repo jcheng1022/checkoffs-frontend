@@ -1,13 +1,20 @@
 import styled from 'styled-components'
-import {useCurrentUser, useUserFriends} from "@/hooks/user.hook";
+import {useCurrentUser, useUserFriends, useUserIsLoggedIn} from "@/hooks/user.hook";
 import FriendItem from "@/components/profile/FriendItem";
 import {theme} from "@/styles/themes";
 import {Spin} from "antd";
 import {FlexBox} from "@/components/core";
+import { useParams } from 'next/navigation';
+
 
 const FriendsList = () => {
-    const { data: user } = useCurrentUser();
-    const {data: friends, isFetching, isLoading} = useUserFriends(user?.id, 'ACCEPTED')
+    // const { data: user } = useCurrentUser();
+    const isLoggedIn = useUserIsLoggedIn();
+    const { user:userId } = useParams();
+
+    const {data: friends, isFetching, isLoading} = useUserFriends(isLoggedIn, 'ACCEPTED', {
+        userId
+    })
     return (
         <Container>
             <div> My Friends</div>

@@ -6,6 +6,18 @@ import {auth} from "@/lib/firebase/firebase";
 import {onAuthStateChanged} from "firebase/auth";
 import {useState} from "react";
 
+
+export const useUserIsLoggedIn = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    onAuthStateChanged(auth,  (user) => {
+        if (user) {
+            setIsLoggedIn(true)
+        } else {
+            setIsLoggedIn(false)
+        }})
+
+    return isLoggedIn
+}
 export const useCurrentUser = ( props = {})  => {
 
 
@@ -36,9 +48,9 @@ export const useCurrentUser = ( props = {})  => {
 
 }
 
-export const useUserFriends = ( userId = null, type = 'ACCEPTED')  => {
+export const useUserFriends = ( userId = null, type = 'ACCEPTED', props)  => {
 
-    const queryKey = ['friends', userId, type];
+    const queryKey = ['friends', userId, type, props];
 
     return useQuery({
         queryKey,
@@ -46,8 +58,23 @@ export const useUserFriends = ( userId = null, type = 'ACCEPTED')  => {
         enabled: !!userId,
         retry: 5,
         queryFn: () => APIClient.api.get(`/user/friends`, { params: {
-                status: type
+                status: type,
+                ...props
             }})
+    })
+
+};
+
+export const useUserPrivacy = ( isLoggedIn, userId, props = {})  => {
+
+    const queryKey = ['user', userId, 'privacy'];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled: !!isLoggedIn,
+        retry: 5,
+        queryFn: () => APIClient.api.get(`/user/${userId}/privacy`, { params: props})
     })
 
 };

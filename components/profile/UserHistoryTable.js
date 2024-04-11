@@ -7,20 +7,25 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 import {createColumnHelper} from "@tanstack/react-table";
 import ImageViewerModal from "@/components/modals/ImageViewerModal";
-import {useCurrentUser} from "@/hooks/user.hook";
+import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
 import {theme} from "@/styles/themes";
 import TableSkeleton from "@/components/skeletons/TableSkeleton";
+import {useParams} from "next/navigation";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
 const UserHistoryTable = () => {
     // const { user } = useAuthContext()
-    const { data: user } = useCurrentUser();
+    const isLoggedIn = useUserIsLoggedIn();
 
     const [openImageModal, setOpenImageModal] = useState(null)
     const [initializingData, setInitializingData] = useState(true)
 
-    const {data: activities, isFetching, isLoading } = useActivitiesByUser( user?.id,{
+    const { user:userId } = useParams();
+
+
+    const {data: activities, isFetching, isLoading } = useActivitiesByUser( isLoggedIn,{
+        userId
     })
     const {data: tableData, columns} = useMemo(() => {
         const data =  activities?.map(o => {

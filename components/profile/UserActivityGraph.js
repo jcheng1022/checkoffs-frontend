@@ -3,18 +3,21 @@
 import ActivityGraph from "@/components/ActivityGraph";
 import {useActivitiesByUser} from "@/hooks/activity.hook";
 import {useMemo} from "react";
-import {useCurrentUser} from "@/hooks/user.hook";
+import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
 import styled from 'styled-components'
 import {theme} from "@/styles/themes";
 import ActivityGraphSkeleton from "@/components/skeletons/ActivityGraphSkeleton";
+import {useParams} from "next/navigation";
 
 const UserActivityGraph = () => {
 
-    const { data: user } = useCurrentUser();
-
-    const {data: activities, isFetching, isLoading } = useActivitiesByUser( user?.id,{
-        dateOnly: true
+    const isLoggedIn = useUserIsLoggedIn();
+    const { user:userId } = useParams();
+    const {data: activities, isFetching, isLoading } = useActivitiesByUser( isLoggedIn,{
+        dateOnly: true,
+        userId
     })
+
     const graphData = useMemo(() => {
         return activities?.map(o => o.date)
     }, [activities])
