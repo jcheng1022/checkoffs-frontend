@@ -34,14 +34,14 @@ const ActivityItem = ({activity, type = 'image'}) => {
         })
     }
     const items = [
-        {
-            key: 'edit',
-            label: (
-                <div>
-                    Edit
-                </div>
-            ),
-        },
+        // {
+        //     key: 'edit',
+        //     label: (
+        //         <div>
+        //             Edit
+        //         </div>
+        //     ),
+        // },
         {
             key: 'delete',
             label: (
@@ -63,7 +63,7 @@ const ActivityItem = ({activity, type = 'image'}) => {
     ]
     const {data: user} = useCurrentUser();
     // const {user} = useAuthContext();
-    const isOwner = user?.id === activity?.user?.id;
+    const isOwner = user?.id === activity?.userId;
 
 
     return (

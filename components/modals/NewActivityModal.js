@@ -53,9 +53,8 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
             setLoading(false)
 
             console.log(user?.id)
-            if (pathname === '/feed') {
-                client.refetchQueries({queryKey: ['feed', user?.id]})
-            }
+            // if (pathname === '/feed') {
+            // }
 
 
             if (user?.id === userId) {
@@ -67,12 +66,16 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
                 client.refetchQueries({queryKey: ['activities', {
                         userId
                     }]})
+
             }
+            client.refetchQueries({queryKey: ['feed', user?.id]})
+
 
             // client.refetchQueries({queryKey: ['activities', {
             //         dateOnly: true
             //     }]})
             onCancel();
+            router.push(`/feed`)
         })
 
 
