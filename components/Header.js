@@ -19,8 +19,8 @@ import MobileMenu from "@/components/MobileMenu";
 const Header = () => {
     const { data: user } = useCurrentUser();
 
-    const { mobileMenuIsOpen, setMobileMenuIsOpen, handleSignIn } = useAppContext();
-    const {logOut } = useAuthContext()
+    const { mobileMenuIsOpen, setMobileMenuIsOpen } = useAppContext();
+    const {logOut, handleSignIn } = useAuthContext()
     const router = useRouter();
     const pathname = usePathname()
     const [creatingNewActivity, setCreatingNewActivity] = useState(false)
@@ -103,18 +103,22 @@ const Header = () => {
                     { !!user && !isMobile && <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>}
 
 
-                    <Globe className={'notification'} color={'black'} size={20} onClick={() => setShowNotifications(prev => !prev)} />
+                    {!!user && (
+                        <Globe className={'notification'} color={'black'} size={20} onClick={() => setShowNotifications(prev => !prev)} />
 
+                    )}
                     <div className={'notification-list'} style={{
                         display: showNotifications ? 'block' : 'none',
                         width: 400,
                         position: 'absolute',
                         top: 50,
-                        right: isMobile ? 0 : 40,
+                        right: isMobile ? 5 : 40,
                         zIndex: 100,
                         backgroundColor: 'white',
                         padding: 12,
-                        borderRadius: 12,  }
+                        borderRadius: 12,
+                        border: '1px solid #e0dede'
+                    }
                     }>
 
                         {
@@ -160,9 +164,9 @@ const Header = () => {
                                     />
                                 </>
                             ) : (
-                                <div className={'no-notifications'}>
+                                <FlexBox style={{width: '100%' }} justify={'center'} className={'no-notifications'}>
                                     No Notifications
-                                </div>
+                                </FlexBox>
                             )
                         }
 
@@ -184,10 +188,14 @@ const Header = () => {
 
 
 
-                            : (!isMobile && !user) ? <Button onClick={handleSignIn}>
-                                Sign in
-                            </Button> : (
+                            : ( !!user) ?
                                 <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>
+                                :
+
+                                (
+                                    <Button className={'sign-in-btn'} onClick={() => handleSignIn()}>
+                                        Sign in
+                                    </Button>
 
                             )
                     }
@@ -255,5 +263,13 @@ const Container = styled(FlexBox)`
   .no-notifications {
     height: 100px;
     width: 200px;
+
+  }
+  
+  .sign-in-btn {
+    background-color: ${theme.lightBlue_2};
+    color: white;
+    font-weight: 600;
+    height: 36px;
   }
 `

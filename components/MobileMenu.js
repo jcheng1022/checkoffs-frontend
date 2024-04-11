@@ -4,6 +4,8 @@ import {theme} from "@/styles/themes";
 import {useRouter} from "next/navigation";
 import {useCurrentUser} from "@/hooks/user.hook";
 import {useAuthContext} from "@/context/AuthContext";
+import {Activity, BarChart, LogOut, Users} from "react-feather";
+import {FlexBox} from "@/components/core";
 
 const MobileMenu = () => {
     const { mobileMenuIsOpen, setMobileMenuIsOpen } = useAppContext()
@@ -13,10 +15,18 @@ const MobileMenu = () => {
     console.log(mobileMenuIsOpen, '3232')
     let menuItems;
 
+    const iconProps = {
+        size: 16,
+        style: {
+            marginRight: 12
+        }
+    }
+
     if (user ) {
         menuItems = [
             {
                 key: 'feed',
+                icon: <Activity  {...iconProps }/>,
                 label: 'Feed',
                 onClick: () => {
                     router.push('/feed')
@@ -26,6 +36,7 @@ const MobileMenu = () => {
             {
                 key: 'people',
                 label: 'Find People',
+                icon: <Users {...iconProps} />,
                 onClick: () => {
                     router.push('/people')
                     setMobileMenuIsOpen(false)
@@ -33,7 +44,8 @@ const MobileMenu = () => {
             },
             {
                 key: 'account',
-                label: 'Account',
+                label: 'Profile',
+                icon: <BarChart {...iconProps} />,
                 onClick: () => {
                     router.push(`/user/${user?.id}`)
                     setMobileMenuIsOpen(false)
@@ -43,6 +55,7 @@ const MobileMenu = () => {
             {
                 key: 'sign-out',
                 label: 'Sign Out',
+                icon: <LogOut {...iconProps} />,
                 onClick: () => {
                     logOut()
                     setMobileMenuIsOpen(false)
@@ -71,9 +84,12 @@ const MobileMenu = () => {
             {
                 menuItems.map((navItem, index) => {
                     return (
-                        <div key={`mobile-nav-item-${index}`} onClick={navItem.onClick} className={'mobile-nav-item'}>
-                            {navItem.label}
-                        </div>
+                        <FlexBox key={`mobile-nav-item-${index}`} onClick={navItem.onClick} className={'mobile-nav-item'}>
+                            {navItem.icon}
+                            <div>
+                                {navItem.label}
+                            </div>
+                        </FlexBox>
                     )
                 })
             }
