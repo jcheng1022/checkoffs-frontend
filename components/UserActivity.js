@@ -7,19 +7,33 @@ import UserActivityGraph from "@/components/profile/UserActivityGraph";
 import UserActivityStats from "@/components/profile/UserActivityStats";
 import FriendsList from "@/components/profile/FriendsList";
 import {useParams, useRouter} from "next/navigation";
-import {useUserIsLoggedIn, useUserPrivacy} from "@/hooks/user.hook";
-import {Modal} from "antd";
+import {useCurrentUser, useUserIsLoggedIn, useUserPrivacy, useUserProfile} from "@/hooks/user.hook";
+import {Button, Modal, notification} from "antd";
 import Link from "next/link";
 import {ArrowRight} from "react-feather";
+import {theme} from "@/styles/themes";
+import APIClient from "@/services/api";
+import {useState} from "react";
+import {useQueryClient} from "@tanstack/react-query";
+import dayjs from "dayjs";
+
+const  advancedFormat = require('dayjs/plugin/advancedFormat')
+dayjs.extend(advancedFormat)
 
 
 const UserActivity = () => {
     const { user:userId } = useParams();
     const isLoggedIn = useUserIsLoggedIn();
-    const {data: privacy, isFetching, isLoading} = useUserPrivacy(isLoggedIn, userId)
+    const {data: user} = useCurrentUser();
+    const [loadingUser, setLoadingUser] = useState(false)
+    const {data: profile, isFetching, isLoading} = useUserProfile(isLoggedIn, userId ,{
+        minimal: true
+    })
     const router = useRouter();
+    const client = useQueryClient();
 
-    if ( (!isFetching && !isLoading) && privacy?.isPublic === false) {
+
+    if ( (!isFetching && !isLoading) && profile?.isPublic === false) {
         return (
             <PrivateModal centered open={true} closeIcon={false} maskClosable={false} footer={null}>
                 <FlexBox justify={'center'}>
@@ -39,11 +53,62 @@ const UserActivity = () => {
     }
 
 
+    const handleAddFriend = async () => {
+        // e.stopPropagation();
+
+
+
+        setLoadingUser(true)
+
+        await APIClient.api.post(`/user/friends`, {
+            friendId: userId
+        }).then(() => {
+            client.refetchQueries({queryKey: ['user', userId, 'profile']})
+            notification.success({
+                description: 'Friend request sent'
+            })
+
+        }).catch(e =>  notification.error({
+            description: e.message || 'Could not send friend request'
+        })).finally(() => {
+
+            setLoadingUser(false)
+        })
+
+    }
+
     return (
         <Container>
+            <UserHeaderContainer justify={'center'} direction={'column'}>
+                <>
+                    <div className={'username'}>
+                        {profile?.username}
+                    </div>
+
+                    {profile?.friendStatus ? (
+                        profile.friendStatus.status === 'PENDING' ? (
+                            <Button disabled className={'request-sent'}>
+                                 Friend Request Sent
+                            </Button>
+                        ) : (
+                            profile.friendStatus.status === 'ACCEPTED' && (
+                                <div>{`Friends since ${dayjs().format('MMMM Do YYYY')}`}</div>
+                            )
+                        )
+                    ) : (userId !== user?.id) ? (
+                        (
+                            <Button onClick={handleAddFriend} className={'add-btn'}>
+                                Add Friend
+                            </Button>
+                        )
+                    ): null}
+                </>
+
+
+            </UserHeaderContainer>
             <FlexBox className={'top-section'} justify={'center'} gap={50}  align={'flex-start'}>
                 <FriendsList />
-                <UserActivityStats />
+                {/*<UserActivityStats />*/}
             </FlexBox>
             <UserActivityGraph />
 
@@ -69,7 +134,7 @@ const Container = styled.div`
 
 const ActionContainer = styled(FlexBox)`
   margin: 24px 0px;
-  
+
 `
 
 const PrivateModal = styled(Modal)`
@@ -78,8 +143,40 @@ const PrivateModal = styled(Modal)`
     color: #1890ff;
     cursor: pointer;
   }
-  
+
   .redirect-text:hover {
     text-decoration: underline;
+  }
+`
+
+
+const UserHeaderContainer = styled(FlexBox)`
+  height: 200px;
+  background-color: ${theme.lightBlue_1};
+  margin:24px;
+  border-radius: 12px;
+
+  .username {
+    font-size: 24px;
+    font-weight: 500;
+    padding: 24px;
+  }
+
+  .add-btn {
+    width: 150px;
+    height: 50px;
+    background-color: ${theme.darkBlue_1};
+    border-radius: 18px;
+    color: white;
+    font-weight: 600;
+    border: 2px solid ${theme.SNOW};
+  }
+  
+  .request-sent {
+    color: white;
+    height: 50px;
+    width: 200px;
+    font-weight: 600;
+    cursor: auto;
   }
 `

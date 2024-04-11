@@ -65,16 +65,16 @@ export const useUserFriends = ( userId = null, type = 'ACCEPTED', props)  => {
 
 };
 
-export const useUserPrivacy = ( isLoggedIn, userId, props = {})  => {
+export const useUserProfile = ( isLoggedIn, userId, props = {})  => {
 
-    const queryKey = ['user', userId, 'privacy'];
+    const queryKey = ['user', userId, 'profile'];
 
     return useQuery({
         queryKey,
         ...defaultQueryProps,
         enabled: !!isLoggedIn,
         retry: 5,
-        queryFn: () => APIClient.api.get(`/user/${userId}/privacy`, { params: props})
+        queryFn: () => APIClient.api.get(`/user/${userId}/profile`, { params: props})
     })
 
 };

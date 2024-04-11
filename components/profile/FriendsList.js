@@ -17,6 +17,13 @@ const FriendsList = () => {
     })
     const router = useRouter();
 
+    let isMobile = false;
+
+    if (window) {
+        isMobile = window.matchMedia("(max-width: 600px)").matches;
+
+    }
+
 
     const EmptyFriends = () => {
         return (
@@ -31,7 +38,7 @@ const FriendsList = () => {
         )
     }
     return (
-        <Container>
+        <Container direction={'column'} align={'flex-start'} isMobile={isMobile} >
             <div> My Friends</div>
 
             {(isFetching || isLoading) ?
@@ -64,8 +71,12 @@ const FriendsList = () => {
 
 export default FriendsList;
 
-const Container = styled.div`
-  min-width: 450px; 
+const Container = styled(FlexBox)`
+  //min-width: 300px; 
+  min-width: ${props => props.isMobile ? '100%' : '300px'};
+  //min-width: 100%;
+  margin: 24px 24px;
+  min-width: ${props => props.isMobile ? '100%' : '500px'};
   height: 300px;
   padding: 24px;
   border-radius: 12px;
@@ -78,9 +89,10 @@ const Container = styled.div`
 
 const EmptyContainer = styled(FlexBox)`
   height: 100%;
+  width: 100%;
   
   .empty-title {
-    font-size: 20px
+    font-size: 20px;
   }
 
   .empty-desc {

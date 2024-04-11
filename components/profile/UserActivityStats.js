@@ -25,6 +25,7 @@ export default UserActivityStats;
 const Container = styled(FlexBox)`
   height: 300px;
   min-width: 100px;
+  max-width: 50%;
   padding: 24px;
   border-radius: 12px;
   background-color: ${theme.WHITE};

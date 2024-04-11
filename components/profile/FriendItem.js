@@ -2,13 +2,16 @@
 
 import styled from "styled-components";
 import {FlexBox} from "@/components/core";
-import {Avatar} from "antd";
+import {Avatar, Dropdown} from "antd";
 import {MoreVertical} from "react-feather";
 import {useEffect, useState} from "react";
 import {getDatabase, onValue, ref} from "firebase/database";
+import {useRouter} from "next/navigation";
+
 
 const FriendItem = ({friend}) => {
     const [isOnline, setIsOnline] = useState(false)
+    const router = useRouter();
 
     useEffect(() => {
         const getStatus = () => {
@@ -33,8 +36,29 @@ const FriendItem = ({friend}) => {
 
         getStatus()
     }, [])
+
+    const items = [
+        {
+            key: 'friend-profile',
+            label: (
+                <div onClick={() => router.push(`/user/${friend?.id}`)}>
+                    View Profile
+                </div>
+            ),
+        },
+        // {
+        //     key: 'sign-out',
+        //     label: (
+        //
+        //         <div onClick={logOut} >
+        //             Sign Out
+        //         </div>
+        //
+        //     ),
+        // }
+    ]
     return (
-        <Container>
+        <Container align={'flex-start'}>
             <FlexBox gap={8} align={'center'}>
                 <Avatar
                     style={{
@@ -50,8 +74,17 @@ const FriendItem = ({friend}) => {
                     <div className={'activity-text'}>{isOnline ? 'Active now' : 'Offline'}</div>
                 </div>
             </FlexBox>
-            <FlexBox justify={'flex-end'} align={'center'} style={{cursor: 'pointer'}}>
-                <MoreVertical/>
+            <FlexBox justify={'flex-end'} align={'center'}>
+                <Dropdown
+                    trigger={['click']}
+
+                    menu={{
+                        items
+                    }}
+                >
+                    <MoreVertical  style={{cursor: 'pointer'}}/>
+
+                </Dropdown>
             </FlexBox>
         </Container>
     )
