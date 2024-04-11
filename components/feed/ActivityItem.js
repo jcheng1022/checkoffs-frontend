@@ -132,6 +132,7 @@ const Container = styled.div`
   }
   
     .description {
+      text-align: left;
         padding: 8px;
     }
 

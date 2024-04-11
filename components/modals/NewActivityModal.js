@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import {useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import APIClient from '../../services/api'
-import {usePathname, useRouter} from 'next/navigation';
+import {useParams, usePathname, useRouter} from 'next/navigation';
 import {useCurrentUser} from "@/hooks/user.hook";
 
 const {TextArea} = Input;
@@ -25,6 +25,8 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
     const {data: user} = useCurrentUser()
     // const {user } = useAuthContext();
     const pathname = usePathname();
+    const params = useParams();
+    const {user: userId} = params;
 
     const [loading, setLoading] = useState(false)
     const router = useRouter();
@@ -54,7 +56,22 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
             if (pathname === '/feed') {
                 client.refetchQueries({queryKey: ['feed', user?.id]})
             }
-            client.refetchQueries({queryKey: ['activities', user?.id]})
+
+
+            if (user?.id === userId) {
+                // user is viewing their own profile
+                client.refetchQueries({queryKey: ['activities', {
+                    dateOnly: true,
+                        userId
+                }]})
+                client.refetchQueries({queryKey: ['activities', {
+                        userId
+                    }]})
+            }
+
+            // client.refetchQueries({queryKey: ['activities', {
+            //         dateOnly: true
+            //     }]})
             onCancel();
         })
 

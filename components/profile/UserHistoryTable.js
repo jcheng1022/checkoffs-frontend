@@ -11,6 +11,7 @@ import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
 import {theme} from "@/styles/themes";
 import TableSkeleton from "@/components/skeletons/TableSkeleton";
 import {useParams} from "next/navigation";
+import {FlexBox} from "@/components/core";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
@@ -68,7 +69,19 @@ const UserHistoryTable = () => {
         <Container >
             {(isFetching || isLoading) ?
                 <TableSkeleton />  :
-                <CoreTable initialData={tableData} columns={columns}/>
+
+                (tableData?.length === 0) ?
+                <>
+                    <CoreTable initialData={tableData} columns={columns}/>
+                    <EmptyTableContainer justify={'center'}>
+                        <div className={'text'}>
+                            No data yet! Make an entry to get started
+                        </div>
+                    </EmptyTableContainer>
+                </> :
+                    <CoreTable initialData={tableData} columns={columns}/>
+
+
 
             }
             {/*<CoreTable initialData={tableData} columns={columns}/>*/}
@@ -87,5 +100,14 @@ const Container = styled.div`
   padding: 24px;
   
 
+`
+
+const EmptyTableContainer = styled(FlexBox)`
+  height: 100px;
+  background-color: ${theme.skeleton};
+  
+  .text {
+    font-size: 14px;
+  }
 `
 

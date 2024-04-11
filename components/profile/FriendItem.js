@@ -21,7 +21,7 @@ const FriendItem = ({friend}) => {
                     return;
                 }
 
-                if (snapshot.val().state === 'online') {
+                if (snapshot.val()?.state === 'online') {
                     setIsOnline(true)
                 } else {
                     setIsOnline(false)

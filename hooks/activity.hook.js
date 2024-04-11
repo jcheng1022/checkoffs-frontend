@@ -2,14 +2,14 @@ import {useQuery} from "@tanstack/react-query";
 import {defaultQueryProps} from "@/app/providers";
 import APIClient from "@/services/api";
 
-export const useActivitiesByUser = (userId,  props = {})  => {
+export const useActivitiesByUser = (isLoggedIn,  props = {})  => {
 
-    const queryKey = ['activities', userId, props];
+    const queryKey = ['activities', props];
 
     return useQuery({
         queryKey,
         ...defaultQueryProps,
-        enabled: !!userId,
+        enabled: !!isLoggedIn,
         queryFn: () => APIClient.api.get(`/activity`, { params: props})
     })
 

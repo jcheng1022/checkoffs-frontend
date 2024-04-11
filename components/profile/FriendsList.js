@@ -4,7 +4,7 @@ import FriendItem from "@/components/profile/FriendItem";
 import {theme} from "@/styles/themes";
 import {Spin} from "antd";
 import {FlexBox} from "@/components/core";
-import { useParams } from 'next/navigation';
+import {useParams, useRouter} from 'next/navigation';
 
 
 const FriendsList = () => {
@@ -15,6 +15,21 @@ const FriendsList = () => {
     const {data: friends, isFetching, isLoading} = useUserFriends(isLoggedIn, 'ACCEPTED', {
         userId
     })
+    const router = useRouter();
+
+
+    const EmptyFriends = () => {
+        return (
+            <EmptyContainer direction={'column'} justify={'center'}>
+
+                <div className={'empty-title'}> No Friends Yet!</div>
+                <div className={'empty-desc'} onClick={() => {
+                    router.push(`/people`)
+                }
+                }> Find people here</div>
+            </EmptyContainer>
+        )
+    }
     return (
         <Container>
             <div> My Friends</div>
@@ -23,6 +38,9 @@ const FriendsList = () => {
                 <FlexBox style={{height: '100%'}} justify={'center'} align={'center'}>
                     <Spin tip={<div> Fetching your friends...</div>} />
             </FlexBox> :
+                friends?.length === 0 ?
+                    <EmptyFriends />
+                    :
                 <>
                     {friends?.map((friend, index) => {
                         return (
@@ -55,4 +73,23 @@ const Container = styled.div`
 
 
 
+`
+
+
+const EmptyContainer = styled(FlexBox)`
+  height: 100%;
+  
+  .empty-title {
+    font-size: 20px
+  }
+
+  .empty-desc {
+    color: #1890ff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .empty-desc:hover {
+    text-decoration: underline;
+  }
 `

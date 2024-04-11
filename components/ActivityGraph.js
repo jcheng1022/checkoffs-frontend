@@ -50,7 +50,7 @@ const ActivityGraph = ({ activity = []}) => {
             </div>
 
             <div className={'learn-more'}>
-                Every day with an activity is marked with a blue square. Keep tracking days to build a streak!
+                Every day with an activity is marked with a blue square. Hover the square to see the date. Keep tracking days to build a streak!
             </div>
         </Container>
     )
