@@ -79,6 +79,23 @@ export const useUserProfile = ( isLoggedIn, userId, props = {})  => {
 
 };
 
+export const useUserSettings = ( isLoggedIn, type = 'profile', props = {})  => {
+
+    const queryKey = ['settings', type];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled: !!isLoggedIn,
+        retry: 5,
+        queryFn: () => APIClient.api.get(`/user/settings`, { params: {
+            type
+            }})
+    })
+
+};
+
+
 export const useUserMenuData = (user,  props = {})  => {
 
     const queryKey = ['menu'];

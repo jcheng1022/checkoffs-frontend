@@ -6,6 +6,7 @@ import {useCurrentUser} from "@/hooks/user.hook";
 
 import {getDatabase, onDisconnect, onValue, ref, set} from "firebase/database";
 import dayjs from "dayjs";
+import UserSettingsModal from "@/components/modals/UserSettingsModal";
 
 
 export const AppContext = createContext({});
@@ -17,6 +18,7 @@ export const AppContextProvider = ({
                                     }) => {
     const [userModal, setUserModal] = useState(false)
     const {data: user} = useCurrentUser();
+    const [openUserSettings, setOpenUserSettings] = useState(false)
 
     const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
 
@@ -73,6 +75,8 @@ export const AppContextProvider = ({
     const settings = {
         mobileMenuIsOpen,
         setMobileMenuIsOpen,
+        openUserSettings,
+        setOpenUserSettings
 
     }
     return (
@@ -80,6 +84,7 @@ export const AppContextProvider = ({
 
             {children}
             { userModal && <FinishUserInfoModal open={userModal} onCancel={() => setUserModal(false)} />}
+            { openUserSettings && <UserSettingsModal open={openUserSettings} onCancel={() => setOpenUserSettings(false)}/>}
         </AppContext.Provider>
     );
 };

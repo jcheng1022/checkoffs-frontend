@@ -8,7 +8,7 @@ import UserActivityStats from "@/components/profile/UserActivityStats";
 import FriendsList from "@/components/profile/FriendsList";
 import {useParams, useRouter} from "next/navigation";
 import {useCurrentUser, useUserIsLoggedIn, useUserPrivacy, useUserProfile} from "@/hooks/user.hook";
-import {Button, Modal, notification} from "antd";
+import {Button, Modal, notification, Spin} from "antd";
 import Link from "next/link";
 import {ArrowRight} from "react-feather";
 import {theme} from "@/styles/themes";
@@ -77,10 +77,14 @@ const UserActivity = () => {
 
     }
 
+    const isNotSelf = !!user?.id && userId !== user?.id
+    console.log(profile?.settings?.profileColor, 23232)
+
+
     return (
         <Container>
-            <UserHeaderContainer justify={'center'} direction={'column'}>
-                <>
+            <UserHeaderContainer justify={'center'} direction={'column'} bgColor={profile?.settings?.profileColor}>
+                <Spin spinning={(isFetching || isLoading)}>
                     <div className={'username'}>
                         {profile?.username}
                     </div>
@@ -95,14 +99,14 @@ const UserActivity = () => {
                                 <div>{`Friends since ${dayjs().format('MMMM Do YYYY')}`}</div>
                             )
                         )
-                    ) : (userId !== user?.id) ? (
+                    ) : ( isNotSelf) ? (
                         (
                             <Button onClick={handleAddFriend} className={'add-btn'}>
                                 Add Friend
                             </Button>
                         )
                     ): null}
-                </>
+                </Spin>
 
 
             </UserHeaderContainer>
@@ -152,7 +156,7 @@ const PrivateModal = styled(Modal)`
 
 const UserHeaderContainer = styled(FlexBox)`
   height: 200px;
-  background-color: ${theme.lightBlue_1};
+  background-color: ${props =>  props.bgColor ? `#${props?.bgColor}` : theme.lightBlue_1};
   margin:24px;
   border-radius: 12px;
 

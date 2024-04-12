@@ -4,11 +4,11 @@ import {theme} from "@/styles/themes";
 import {useRouter} from "next/navigation";
 import {useCurrentUser} from "@/hooks/user.hook";
 import {useAuthContext} from "@/context/AuthContext";
-import {Activity, BarChart, LogOut, Users} from "react-feather";
+import {Activity, BarChart, LogOut, Settings, Users} from "react-feather";
 import {FlexBox} from "@/components/core";
 
 const MobileMenu = () => {
-    const { mobileMenuIsOpen, setMobileMenuIsOpen } = useAppContext()
+    const { mobileMenuIsOpen, setMobileMenuIsOpen, setOpenUserSettings } = useAppContext()
     const { logOut, handleSignIn } = useAuthContext();
     const  router = useRouter()
     const { data: user } = useCurrentUser()
@@ -49,6 +49,15 @@ const MobileMenu = () => {
                 onClick: () => {
                     router.push(`/user/${user?.id}`)
                     setMobileMenuIsOpen(false)
+
+                }
+            },
+            {
+                key: 'settings',
+                label: 'Settings',
+                icon: <Settings {...iconProps} />,
+                onClick: () => {
+                     setOpenUserSettings(true)
 
                 }
             },

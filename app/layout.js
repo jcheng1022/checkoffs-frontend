@@ -1,5 +1,5 @@
 import StyledComponentsRegistry from '@/lib/registry'
-import Header from "@/components/Header";
+import Header from "@/components/navigation/Header";
 import {AuthContextProvider} from "@/context/AuthContext";
 import Providers from "@/app/providers";
 import dayjs from "dayjs";
@@ -32,7 +32,7 @@ export default function AuthedLayout({ children }) {
                 <CookiesProvider>
                     <AuthContextProvider>
                        <AppContextProvider>
-                           <NavigationProgressBar />
+                           {/*<NavigationProgressBar />*/}
                            <Header />
                            {children}
                        </AppContextProvider>

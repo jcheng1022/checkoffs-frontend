@@ -40,7 +40,6 @@ export default function Providers({ children }) {
     return (
         <QueryClientProvider client={queryClient}>
 
-            <Next13ProgressBar height="4px" color="#0A2FFF" options={{ showSpinner: true }} showOnShallow />
                     {children}
 
         </QueryClientProvider>

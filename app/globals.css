@@ -12,6 +12,10 @@ body {
     box-sizing: border-box;
 }
 
+.ant-popover-inner {
+    z-index: 9999;
+}
+
 
 
 

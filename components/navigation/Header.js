@@ -14,12 +14,12 @@ import {Globe, Menu, X} from "react-feather";
 import APIClient from '@/services/api'
 import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
-import MobileMenu from "@/components/MobileMenu";
+import MobileMenu from "@/components/navigation/MobileMenu";
 
 const Header = () => {
     const { data: user } = useCurrentUser();
 
-    const { mobileMenuIsOpen, setMobileMenuIsOpen } = useAppContext();
+    const { mobileMenuIsOpen, setMobileMenuIsOpen, setOpenUserSettings } = useAppContext();
     const {logOut, handleSignIn } = useAuthContext()
     const router = useRouter();
     const pathname = usePathname()
@@ -51,6 +51,14 @@ const Header = () => {
             label: (
                 <div onClick={() => router.push(`/user/${user?.id}`)}>
                     My Account
+                </div>
+            ),
+        },
+        {
+            key: 'settings',
+            label: (
+                <div onClick={() => setOpenUserSettings(true)}>
+                    Settings
                 </div>
             ),
         },
