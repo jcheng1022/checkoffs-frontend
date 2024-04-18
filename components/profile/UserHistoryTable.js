@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 import {createColumnHelper} from "@tanstack/react-table";
 import ImageViewerModal from "@/components/modals/ImageViewerModal";
-import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
+import {useUserIsLoggedIn} from "@/hooks/user.hook";
 import {theme} from "@/styles/themes";
 import TableSkeleton from "@/components/skeletons/TableSkeleton";
 import {useParams} from "next/navigation";

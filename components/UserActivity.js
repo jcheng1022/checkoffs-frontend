@@ -4,18 +4,17 @@ import styled from "styled-components";
 import {FlexBox, Gap} from "@/components/core";
 import UserHistoryTable from "@/components/profile/UserHistoryTable"
 import UserActivityGraph from "@/components/profile/UserActivityGraph";
-import UserActivityStats from "@/components/profile/UserActivityStats";
 import FriendsList from "@/components/profile/FriendsList";
 import {useParams, useRouter} from "next/navigation";
-import {useCurrentUser, useUserIsLoggedIn, useUserPrivacy, useUserProfile} from "@/hooks/user.hook";
+import {useCurrentUser, useUserIsLoggedIn, useUserProfile} from "@/hooks/user.hook";
 import {Button, Modal, notification, Spin} from "antd";
-import Link from "next/link";
 import {ArrowRight} from "react-feather";
 import {theme} from "@/styles/themes";
 import APIClient from "@/services/api";
 import {useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import dayjs from "dayjs";
+import ProfilePermissionWrapper from "@/components/ProfilePermissionWrapper";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
@@ -26,14 +25,16 @@ const UserActivity = () => {
     const isLoggedIn = useUserIsLoggedIn();
     const {data: user} = useCurrentUser();
     const [loadingUser, setLoadingUser] = useState(false)
-    const {data: profile, isFetching, isLoading} = useUserProfile(isLoggedIn, userId ,{
+
+    const {data: profile, isFetching, isLoading, isFetched} = useUserProfile(isLoggedIn, userId ,{
         minimal: true
     })
+
     const router = useRouter();
     const client = useQueryClient();
 
 
-    if ( (!isFetching && !isLoading) && profile?.isPublic === false) {
+    if ( (!isFetching && !isLoading) && profile?.settings?.viewProfile === false) {
         return (
             <PrivateModal centered open={true} closeIcon={false} maskClosable={false} footer={null}>
                 <FlexBox justify={'center'}>
@@ -78,51 +79,52 @@ const UserActivity = () => {
     }
 
     const isNotSelf = !!user?.id && userId !== user?.id
-    console.log(profile?.settings?.profileColor, 23232)
 
 
     return (
-        <Container>
-            <UserHeaderContainer justify={'center'} direction={'column'} bgColor={profile?.settings?.profileColor}>
-                <Spin spinning={(isFetching || isLoading)}>
-                    <div className={'username'}>
-                        {profile?.username}
-                    </div>
+        <ProfilePermissionWrapper>
+            <Container>
+                <UserHeaderContainer justify={'center'} direction={'column'} bgColor={profile?.settings?.profileColor}>
+                    <Spin spinning={(isFetching || isLoading)}>
+                        <div className={'username'}>
+                            {profile?.username}
+                        </div>
 
-                    {profile?.friendStatus ? (
-                        profile.friendStatus.status === 'PENDING' ? (
-                            <Button disabled className={'request-sent'}>
-                                 Friend Request Sent
-                            </Button>
-                        ) : (
-                            profile.friendStatus.status === 'ACCEPTED' && (
-                                <div>{`Friends since ${dayjs().format('MMMM Do YYYY')}`}</div>
+                        {profile?.isFriends ? (
+                            profile.isFriends.status === 'PENDING' ? (
+                                <Button disabled className={'request-sent'}>
+                                    Friend Request Sent
+                                </Button>
+                            ) : (
+                                profile.isFriends.status === 'ACCEPTED' && (
+                                    <div>{`Friends since ${dayjs(profile.isFriends?.acceptedOn).format('MMMM Do YYYY')}`}</div>
+                                )
                             )
-                        )
-                    ) : ( isNotSelf) ? (
-                        (
-                            <Button onClick={handleAddFriend} className={'add-btn'}>
-                                Add Friend
-                            </Button>
-                        )
-                    ): null}
-                </Spin>
+                        ) : ( isNotSelf) ? (
+                            (
+                                <Button onClick={handleAddFriend} className={'add-btn'}>
+                                    Add Friend
+                                </Button>
+                            )
+                        ): null}
+                    </Spin>
 
 
-            </UserHeaderContainer>
-            <FlexBox className={'top-section'} justify={'center'} gap={50}  align={'flex-start'}>
-                <FriendsList />
-                {/*<UserActivityStats />*/}
-            </FlexBox>
-            <UserActivityGraph />
+                </UserHeaderContainer>
+                <FlexBox className={'top-section'} justify={'center'} gap={50}  align={'flex-start'}>
+                    <FriendsList />
+                    {/*<UserActivityStats />*/}
+                </FlexBox>
+                <UserActivityGraph />
 
-            <Gap gap={24}/>
+                <Gap gap={24}/>
 
-            {/*<FlexBox justify={'center'} gap={200}  align={'flex-start'}>*/}
-            {/*    <FriendsList />*/}
+                {/*<FlexBox justify={'center'} gap={200}  align={'flex-start'}>*/}
+                {/*    <FriendsList />*/}
                 <UserHistoryTable />
-            {/*</FlexBox>*/}
-        </Container>
+                {/*</FlexBox>*/}
+            </Container>
+        </ProfilePermissionWrapper>
     )
 }
 

@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import {FlexBox} from "@/components/core";
-import {Button, Spin, message, notification} from "antd";
+import {Button, message, notification, Spin} from "antd";
 import {theme} from "@/styles/themes";
 import {useState} from "react";
-import {useQueryClient} from "@tanstack/react-query";
 import {useAppContext} from "@/context/AppContext";
 
 const SettingTabWrapper = ({children, onClear, onSubmit}) => {

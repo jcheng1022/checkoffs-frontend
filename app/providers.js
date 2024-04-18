@@ -2,7 +2,6 @@
 
 
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {Next13ProgressBar} from 'next13-progressbar';
 
 export const defaultQueryProps = {
     retry: false,

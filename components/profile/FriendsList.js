@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {useCurrentUser, useUserFriends, useUserIsLoggedIn} from "@/hooks/user.hook";
+import {useUserFriends, useUserIsLoggedIn} from "@/hooks/user.hook";
 import FriendItem from "@/components/profile/FriendItem";
 import {theme} from "@/styles/themes";
 import {Spin} from "antd";
@@ -38,7 +38,7 @@ const FriendsList = () => {
         )
     }
     return (
-        <Container direction={'column'} align={'flex-start'} isMobile={isMobile} >
+        <Container direction={'column'} align={'flex-start'} justify={'flex-start'} isMobile={isMobile} >
             <div> My Friends</div>
 
             {(isFetching || isLoading) ?

@@ -1,4 +1,4 @@
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {defaultQueryProps} from "@/app/providers";
 import APIClient from "@/services/api";
 
@@ -41,4 +41,14 @@ export const useActivityFeed = (userId,  props = {})  => {
     })
 
 
+}
+
+export const useActivityActionMutation = (activityId) => {
+    return useMutation({
+        mutationFn: ({type, message}) => APIClient.api.post(`/activity/${activityId}/action`, {message}, {
+            params: {
+                type
+            }
+        })
+    })
 }

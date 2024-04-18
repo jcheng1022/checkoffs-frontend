@@ -1,10 +1,8 @@
-import {Button, Input, Modal, notification, Tabs} from "antd";
-import {FlexBox, Gap} from "@/components/core";
+import {Modal, Tabs} from "antd";
 import {useState} from "react";
-import APIClient from '@/services/api'
-import {useQueryClient} from "@tanstack/react-query";
 import styled from "styled-components";
 import ProfileSettings from "@/components/settingTabs/ProfileSettings";
+import PrivacySettings from "@/components/settingTabs/PrivacySettings";
 
 const UserSettingsModal = ({open, onCancel}) => {
 
@@ -20,7 +18,7 @@ const UserSettingsModal = ({open, onCancel}) => {
         {
             label: 'Privacy',
             key: 'privacy-settings-tab',
-            children: 'Provisds'
+            children: <PrivacySettings />
         },
     ]
 

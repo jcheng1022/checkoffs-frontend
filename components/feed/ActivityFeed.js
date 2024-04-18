@@ -7,12 +7,20 @@ import ActivityList from "@/components/feed/ActivityList";
 import {useCurrentUser} from "@/hooks/user.hook";
 import LoadingFeed from "@/components/skeletons/LoadingFeed";
 import {Empty} from "antd";
+import {useState} from "react";
+import {DEFAULT_FEED_INCREMENTS} from "@/constants";
 
 const ActivityFeed = () => {
     const {data: user } = useCurrentUser();
-    const {data: feed, isFetching, isLoading} = useActivityFeed(user?.id)
+    const [amount, setAmount] = useState(DEFAULT_FEED_INCREMENTS)
+
+    const {data: feed, isFetching, isLoading} = useActivityFeed(user?.id, {
+        amount
+    })
+
+
     return (
-        <Container justify={'center'} align={'center'}>
+        <Container justify={'center'} align={'center'} >
             {(isFetching || isLoading) ?
                 <LoadingFeed/> :
                 (feed?.length === 0 ) ?
@@ -24,7 +32,7 @@ const ActivityFeed = () => {
                             </div>
                         </div>
                 :
-                <ActivityList list={feed}/>
+                <ActivityList list={feed} setAmount={setAmount} amount={amount}/>
             }
         </Container>
     )
@@ -35,7 +43,7 @@ export default ActivityFeed;
 
 const Container = styled(FlexBox)`
   width: 100%;
-  height: 100%;
+  //height: 100%;
   
   
   //background-color: red;

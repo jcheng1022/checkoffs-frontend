@@ -27,12 +27,11 @@ const Header = () => {
     const [showNotifications, setShowNotifications] = useState(false)
     const {data: pendingFriends} = useUserFriends(user?.id, 'PENDING')
 
-    let isMobile = false;
 
-    if (window) {
-         isMobile = window.matchMedia("(max-width: 600px)").matches;
 
-    }
+    let isMobile = window?.matchMedia("(max-width: 600px)")?.matches;
+
+
 
     const client = useQueryClient();
 

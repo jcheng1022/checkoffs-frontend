@@ -3,7 +3,7 @@
 import ActivityGraph from "@/components/ActivityGraph";
 import {useActivitiesByUser} from "@/hooks/activity.hook";
 import {useMemo} from "react";
-import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
+import {useUserIsLoggedIn} from "@/hooks/user.hook";
 import styled from 'styled-components'
 import {theme} from "@/styles/themes";
 import ActivityGraphSkeleton from "@/components/skeletons/ActivityGraphSkeleton";

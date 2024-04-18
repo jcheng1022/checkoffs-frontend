@@ -3,13 +3,16 @@
 import styled from "styled-components";
 import {FlexBox} from "@/components/core";
 import dayjs from "dayjs";
-import {Dropdown, Spin} from "antd";
-import {MoreVertical} from "react-feather";
+import {Dropdown, Input, notification, Spin} from "antd";
+import {MessageCircle, MoreVertical} from "react-feather";
 import APIClient from '@/services/api'
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import ConfirmDelete from "@/components/feed/ConfirmDelete";
 import {useCurrentUser} from "@/hooks/user.hook";
+import {useActivityActionMutation} from "@/hooks/activity.hook";
+import Comment from "@/components/feed/Comment";
+import {theme} from "@/styles/themes";
 
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
@@ -17,9 +20,49 @@ dayjs.extend(advancedFormat)
 
 
 const ActivityItem = ({activity, type = 'image'}) => {
+
     const [isLoading, setIsLoading] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
+    const [isLiked, setIsLiked] = useState(activity?.isLiked > 0);
+    const [likeCount, setLikeCount] = useState(activity?.likeCount)
+    const [comment, setComment] = useState('')
+    const [userComments, setUserComments] = useState([])
+    const [showCommentInput, setShowCommentInput] = useState(false)
     const client = useQueryClient();
+    const inputRef = useRef(null)
+
+    const {mutateAsync} = useActivityActionMutation(activity?.id)
+
+    const handleCommentInput = async (e) => {
+        setComment(e.target.value)
+    }
+    useEffect(() => {
+        if (showCommentInput && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [showCommentInput]);
+
+    useEffect(() => {
+        setUserComments(activity?.comments)
+    }, [activity])
+
+    const handleSubmitComment = async () => {
+        const combined = [...userComments, {message: comment, user: {username: user?.username}}]
+        setUserComments(combined)
+
+
+         mutateAsync({type: 'COMMENT', message: comment}).then(() => {
+
+            setShowCommentInput(false)
+            setComment('');
+        }).catch((e) => {
+             setUserComments(combined.slice(0, -1))
+             notification.error({
+                 message: 'Something went wrong',
+                 description: e.message
+             })
+         })
+    }
     const handleAction = (actionType) => async () => {
 
         const params = actionType === 'archive' ? {
@@ -64,7 +107,25 @@ const ActivityItem = ({activity, type = 'image'}) => {
     const {data: user} = useCurrentUser();
     // const {user} = useAuthContext();
     const isOwner = user?.id === activity?.userId;
+    let likedPost = activity?.likedPost
 
+    const actionProps = {
+        size: 18,
+        color: '#000'
+    }
+    const convertToNumber = (val) => {
+        return typeof val === 'string' ? parseInt(val) : val
+    }
+    const toggleLiked = async () => {
+        if (isLiked) {
+            setLikeCount(prev => convertToNumber(prev) -1)
+        } else {
+            setLikeCount(prev => convertToNumber(prev) +1)
+        }
+        setIsLiked(prev => !prev)
+        await mutateAsync({type: 'LIKE'});
+
+    }
 
     return (
         <Container type={type}>
@@ -95,13 +156,47 @@ const ActivityItem = ({activity, type = 'image'}) => {
                     </div>
                 )}
                 <div className={'description'}> {activity?.description} </div>
+                <ItemFooterContainer>
+                    <FlexBox gap={12} className={'actions'}>
+                            <img  className={'action-icon'} width={18} onClick={toggleLiked}  src={`/icons/${isLiked? 'like' : 'empty-heart'}.png`}/>
+                        <div> {likeCount}</div>
 
+                        <MessageCircle onClick={() => setShowCommentInput(prev => !prev)}  className={'action-icon'} {...actionProps} />
+                    </FlexBox>
+
+                    <div className={'comments-container'}
+                        style={{maxHeight: 150, overflowY: "auto"}}
+                    >
+                        {userComments.map((comment, index) => {
+                            return (
+                                <Comment key={`activity-${activity.id}-comment-${index}`} comment={comment}/>
+                            )
+                        })}
+
+                        {/* TODO: find a way to limit showing all the comments here*/}
+                        {/*{activity?.commentCount > 3 && (*/}
+                        {/*    <div className={'show-more'}> {`Showing ${userComments?.length} of ${activity?.commentCount} comments ... show more`} </div>*/}
+                        {/*)}*/}
+                    </div>
+
+                    {showCommentInput && (
+                        <Input allowClear
+                               ref={inputRef}
+                               onPressEnter={handleSubmitComment}
+                            // suffix={comment.length > 0 ? <CornerDownLeft color={'grey'} /> : null}
+                               placeholder={'Press enter to send comment'}
+                               value={comment}
+                               onChange={handleCommentInput} />
+                    )}
+                </ItemFooterContainer>
             </Spin>
-            <ConfirmDelete
-                onCancel={ () => setIsDeleting(false)}
-                open={isDeleting}
-                onSubmit={handleAction('delete')}
-            />
+            {!!isDeleting && (
+                <ConfirmDelete
+                    onCancel={ () => setIsDeleting(false)}
+                    open={isDeleting}
+                    onSubmit={handleAction('delete')}
+                />
+            )}
         </Container>
     )
 }
@@ -112,11 +207,11 @@ export default ActivityItem
 const Container = styled.div`
   min-width: 400px;
   max-width: 400px;
-  height: ${props => props.type === 'image' ? '400px' : '100px'};
-  max-height: ${props => props.type === 'image' ? '400px' : '100px'};
+  // height: ${props => props.type === 'image' ? '450px' : '100px'};
+  // max-height: ${props => props.type === 'image' ? '450px' : '100px'};
   width: 400px;
   background-color: #fafafa;
-  margin: 4px 0px;
+  margin: 10px 0px;
   
   .more-icon {
     cursor: pointer;
@@ -134,16 +229,53 @@ const Container = styled.div`
     .description {
       text-align: left;
         padding: 8px;
+      font-size: 14px;
     }
 
   .image-container {
     width: 100%;
-    height: 300px;
+    height: 250px;
   }
 
   .image {
     width: 100%;
     height: 100%;
     object-fit:cover;
+  }
+`
+
+const ItemFooterContainer = styled.div`
+  //max-height: 200px;
+  padding: 12px;
+  text-align: start;
+  .actions {
+    
+  }
+  
+  .show-more {
+    font-size: 12px;
+    font-weight: 500;
+    color: ${theme.GREY};
+    margin: 12px 0px;
+  }
+
+  .show-more:hover {
+    color: #1890ff;
+    cursor: pointer;
+    transform: scale(1.001);
+  }
+  .
+  
+  .comments-container{
+    text-align: start;
+    margin: 12px 0px;
+
+  }
+  
+  .action-icon {
+    cursor: pointer;
+  }
+  .action-icon:hover {
+    transform: scale(1.1);
   }
 `

@@ -79,6 +79,20 @@ export const useUserProfile = ( isLoggedIn, userId, props = {})  => {
 
 };
 
+export const usePermissionByUser = ( isLoggedIn, userId, props = {})  => {
+
+    const queryKey = ['user', userId, 'permissions'];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled: !!isLoggedIn,
+        retry: 5,
+        queryFn: () => APIClient.api.get(`/user/${userId}/permissions`, { params: props})
+    })
+
+};
+
 export const useUserSettings = ( isLoggedIn, type = 'profile', props = {})  => {
 
     const queryKey = ['settings', type];

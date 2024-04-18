@@ -93,11 +93,11 @@ const FriendItem = ({friend}) => {
 export default FriendItem;
 
 const Container = styled(FlexBox)`
-  margin: 12px 0px;
   //border: 1px solid black;
   width: 100%;
-  padding: 12px;
-  height: 30px;
+  margin: 12px 0px;
+  //padding: 12px;
+  max-height: 30px;
   
   .username {
     font-weight: 500;

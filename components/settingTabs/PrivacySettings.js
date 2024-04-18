@@ -1,28 +1,29 @@
 import SettingTabWrapper from "@/components/settingTabs/SettingTabWrapper";
 import {useEffect, useState} from "react";
-import {ColorPicker, Input} from "antd";
+import {Select} from "antd";
 import styled from "styled-components";
 import {theme} from "@/styles/themes";
 import {useCurrentUser, useUserIsLoggedIn, useUserSettings} from "@/hooks/user.hook";
 import APIClient from '@/services/api'
 import {useQueryClient} from "@tanstack/react-query";
+import {PRIVACY_OPTIONS} from "@/constants";
 
 const ProfileSettings = () => {
 
     const [form, setForm] = useState({})
     const isLoggedIn = useUserIsLoggedIn();
     const {data: user} = useCurrentUser();
-    const {data: profileSettings} = useUserSettings(isLoggedIn, 'profile')
+    const {data: profileSettings} = useUserSettings(isLoggedIn, 'privacy')
 
-     const [colorPickerOpen, setColorPickerOpen] = useState(true)
     const client = useQueryClient();
     useEffect(() => {
 
         if (profileSettings) {
             console.log(profileSettings,2)
             setForm({
-                username: profileSettings.username,
-                profileColor: profileSettings.profileColor
+                postPrivacy: profileSettings?.postPrivacy,
+                profilePrivacy: profileSettings?.profilePrivacy,
+                friendPrivacy: profileSettings?.friendPrivacy,
             })
         }
 
@@ -55,41 +56,60 @@ const ProfileSettings = () => {
         setForm({})
     }
 
+    const settingOptions = [
+        {
+            label: 'Everyone',
+            value: PRIVACY_OPTIONS.EVERYONE
+        },
+        {
+            label: 'Friends',
+            value: PRIVACY_OPTIONS.FRIENDS
+        },
+        {
+            label: 'Only Me',
+            value: PRIVACY_OPTIONS.PRIVATE
+        },
+    ]
+
     console.log(form?.profileColor, 928, typeof form?.profileColor)
     return (
         <SettingTabWrapper onSubmit={onSubmit } onClear={onClear}>
             <Container>
 
-                {/* TODO*/}
-                {/*<div className={'form-cluster'}>*/}
-                {/*    <div className={'label'}>*/}
-                {/*        Avatar*/}
-                {/*    </div>*/}
-                {/*    <Input />*/}
-                {/*    <div className={'description'}>*/}
-                {/*        This username will be shown to other users across the website. Every username is unique and references a specific user.*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+
 
                 <div className={'form-cluster'}>
                     <div className={'label'}>
-                        Username
+                        Who can see your <span style={{fontWeight:'bold'}}> profile </span>
                     </div>
-                    <Input value={form?.username} onChange={handleInputChange('username')} />
+                    <Select placeholder={'Activity Feed'} className={'setting-select'} options={settingOptions} value={form?.viewProfile} onChange={handleInputChange('viewProfile')} />
                     <div className={'description'}>
-                        This username will be shown to other users across the website. Every username is unique and references a specific user.
+                        Only authorized users can see your profile. All users can visit profiles by default
                     </div>
                 </div>
 
                 <div className={'form-cluster'}>
                     <div className={'label'}>
-                        Profile Color
+                        Who can see your  <span style={{fontWeight:'bold'}}>posts </span>
                     </div>
-                    <ColorPicker defaultValue={form?.profileColor} onChangeComplete={(color => setForm({...form, profileColor: color?.toHex()}))} />
+                    <Select placeholder={'Posts'} className={'setting-select'} options={settingOptions} value={form?.viewPosts} onChange={handleInputChange('viewPosts')} />
                     <div className={'description'}>
-                        This color will be used to decorate your profile
+                        This setting will determine who can see your posts
                     </div>
                 </div>
+
+
+                <div className={'form-cluster'}>
+                    <div className={'label'}>
+                       Who can see your  <span style={{fontWeight:'bold'}}> {`friends's list`}</span>
+                    </div>
+                    <Select placeholder={`Friend's list`} className={'setting-select'} options={settingOptions} value={form?.viewFriendsList} onChange={handleInputChange('viewFriendsList')} />
+                    <div className={'description'}>
+                        {`Disabling this will hide your friend's list from other users`}
+                    </div>
+                </div>
+
+
 
             </Container>
         </SettingTabWrapper>
@@ -108,5 +128,9 @@ const Container = styled.div`
     font-size: 10px;
     font-style: italic;
     color: ${theme.GREY};
+  }
+  
+  .setting-select {
+    width: 300px;
   }
 `

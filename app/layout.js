@@ -5,7 +5,6 @@ import Providers from "@/app/providers";
 import dayjs from "dayjs";
 import {CookiesProvider} from 'next-client-cookies/server';
 import {AppContextProvider} from "@/context/AppContext";
-import NavigationProgressBar from "@/components/NavigationProgressBar";
 import {theme} from "@/styles/themes";
 import './globals.css'
 
