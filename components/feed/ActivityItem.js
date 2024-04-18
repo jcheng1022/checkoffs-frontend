@@ -49,14 +49,17 @@ const ActivityItem = ({activity, type = 'image'}) => {
     const handleSubmitComment = async () => {
         const combined = [...userComments, {message: comment, user: {username: user?.username}}]
         setUserComments(combined)
+        setShowCommentInput(false)
+
 
 
          mutateAsync({type: 'COMMENT', message: comment}).then(() => {
 
-            setShowCommentInput(false)
             setComment('');
         }).catch((e) => {
+
              setUserComments(combined.slice(0, -1))
+             setShowCommentInput(true)
              notification.error({
                  message: 'Something went wrong',
                  description: e.message
