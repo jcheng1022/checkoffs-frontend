@@ -121,6 +121,7 @@ const Container = styled.div`
 
   .mobile-nav-item {
     padding: 8px 12px;
+    cursor: pointer;
     
   }
   
