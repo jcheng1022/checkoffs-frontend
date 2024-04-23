@@ -15,9 +15,9 @@ const GroupList = () => {
     return (
         <Container>
 
-            {(isFetching || isLoading) ? <Spin /> : groups?.length > 0 ? groups.map((group, index) => {
+            {(isFetching || isLoading) ? <Spin /> : groups?.length > 0 ? groups.map((groupItem, index) => {
                 return (
-                    <GroupItem key={`group-${index}`} group={group}/>
+                    <GroupItem key={`group-${index}`} group={groupItem.group}/>
                 )
             }) : <EmptyContent title={'No groups...yet!'} subtitle={'Create or join a group'} route={'/groups/create'} />}
 

@@ -1,14 +1,15 @@
-import {Button, List} from "antd";
+import {Button, List, notification} from "antd";
 import APIClient from "@/services/api";
 import {FlexBox} from "@/components/core";
 import {NOTIFICATION_TYPES} from "@/constants";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useCurrentUser, useNotificationsByUser, useUserIsLoggedIn} from "@/hooks/user.hook";
 import {useDocumentData} from "react-firebase-hooks/firestore";
 import {doc} from "firebase/firestore";
 import {firestoreClient} from "@/lib/firebase/firebase";
 import {Globe} from "react-feather";
 import dayjs from "dayjs";
+import {useQueryClient} from "@tanstack/react-query";
 
 const NotificationsList = ({}) => {
     const [props, setProps] = useState({
@@ -20,7 +21,7 @@ const NotificationsList = ({}) => {
 
     const { data: notifications,  } = useNotificationsByUser(!!user, showNotifications,  props);
     const [newNotifications, setNewNotifications] = useState(false)
-
+    const client = useQueryClient();
 
     const [updateValue, loading, error] = useDocumentData(doc(firestoreClient, `notifications/${user?.firebaseUuid}`), {
         snapshotListenOptions: { includeMetadataChanges: true } } )
@@ -46,8 +47,37 @@ const NotificationsList = ({}) => {
         }
     }, [updateValue, notifications])
 
+    const notificationList = useMemo(() => {
+        return notifications?.filter(notification => {
+            if (notification?.type === NOTIFICATION_TYPES.FRIEND_REQUEST) {
+               return  !notification?.body.status || notification?.body?.status === 'PENDING'
+            }
+        })
+    }, [notifications])
 
 
+
+
+    const handleRespond = (type, item, response) => () => {
+        if ( type === NOTIFICATION_TYPES.FRIEND_REQUEST ) {
+            console.log(item)
+                //
+                return APIClient.api.patch(`/user/friends`, {
+                    notificationId: item?.id,
+                    requestUserId: item?.body?.sender?.id,
+                    respondUserId: item?.userId,
+                    status: response,
+                }).then(async () => {
+                    await client.refetchQueries({queryKey: ['notifications', props]})
+                }).catch(e => {
+                    notification.error({
+                        message: 'Error',
+                        description: e?.message
+                    })
+                })
+
+        }
+    }
     return (
         <>
 
@@ -93,24 +123,16 @@ const NotificationsList = ({}) => {
             }>
 
                 {
-                    notifications?.length > 0 ? (
+                    notificationList?.length > 0 ? (
                         <>
                             <div className={'notif-headers'}> Buddy Requests</div>
                             <List
 
                                 itemLayout="horizontal"
-                                dataSource={notifications}
+                                dataSource={notificationList}
                                 renderItem={(item, index) => {
                                     const message = item?.type === NOTIFICATION_TYPES.FRIEND_REQUEST ? `You have a friend request from ${item?.body?.sender?.username}` : `You have been invited to join ${item?.group?.name} group`
 
-                                    // const handleRespond = (response) => () => {
-                                    //     return APIClient.api.patch(`/user/friends`, {
-                                    //         requestId: item?.id,
-                                    //         status: response,
-                                    //     }).then(async () => {
-                                    //         await client.refetchQueries({queryKey: ['friends', user?.id, 'PENDING']})
-                                    //     })
-                                    // }
                                     return (
                                         <List.Item>
                                             <FlexBox>
@@ -119,12 +141,12 @@ const NotificationsList = ({}) => {
 
                                             <FlexBox justify={'flex-end'} wrap={'no-wrap'} gap={6}>
                                                 <Button className={'invite-accept-btn'}
-                                                    // onClick={handleRespond('ACCEPTED')}
+                                                        onClick={handleRespond(NOTIFICATION_TYPES.FRIEND_REQUEST, item, 'ACCEPTED')}
                                                         type={'primary'}>
                                                     Accept
                                                 </Button>
                                                 <Button
-                                                    // onClick={handleRespond('DECLINED')}
+                                                    onClick={handleRespond(NOTIFICATION_TYPES.FRIEND_REQUEST, item, 'DECLINE')}
                                                 >
                                                     Decline
                                                 </Button>
@@ -137,7 +159,7 @@ const NotificationsList = ({}) => {
                         </>
                     ) : (
                         <FlexBox style={{width: '100%' }} justify={'center'} className={'no-notifications'}>
-                            No Notifications
+                            No New Notifications
                         </FlexBox>
                     )
                 }
