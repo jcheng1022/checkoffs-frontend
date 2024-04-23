@@ -30,15 +30,16 @@ export default Hero;
 
 const Container = styled(FlexBox)`
   width: 100%;
+  padding: 24px;
   //margin: 24px;
-  height: 300px;
+  //height: 300px;
   
 
     .img-container {
         width: 700px;
         height: 240px;
       border-radius: 12px;
-      margin-right: 24px;
+      padding: 0px 24px;
       
     }
   
