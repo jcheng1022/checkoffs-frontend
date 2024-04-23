@@ -41,7 +41,7 @@ export const useCurrentUser = ( props = {})  => {
         queryKey,
         ...defaultQueryProps,
         enabled: !!isLoggedIn,
-        retry: 5,
+        // retry: 5,
         queryFn: () => APIClient.api.get(`/user/me`, { params: props})
     })
 
@@ -59,6 +59,24 @@ export const useUserFriends = ( userId = null, type = 'ACCEPTED', props)  => {
         retry: 5,
         queryFn: () => APIClient.api.get(`/user/friends`, { params: {
                 status: type,
+                ...props
+            }})
+    })
+
+};
+
+export const useNotificationsByUser = ( isLoggedIn,showNotifications, props)  => {
+
+    const queryKey = ['notifications', props];
+
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled: showNotifications && isLoggedIn,
+
+
+        queryFn: () => APIClient.api.get(`/user/notifications`, { params: {
                 ...props
             }})
     })
@@ -137,3 +155,17 @@ export const usePeopleSearch = (userId,   props = {})  => {
 
 
 }
+
+export const useGroupsByUserId = ( isLoggedIn, userId, props = {})  => {
+
+    const queryKey = ['user', userId, 'groups'];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled: !!isLoggedIn,
+        retry: 5,
+        queryFn: () => APIClient.api.get(`/groups/${userId}`, { params: props})
+    })
+
+};

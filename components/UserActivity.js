@@ -7,7 +7,7 @@ import UserActivityGraph from "@/components/profile/UserActivityGraph";
 import FriendsList from "@/components/profile/FriendsList";
 import {useParams, useRouter} from "next/navigation";
 import {useCurrentUser, useUserIsLoggedIn, useUserProfile} from "@/hooks/user.hook";
-import {Button, Modal, notification, Spin} from "antd";
+import {Button, Modal, notification, Spin, Tabs} from "antd";
 import {ArrowRight} from "react-feather";
 import {theme} from "@/styles/themes";
 import APIClient from "@/services/api";
@@ -15,6 +15,7 @@ import {useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import dayjs from "dayjs";
 import ProfilePermissionWrapper from "@/components/ProfilePermissionWrapper";
+import GroupList from "@/components/profile/GroupList";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
@@ -81,6 +82,18 @@ const UserActivity = () => {
     const isNotSelf = !!user?.id && userId !== user?.id
 
 
+    const tabOptions = [
+        {
+            label: 'Friends',
+            key: 'friends',
+            children: <FriendsList />
+        },
+        {
+            label: 'Groups',
+            key: 'groups',
+            children: <GroupList />
+        },
+    ]
     return (
         <ProfilePermissionWrapper>
             <Container>
@@ -111,10 +124,12 @@ const UserActivity = () => {
 
 
                 </UserHeaderContainer>
-                <FlexBox className={'top-section'} justify={'center'} gap={50}  align={'flex-start'}>
-                    <FriendsList />
-                    {/*<UserActivityStats />*/}
-                </FlexBox>
+                <Tabs
+                    defaultActiveKey="1"
+                    centered
+                    items={tabOptions}
+                />
+
                 <UserActivityGraph />
 
                 <Gap gap={24}/>

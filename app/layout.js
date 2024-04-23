@@ -14,7 +14,7 @@ dayjs.extend(advancedFormat)
 
 // either Static metadata
 export const metadata = {
-    title: 'Gymfriends',
+    title: 'Checkoff',
 }
 export default function AuthedLayout({ children }) {
 

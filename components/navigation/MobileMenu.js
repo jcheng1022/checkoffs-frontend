@@ -13,7 +13,6 @@ const MobileMenu = () => {
     const { logOut, handleSignIn } = useAuthContext();
     const  router = useRouter()
     const { data: user } = useCurrentUser()
-    console.log(mobileMenuIsOpen, '3232')
     let menuItems;
 
 

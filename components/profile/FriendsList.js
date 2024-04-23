@@ -5,6 +5,7 @@ import {theme} from "@/styles/themes";
 import {Spin} from "antd";
 import {FlexBox} from "@/components/core";
 import {useParams, useRouter} from 'next/navigation';
+import EmptyContent from "@/components/EmptyContent";
 
 
 const FriendsList = () => {
@@ -25,28 +26,15 @@ const FriendsList = () => {
     }
 
 
-    const EmptyFriends = () => {
-        return (
-            <EmptyContainer direction={'column'} justify={'center'}>
 
-                <div className={'empty-title'}> No Friends Yet!</div>
-                <div className={'empty-desc'} onClick={() => {
-                    router.push(`/people`)
-                }
-                }> Find people here</div>
-            </EmptyContainer>
-        )
-    }
     return (
         <Container direction={'column'} align={'flex-start'} justify={'flex-start'} isMobile={isMobile} >
-            <div> My Friends</div>
-
             {(isFetching || isLoading) ?
                 <FlexBox style={{height: '100%'}} justify={'center'} align={'center'}>
                     <Spin tip={<div> Fetching your friends...</div>} />
             </FlexBox> :
-                friends?.length === 0 ?
-                    <EmptyFriends />
+                friends?.length > 0 ?
+                    <EmptyContent title={'No Friends...yet!'} subtitle={'Find people'} route={'/people'} />
                     :
                 <>
                     {friends?.map((friend, index) => {
@@ -72,11 +60,8 @@ const FriendsList = () => {
 export default FriendsList;
 
 const Container = styled(FlexBox)`
-  //min-width: 300px; 
   min-width: ${props => props.isMobile ? '100%' : '300px'};
-  //min-width: 100%;
   margin: 24px 24px;
-  min-width: ${props => props.isMobile ? '100%' : '500px'};
   height: 300px;
   padding: 24px;
   border-radius: 12px;
@@ -87,21 +72,4 @@ const Container = styled(FlexBox)`
 `
 
 
-const EmptyContainer = styled(FlexBox)`
-  height: 100%;
-  width: 100%;
-  
-  .empty-title {
-    font-size: 20px;
-  }
 
-  .empty-desc {
-    color: #1890ff;
-    font-size: 14px;
-    cursor: pointer;
-  }
-
-  .empty-desc:hover {
-    text-decoration: underline;
-  }
-`
