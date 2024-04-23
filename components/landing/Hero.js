@@ -10,7 +10,7 @@ const Hero = () => {
         <Container justify={'space-between'}>
             <div className={'left-side'}>
                 <div className={'main-text'}>
-                    A more visually appealing way of tracking your wins
+                    A more visually appealing way of getting things done
                 </div>
                 <FlexBox className={'btn-container'} justify={'center'}>
                     <Button className={'get-started-btn'}>
