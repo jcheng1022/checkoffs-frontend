@@ -59,6 +59,8 @@ class APIClient {
                 return Promise.reject(error.response?.data?.data || error.response?.data || error.toString());
             }
         );
+        this.isReady = true
+
     }
 }
 

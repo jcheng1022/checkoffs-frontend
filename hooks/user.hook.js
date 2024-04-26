@@ -30,7 +30,6 @@ export const useCurrentUser = ( props = {})  => {
     // const uid = auth.currentUser?.uid
     // console.log(uid, 'uid')
     const uid = auth.currentUser?.uid
-    console.log(uid, 222)
 
 
     // // let isLoggedIn;
@@ -43,8 +42,8 @@ export const useCurrentUser = ( props = {})  => {
     return useQuery({
         queryKey,
         ...defaultQueryProps,
-        enabled: !!uid,
-        // retry: 5,
+        enabled: !!uid && APIClient.isReady,
+        retry: 5,
         queryFn: () => APIClient.api.get(`/user/me`, { params: props})
     })
 
