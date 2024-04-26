@@ -29,18 +29,21 @@ export const useCurrentUser = ( props = {})  => {
     // console.log(auth.currentUser, 'user')
     // const uid = auth.currentUser?.uid
     // console.log(uid, 'uid')
+    const uid = auth.currentUser?.uid
+    console.log(uid, 222)
 
-    // let isLoggedIn;
-    onAuthStateChanged(auth,  (user) => {
-        if (user) {
-            setIsLoggedIn(true)
-        } else {
-            return;
-        }})
+
+    // // let isLoggedIn;
+    // onAuthStateChanged(auth,  (user) => {
+    //     if (user) {
+    //         setIsLoggedIn(true)
+    //     } else {
+    //         return;
+    //     }})
     return useQuery({
         queryKey,
         ...defaultQueryProps,
-        enabled: !!isLoggedIn,
+        enabled: !!uid,
         // retry: 5,
         queryFn: () => APIClient.api.get(`/user/me`, { params: props})
     })
