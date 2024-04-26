@@ -65,12 +65,13 @@ const GroupDashboard = () => {
     return (
         <Container isMobile={isMobile} align={'flex-start'} wrap={'no-wrap'}>
             <Menu
-                mode="inline"
+                mode={isMobile ? 'horizontal' : 'inline'}
                 defaultSelectedKeys={['members']}
                 openKeys={openMenuKey}
                 onClick={(val) => {
                 setOpenMenuKey([val.key])
                 }}
+
                 inlineCollapsed={isMobile}
 
                 className={isMobile ? 'mobile-dashboard-menu' :'dashboard-menu'}
@@ -93,10 +94,16 @@ export default GroupDashboard;
 const Container = styled(FlexBox)`
 
   .mobile-dashboard-menu {
-    //padding: 8px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    
+    width: 100vw;
+    padding: 8px;
     background-color: ${theme.softBlue_1};
-    height: 100vh;
+    z-index: 999; /* Ensure it's above other content */
   }
+ 
   
   .dashboard-menu {
     width: 200px;
@@ -104,7 +111,7 @@ const Container = styled(FlexBox)`
     background-color: ${theme.softBlue_1};
     height: 100vh;
   }
-  .ant-menu-item {
+   .ant-menu-item {
     border-radius: 0;
     margin: 0px;
     color: white;
@@ -112,7 +119,16 @@ const Container = styled(FlexBox)`
     font-weight: 500;
 
     //padding: 0px;
-    width: 100%;
+    max-width: ${props => props.isMobile ? '25%' : '100%'};
+  }
+  
+  .ant-menu-title-content {
+    display: ${props => props.isMobile ? 'none': 'block'};
+  }
+  
+  .ant-menu-overflow-item {
+    text-align: ${props => props.isMobile ? 'center': 'left'};
+    width: 25%;
   }
 
   .ant-menu-item-selected {
@@ -120,5 +136,6 @@ const Container = styled(FlexBox)`
     color: black;
   }
 
+  
 
 `
