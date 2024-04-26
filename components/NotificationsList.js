@@ -1,14 +1,13 @@
 import {Button, List, notification} from "antd";
 import APIClient from "@/services/api";
 import {FlexBox} from "@/components/core";
-import {NOTIFICATION_TYPES} from "@/constants";
+import {NOTIFICATION_TYPES, STATUS} from "@/constants";
 import {useEffect, useMemo, useState} from "react";
-import {useCurrentUser, useNotificationsByUser, useUserIsLoggedIn} from "@/hooks/user.hook";
+import {useCurrentUser, useNotificationsByUser} from "@/hooks/user.hook";
 import {useDocumentData} from "react-firebase-hooks/firestore";
 import {doc} from "firebase/firestore";
 import {firestoreClient} from "@/lib/firebase/firebase";
 import {Globe} from "react-feather";
-import dayjs from "dayjs";
 import {useQueryClient} from "@tanstack/react-query";
 
 const NotificationsList = ({}) => {
@@ -37,7 +36,6 @@ const NotificationsList = ({}) => {
     useEffect(() => {
 
         if (props?.lastUpdated && updateValue?.lastUpdated && updateValue?.lastUpdated !== props.lastUpdated) {
-            console.log(`should update`)
 
             setProps({
                 ...props,
@@ -49,7 +47,7 @@ const NotificationsList = ({}) => {
 
     const notificationList = useMemo(() => {
         return notifications?.filter(notification => {
-            if (notification?.type === NOTIFICATION_TYPES.FRIEND_REQUEST) {
+            if (notification?.type === NOTIFICATION_TYPES.FRIEND_REQUEST || notification?.type === NOTIFICATION_TYPES.GROUP_INVITE) {
                return  !notification?.body.status || notification?.body?.status === 'PENDING'
             }
         })
@@ -60,8 +58,6 @@ const NotificationsList = ({}) => {
 
     const handleRespond = (type, item, response) => () => {
         if ( type === NOTIFICATION_TYPES.FRIEND_REQUEST ) {
-            console.log(item)
-                //
                 return APIClient.api.patch(`/user/friends`, {
                     notificationId: item?.id,
                     requestUserId: item?.body?.sender?.id,
@@ -75,6 +71,20 @@ const NotificationsList = ({}) => {
                         description: e?.message
                     })
                 })
+
+        } else if ( type === NOTIFICATION_TYPES.GROUP_INVITE ) {
+            return APIClient.api.patch(`/groups/${item?.body?.group?.id}/invite`, {
+                notificationId: item?.id,
+                userId: user?.id,
+                status: response,
+            }).then(async () => {
+                await client.refetchQueries({queryKey: ['notifications', props]})
+            }).catch(e => {
+                notification.error({
+                    message: 'Error',
+                    description: e?.message
+                })
+            })
 
         }
     }
@@ -125,13 +135,13 @@ const NotificationsList = ({}) => {
                 {
                     notificationList?.length > 0 ? (
                         <>
-                            <div className={'notif-headers'}> Buddy Requests</div>
+                            {/*<div className={'notif-headers'}> Buddy Requests</div>*/}
                             <List
 
                                 itemLayout="horizontal"
                                 dataSource={notificationList}
                                 renderItem={(item, index) => {
-                                    const message = item?.type === NOTIFICATION_TYPES.FRIEND_REQUEST ? `You have a friend request from ${item?.body?.sender?.username}` : `You have been invited to join ${item?.group?.name} group`
+                                    const message = item?.type === NOTIFICATION_TYPES.FRIEND_REQUEST ? `You have a friend request from ${item?.body?.sender?.username}` : `You have been invited to join ${item?.body?.group?.name} group`
 
                                     return (
                                         <List.Item>
@@ -141,12 +151,12 @@ const NotificationsList = ({}) => {
 
                                             <FlexBox justify={'flex-end'} wrap={'no-wrap'} gap={6}>
                                                 <Button className={'invite-accept-btn'}
-                                                        onClick={handleRespond(NOTIFICATION_TYPES.FRIEND_REQUEST, item, 'ACCEPTED')}
+                                                        onClick={handleRespond(item?.type, item, STATUS.ACCEPTED)}
                                                         type={'primary'}>
                                                     Accept
                                                 </Button>
                                                 <Button
-                                                    onClick={handleRespond(NOTIFICATION_TYPES.FRIEND_REQUEST, item, 'DECLINE')}
+                                                    onClick={handleRespond(item?.type, item, STATUS.DECLINED)}
                                                 >
                                                     Decline
                                                 </Button>

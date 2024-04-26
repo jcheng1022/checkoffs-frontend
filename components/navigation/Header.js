@@ -1,23 +1,18 @@
 'use client'
 
-import {Button, Dropdown, List} from "antd";
+import {Button, Dropdown} from "antd";
 // import {googleAuthProvider} from "@/app/firebase";
-import {doc} from "firebase/firestore"
 import {FlexBox} from "@/components/core";
 import {useAuthContext} from "@/context/AuthContext";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import NewActivityModal from "@/components/modals/NewActivityModal";
 import styled from 'styled-components'
-import {useQueryClient} from "@tanstack/react-query";
-import {useCurrentUser, useNotificationsByUser, useUserFriends} from "@/hooks/user.hook";
-import {Globe, Menu, X} from "react-feather";
-import APIClient from '@/services/api'
+import {useCurrentUser} from "@/hooks/user.hook";
+import {Menu, X} from "react-feather";
 import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
 import MobileMenu from "@/components/navigation/MobileMenu";
-import {useDocumentData} from "react-firebase-hooks/firestore";
-import {firestoreClient} from "@/lib/firebase/firebase";
 import NotificationsList from "@/components/NotificationsList";
 
 const Header = () => {

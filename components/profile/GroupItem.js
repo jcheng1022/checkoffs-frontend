@@ -2,10 +2,12 @@
 
 import styled from "styled-components";
 import {FlexBox} from "@/components/core";
+import {useRouter} from "next/navigation";
 
 const GroupItem = ({group}) => {
+    const router = useRouter()
     return (
-        <Container>
+        <Container onClick={() => router.push(`/group/${group.id}`)}>
             <div>
                 <div className={'title'}> {group?.name}</div>
                 <div className={'owner'}> Owner: {group?.creator.username}</div>

@@ -1,7 +1,6 @@
 'use client'
 
 import {FlexBox} from "@/components/core";
-import {Button} from "antd";
 import styled from "styled-components";
 
 const FeatureList = () => {

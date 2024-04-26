@@ -6,7 +6,6 @@ import {useCurrentUser} from "@/hooks/user.hook";
 import {useAuthContext} from "@/context/AuthContext";
 import {Activity, BarChart, LogOut, Settings, Users} from "react-feather";
 import {FlexBox} from "@/components/core";
-import {useEffect} from "react";
 
 const MobileMenu = () => {
     const { mobileMenuIsOpen, setMobileMenuIsOpen, setOpenUserSettings } = useAppContext()

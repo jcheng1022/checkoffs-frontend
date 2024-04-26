@@ -1,7 +1,7 @@
 'use client';
 
 import styled from "styled-components";
-import {FlexBox, Gap} from "@/components/core";
+import {Gap} from "@/components/core";
 import {Button, Input} from "antd";
 import {useState} from "react";
 import {useCurrentUser} from "@/hooks/user.hook";

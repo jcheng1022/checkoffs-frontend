@@ -165,7 +165,7 @@ export const useGroupsByUserId = ( isLoggedIn, userId, props = {})  => {
         ...defaultQueryProps,
         enabled: !!isLoggedIn,
         retry: 5,
-        queryFn: () => APIClient.api.get(`/groups/${userId}`, { params: props})
+        queryFn: () => APIClient.api.get(`/user/${userId}/groups`, { params: props})
     })
 
 };
