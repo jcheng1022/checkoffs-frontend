@@ -4,8 +4,11 @@ import styled from "styled-components";
 import {FlexBox} from "@/components/core";
 import {Button} from "antd";
 import {theme} from "@/styles/themes";
+import {useAuthContext} from "@/context/AuthContext";
 
 const Hero = () => {
+    const { logOut, handleSignIn } = useAuthContext();
+
     return (
         <Container justify={'space-between'}>
             <div className={'left-side'}>
@@ -13,7 +16,7 @@ const Hero = () => {
                     A more visually appealing way of getting things done
                 </div>
                 <FlexBox className={'btn-container'} justify={'center'}>
-                    <Button className={'get-started-btn'}>
+                    <Button className={'get-started-btn'} onClick={handleSignIn}>
                         Get Started
                     </Button>
                 </FlexBox>
