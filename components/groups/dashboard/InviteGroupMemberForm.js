@@ -68,7 +68,7 @@ const InviteGroupMemberForm = ({open, onClose}) => {
                //         Cancel
                //     </Button>
                    <Button
-                      type={'primary'}
+                       key={'send-invite-btn'}
                        disabled={userList?.length === 0} type={'primary'} onClick={handleSendInvite}>
                        Send Invite(s)
                    </Button>
