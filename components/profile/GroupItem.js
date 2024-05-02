@@ -20,6 +20,8 @@ const GroupItem = ({group}) => {
 export default GroupItem;
 
 const Container = styled(FlexBox)`
+  padding: 8px 12px;
+  border-radius: 6px;
   .title {
     font-size: 16px;
     font-weight: 600;
@@ -30,4 +32,9 @@ const Container = styled(FlexBox)`
     font-weight: 400;
     color: #8c8c8c;
   }
+  
+  &:hover {
+    cursor: pointer;
+  background-color: #f0f0f0;
+    
 `

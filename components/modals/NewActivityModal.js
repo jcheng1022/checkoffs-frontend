@@ -1,15 +1,16 @@
 'use client'
 import styled from "styled-components";
-import {Button, DatePicker, Input, Modal, Spin} from "antd";
+import {Button, DatePicker, Input, Modal, Select, Spin, Tag} from "antd";
 import {Controller, useForm} from "react-hook-form";
 import ImageUploader from "@/components/ImageUploader";
 import {Gap} from "@/components/core";
 import dayjs from "dayjs";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import APIClient from '../../services/api'
 import {useParams, usePathname, useRouter} from 'next/navigation';
 import {useCurrentUser} from "@/hooks/user.hook";
+import {useActivitySharingOptions} from "@/hooks/activity.hook";
 
 const {TextArea} = Input;
 
@@ -23,6 +24,8 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
     } = useForm()
     const client = useQueryClient();
     const {data: user} = useCurrentUser()
+    const { data: options} = useActivitySharingOptions(!!user)
+
     // const {user } = useAuthContext();
     const pathname = usePathname();
     const params = useParams();
@@ -31,8 +34,9 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
     const [loading, setLoading] = useState(false)
     const router = useRouter();
 
-
+    console.log(pathname, 232)
     const [image, setImage] = useState(null);
+
 
     const onSubmit =  async (data) => {
 
@@ -67,15 +71,20 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
                         userId
                     }]})
 
+            } else if (pathname.includes('feed')) {
+                client.refetchQueries({queryKey: ['feed', user?.id]})
+            } else if (pathname.includes('group')){
+                const {groupId} = params;
+
+                client.refetchQueries({queryKey: ['group-feed', params?.groupId]})
             }
-            client.refetchQueries({queryKey: ['feed', user?.id]})
 
 
             // client.refetchQueries({queryKey: ['activities', {
             //         dateOnly: true
             //     }]})
             onCancel();
-            router.push(`/feed`)
+            // router.push(`/feed`)
         })
 
 
@@ -86,12 +95,71 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
 
         setImage(file); // Update formData with the uploaded image file
     };
+    const SHARING_OPTIONS = {
+        ALL: 'ALL',
+        GROUP: 'GROUP',
+    }
+
+    const selectOptions = useMemo(() => {
+        const base = [
+            {
+                label: 'General',
+                value: 'general',
+                options: [
+                    {
+                        label: 'All',
+                        value: SHARING_OPTIONS.ALL
+                    }
+                ]
+            }
+        ]
+
+        let personalizedOptions = []
+       if (options) {
+            personalizedOptions = options?.map(option => {
+                base[0].options?.push(   {
+                    label: `Group - ${option.name}`,
+                    value: `group=${option.groupId}`
+                })
+               return {
+                   label: <span> Group - {option.name}</span>,
+                   value: option.groupId,
+                   options: option.goals.map(goal => {
+                           return {
+                               label: goal.name,
+                               value: `group=${option.groupId}&goal=${goal.id}`
+                           }
+                       })
+               }
+           })
+       }
+
+        return  [...base, ...personalizedOptions]
+    }, [options])
+
     return (
         <ModalContainer width={1000} open={open} onCancel={onCancel} footer={[]}>
            <Spin spinning={loading}>
-               <div> Create </div>
+               {/*<div> Create </div>*/}
 
                <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+
+                   <Controller
+                       // defaultValue={} // Provide defaultValue here
+
+                       control={control}
+                       name='destination'
+                       render={({ field }) => (
+                           <Select
+                               placeholderText='Select date'
+                               options={selectOptions}
+                               style={{width: '100%'}}
+                               onChange={(val) => field.onChange(val)}
+                               selected={field.value}
+                               {...field}
+                           />
+                       )}
+                   />
 
                    <Controller
                        defaultValue={dayjs()} // Provide defaultValue here

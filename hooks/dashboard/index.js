@@ -15,3 +15,17 @@ export const useDashboardGroupMembers = ( groupId, props = {})  => {
     })
 
 };
+
+export const useDashboardGroupGoals = ( groupId, props = {})  => {
+
+    const queryKey = ['group-goals', 'dashboard', groupId, props];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        // enabled: !!isLoggedIn,
+        retry: 5,
+        queryFn: () => APIClient.api.get(`/groups/${groupId}/dashboard/GOALS`, { params: props})
+    })
+
+};

@@ -2,18 +2,24 @@ import styled from "styled-components";
 import {theme} from "@/styles/themes";
 import EmptyContent from "@/components/EmptyContent";
 import {useGroupsByUserId, useUserIsLoggedIn} from "@/hooks/user.hook";
-import {useParams} from "next/navigation";
-import {Spin} from "antd";
+import {useParams, useRouter} from "next/navigation";
+import {Button, Spin} from "antd";
 import GroupItem from "@/components/profile/GroupItem";
+import {FlexBox} from "@/components/core";
 
 const GroupList = () => {
 
     const isEmpty = true;
     const isLoggedIn = useUserIsLoggedIn();
     const { user:userId } = useParams();
+    const router = useRouter();
+
     const {data: groups, isFetching, isLoading} = useGroupsByUserId(isLoggedIn, userId, {})
     return (
         <Container>
+                <FlexBox justify={'flex-end'}>
+                    <Button onClick={() => router.push(`/groups/create`)}  type={'primary'}> Create Group </Button>
+                </FlexBox>
 
             {(isFetching || isLoading) ? <Spin /> : groups?.length > 0 ? groups.map((groupItem, index) => {
                 return (

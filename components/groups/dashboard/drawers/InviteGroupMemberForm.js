@@ -1,5 +1,5 @@
 import {Button, Drawer, Input} from "antd";
-import {FlexBox} from "@/components/core";
+import {FlexBox, Gap} from "@/components/core";
 import {ArrowLeft} from "react-feather";
 import {useState} from "react";
 import styled from "styled-components";
@@ -57,30 +57,25 @@ const InviteGroupMemberForm = ({open, onClose}) => {
         }
     }
     return (
-        <Drawer
-            open={open}
-            // title="Basic Drawer"
-            placement={'right'}
-            closeIcon={<ArrowLeft/>}
-            extra={[
-               // <FlexBox gap={8}>
-               //     <Button onClick={onClose}>
-               //         Cancel
-               //     </Button>
-                   <Button
-                       key={'send-invite-btn'}
-                       disabled={userList?.length === 0} type={'primary'} onClick={handleSendInvite}>
-                       Send Invite(s)
-                   </Button>
-               // </FlexBox>
-            ]}
-            onClose={onClose}>
-        <FlexBox wrap={'no-wrap'} gap={12}>
-            <Input onChange={e => setSearchTerm(e.target.value)} value={searchTerm} placeholder={'Search by username'} />
-            <Button style={{backgroundColor: theme.softBlue_2, color: 'white', fontWeight: 600, width: 150}} onClick={handleSearchUsers}>
-                Search
-            </Button>
-        </FlexBox>
+        // <Drawer
+        //     open={open}
+        //     placement={'right'}
+        //     closeIcon={<ArrowLeft/>}
+            // extra={[
+            //        <Button
+            //            key={'send-invite-btn'}
+            //            disabled={form?.invitedUsers?.length === 0} type={'primary'} onClick={handleSendInvite}>
+            //            Send Invite(s)
+            //        </Button>
+            // ]}
+            // onClose={onClose}>
+        <>
+            <FlexBox wrap={'no-wrap'} gap={12}>
+                <Input onChange={e => setSearchTerm(e.target.value)} value={searchTerm} placeholder={'Search by username'} />
+                <Button style={{backgroundColor: theme.softBlue_2, color: 'white', fontWeight: 600, width: 150}} onClick={handleSearchUsers}>
+                    Search
+                </Button>
+            </FlexBox>
 
             <UserListContainer>
                 <div className={'user-list-title'}> Invited Users</div>
@@ -98,12 +93,22 @@ const InviteGroupMemberForm = ({open, onClose}) => {
                             </FlexBox>
                         )})
 
+
                 ) : (
                     <div style={{marginTop: 100, marginLeft: 100}}> No users yet</div>
                 )}
+
+                <Gap gap={48}/>
+
+                <Button
+                    key={'send-invite-btn'}
+                    disabled={form?.invitedUsers?.length === 0} type={'primary'} onClick={handleSendInvite}>
+                    Send Invite(s)
+                </Button>
             </UserListContainer>
 
-        </Drawer>
+        </>
+        // </Drawer>
     )
 }
 

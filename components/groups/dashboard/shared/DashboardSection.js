@@ -2,10 +2,22 @@
 
 import styled from "styled-components";
 import {FlexBox} from "@/components/core";
-import {Tooltip} from "antd";
+import {Button, Drawer, Tooltip} from "antd";
 import {theme} from "@/styles/themes";
+import {ArrowLeft} from "react-feather";
 
-export const DashboardSection = ({title, subtitle, description, actions =[], children}) => {
+export const DashboardSection = ({
+                                     title,
+                                     subtitle,
+                                     description,
+                                     actions =[],
+                                    openDrawer =false,
+                                    drawerContent= null,
+                                    drawerExtra = [],
+                                    onDrawerClose = () => {},
+                                    footer=null,
+                                     children
+}) => {
     return (
         <Container>
             <FlexBox justify={'space-between'} wrap={'no-wrap'} style={{width: '100%'}}>
@@ -39,6 +51,17 @@ export const DashboardSection = ({title, subtitle, description, actions =[], chi
             <div className={'section-contents'}>
                 {children}
             </div>
+
+            <Drawer
+                open={openDrawer}
+                placement={'right'}
+                closeIcon={<ArrowLeft/>}
+                extra={drawerExtra}
+                onClose={onDrawerClose}
+                footer={footer}
+            >
+                {drawerContent}
+            </Drawer>
         </Container>
     )
 }

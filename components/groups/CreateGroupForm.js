@@ -24,9 +24,9 @@ const CreateGroupForm = () => {
         e.preventDefault();
         console.log('submit', form)
         setLoading(true)
-        return APIClient.api.post('/groups/', form).then(() => {
+        return APIClient.api.post('/groups/', form).then((data) => {
             setLoading(false)
-            router.push(`/user/${user?.id}/?tab=groups`)
+            router.push(`/group/${data?.id}`)
         })
     }
     return (

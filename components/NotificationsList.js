@@ -18,7 +18,7 @@ const NotificationsList = ({}) => {
 
     const {data: user} = useCurrentUser()
 
-    const { data: notifications,  } = useNotificationsByUser(!!user, showNotifications,  props);
+    const { data: notifications, isLoading, isFetching, refetch: refetchNotifcations  } = useNotificationsByUser(!!user, showNotifications,  props);
     const [newNotifications, setNewNotifications] = useState(false)
     const client = useQueryClient();
 
@@ -27,9 +27,13 @@ const NotificationsList = ({}) => {
     let isMobile = window?.matchMedia("(max-width: 600px)")?.matches;
 
 
+    const isLoadingNotifications = isLoading || isFetching
     useEffect(() => {
         if ( updateValue?.lastUpdated > updateValue?.lastViewed  || (!updateValue?.lastViewed && updateValue?.lastUpdated ) ) {
-            setNewNotifications(true)
+            refetchNotifcations().then(() => {
+                setNewNotifications(true)
+
+            })
 
         }
     }, [updateValue])
@@ -169,7 +173,7 @@ const NotificationsList = ({}) => {
                         </>
                     ) : (
                         <FlexBox style={{width: '100%' }} justify={'center'} className={'no-notifications'}>
-                            No New Notifications
+                            {isLoadingNotifications ? 'Loading ...' : 'No notifications'}
                         </FlexBox>
                     )
                 }

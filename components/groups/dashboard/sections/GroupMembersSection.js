@@ -8,13 +8,15 @@ import dayjs from "dayjs";
 import {Tag} from "antd";
 import {getTagColorByRole, STATUS} from "@/constants";
 import {useState} from "react";
-import InviteGroupMemberForm from "@/components/groups/dashboard/InviteGroupMemberForm";
+import InviteGroupMemberForm from "@/components/groups/dashboard/drawers/InviteGroupMemberForm";
 
+const SIZE_PER_PAGE = 10;
 const GroupMembersSection = () => {
     const {groupId} = useParams();
+    const [page, setPage] = useState(1)
     const {data: members } = useDashboardGroupMembers(groupId, {
-        page: 1,
-        size: 10
+        page,
+        size: SIZE_PER_PAGE
     })
     const [showDrawer, setShowDrawer] = useState(false)
     const actions = [
@@ -66,17 +68,29 @@ const GroupMembersSection = () => {
     ];
     return (
         <DashboardSection title={'Members'}
+                          openDrawer={showDrawer}
+                          drawerContent={<InviteGroupMemberForm open={showDrawer} onClose={() => setShowDrawer(false)} />}
+                          onDrawerClose={() => setShowDrawer(false)}
+
                           description={'View and manage group members'}
                           actions={actions}
         >
             <Container>
-                <DashboardTable data={members?.results} columns={columns} />
+                <DashboardTable data={members?.results}
+                                columns={columns}
+                                paginationOptions={{
+                                    total: members?.total,
+                                    current: page,
+                                    pageSize: SIZE_PER_PAGE,
+                                    onChange: (page) => setPage(page)
+                                }}
+                />
 
             </Container>
 
-            {showDrawer && (
-                    <InviteGroupMemberForm open={showDrawer} onClose={() => setShowDrawer(false)} />
-            )}
+            {/*{showDrawer && (*/}
+            {/*        <InviteGroupMemberForm open={showDrawer} onClose={() => setShowDrawer(false)} />*/}
+            {/*)}*/}
         </DashboardSection>
     )
 }

@@ -3,7 +3,7 @@
 import {Table} from "antd";
 import styled from "styled-components";
 
-export const DashboardTable = ({data, columns}) => {
+export const DashboardTable = ({data, columns, paginationOptions = {} }) => {
 
     if (!data || !columns) return null;
     //
@@ -70,7 +70,9 @@ export const DashboardTable = ({data, columns}) => {
     // ];
 
     return (
-        <StyledTable columns={columns} dataSource={data}/>
+        <StyledTable columns={columns}
+                     dataSource={data}
+                     pagination={paginationOptions}/>
     )
 }
 

@@ -1,30 +1,73 @@
 'use client';
 import styled from "styled-components";
-import {useParams, useRouter} from "next/navigation";
+import {useParams, useRouter, useSearchParams} from "next/navigation";
 import {useGroupById} from "@/hooks/groups.hook";
 import dayjs from "dayjs";
 import {Crown} from "lucide-react";
 import {FlexBox} from "@/components/core";
 import GroupMemberCarousel from "@/components/groups/GroupMemberCarousel";
-import {Settings} from "react-feather";
+import {Activity,List, Mail, Settings, Users} from "react-feather";
 import {useCurrentUser} from "@/hooks/user.hook";
+import {Menu} from "antd";
+import {useEffect, useState} from "react";
+import ActivityList from "@/components/feed/ActivityList";
+import GroupFeed from "@/components/groups/tabs/GroupFeed";
+import GroupGoals from "@/components/groups/tabs/GroupGoals";
+
+const MENU_ITEMS = {
+    FEED: 'feed',
+    MEMBERS: 'members',
+    GOALS: 'goals',
+}
 
 const ViewGroupPage = () => {
     const {groupId} = useParams();
     const router = useRouter()
+    const searchParams = useSearchParams()
+    const tab = searchParams.get('tab') || MENU_ITEMS.FEED
+
     const {data: user} = useCurrentUser();
+    const [openMenuKey, setOpenMenuKey] = useState([])
 
     const {data: group, isFetching, isLoading} = useGroupById(groupId);
 
+    const iconProps = {
+        width: 20
+    }
+    const menuItems = [
+        {
+            key: 'feed',
+            icon: <List {...iconProps}  />,
+            label: 'Feed'
+        },
+        {
+            key: 'members',
+            icon: <Users {...iconProps} />,
+            label: 'Members'
+        },
+        {
+            key: 'goals',
+            icon: <Activity {...iconProps}  />,
+            label: 'Goals'
+        }
+       ]
+
+    let isMobile = window?.matchMedia("(max-width: 600px)")?.matches;
+
+    useEffect(() => {
+        if (tab) {
+            setOpenMenuKey(tab)
+        }
+    }, [tab])
 
     return (
-        <Container>
+        <Container isMobile={isMobile}>
 
             <div className={'top-heading'}>
                 <FlexBox justify={'space-between'}>
-                    <div className={'name'}> {group?.name}</div>
+                    <div className={'group-name'}> {group?.name}</div>
                     {group?.creator?.id === user?.id && (
-                        <div className={'settings-icon'} onClick={() => router.push(`/group/${group?.id}/dashboard`)}>
+                        <div className={'settings-icon'} onClick={() => router.push(`/group/${group?.id}/dashboard/?tab=members`)}>
                             <Settings color={'white'}/>
                         </div>
                     )}
@@ -41,8 +84,34 @@ const ViewGroupPage = () => {
                 </FlexBox>
 
             </div>
+            <FlexBox align={'flex-start'} wrap={'no-wrap'} style={{width: '100%'}}>
+                <Menu
+                    mode={isMobile ? 'horizontal' : 'inline'}
+                    defaultSelectedKeys={[tab]}
+                    openKeys={openMenuKey}
+                    onClick={(val) => {
+                        setOpenMenuKey(val.key)
+                        router.push(`?tab=${val.key}`)
 
-            <GroupMemberCarousel />
+
+                    }}
+                    disabledOverflow={true}
+                    inlineCollapsed={isMobile}
+
+                    className={isMobile ? 'mobile-view-group-menu' :'view-group-menu'}
+                    items={menuItems}
+                />
+
+                {openMenuKey === MENU_ITEMS.FEED && (
+                    <GroupFeed />
+                )}
+                {openMenuKey === MENU_ITEMS.MEMBERS && (
+                    <GroupMemberCarousel />
+                )}
+                {openMenuKey === MENU_ITEMS.GOALS && (
+                    <GroupGoals />
+                )}
+            </FlexBox>
         </Container>
     )
 }
@@ -65,7 +134,7 @@ const Container = styled.div`
   
 
   
-  .name {
+  .group-name {
     font-size: 48px;
     font-weight: 700;
     color: white;
@@ -93,5 +162,53 @@ const Container = styled.div`
     font-weight: 400;
     color: grey;
     font-style: italic;
+  }
+  .ant-menu-title-content {
+    width: 100%;
+  }
+  .ant-menu-item {
+    border-radius: 0;
+    margin: 0px;
+    //color: white;
+    letter-spacing: 1.01px;
+    font-weight: 500;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: ${props => props?.isMobile && '120px'};
+    height: 60px;
+    //flex: 1;
+
+  }
+  
+  .mobile-view-group-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+
+    width: 100vw;
+    padding: 8px;
+    z-index: 999; /* Ensure it's above other content */
+  }
+  
+  .view-group-menu {
+    height: 100vh;
+    min-width: 200px;
+    width: 200px;
+    max-width: 200px;
+    
+  
+    
+
+
+    
+    .ant-menu-overflow-item {
+      text-align: ${props => props.isMobile ? 'center': 'left'};
+      width: 25%;
+    }
+    
   }
 `

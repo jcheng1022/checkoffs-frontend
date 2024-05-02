@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import {FlexBox} from "@/components/core";
 import dayjs from "dayjs";
-import {Dropdown, Input, notification, Spin} from "antd";
+import {Dropdown, Input, notification, Spin, Tag} from "antd";
 import {MessageCircle, MoreVertical} from "react-feather";
 import APIClient from '@/services/api'
 import {useEffect, useRef, useState} from "react";
@@ -13,6 +13,7 @@ import {useCurrentUser} from "@/hooks/user.hook";
 import {useActivityActionMutation} from "@/hooks/activity.hook";
 import Comment from "@/components/feed/Comment";
 import {theme} from "@/styles/themes";
+import {useParams, useRouter} from "next/navigation";
 
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
@@ -30,6 +31,8 @@ const ActivityItem = ({activity, type = 'image'}) => {
     const [showCommentInput, setShowCommentInput] = useState(false)
     const client = useQueryClient();
     const inputRef = useRef(null)
+    const { groupId } = useParams();
+    const router = useRouter();
 
     const {mutateAsync} = useActivityActionMutation(activity?.id)
 
@@ -165,7 +168,13 @@ const ActivityItem = ({activity, type = 'image'}) => {
                         <div> {likeCount}</div>
 
                         <MessageCircle onClick={() => setShowCommentInput(prev => !prev)}  className={'action-icon'} {...actionProps} />
+                        {activity?.goal?.id && (
+                            <FlexBox justify={'flex-end'} onClick={() => router.push(`/group/${groupId}/goal/${activity.goal.id}`)}>
+                                <Tag color={'blue'} style={{fontWeight: 500}} > {activity.goal.name}</Tag>
+                            </FlexBox>
+                        )}
                     </FlexBox>
+
 
                     <div className={'comments-container'}
                         style={{maxHeight: 150, overflowY: "auto"}}

@@ -103,7 +103,7 @@ const Header = () => {
 
                             <Dropdown
                                 trigger={['hover']}
-
+                                className={'header-user-dropdown'}
                                 menu={{
                                     items
                                 }}
@@ -197,5 +197,9 @@ const Container = styled(FlexBox)`
     color: white;
     font-weight: 600;
     height: 36px;
+  }
+  
+  .ant-dropdown-menu-item {
+    min-width: 500px;
   }
 `

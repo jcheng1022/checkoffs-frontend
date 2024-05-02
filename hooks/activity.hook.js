@@ -15,6 +15,20 @@ export const useActivitiesByUser = (isLoggedIn,  props = {})  => {
 
 
 }
+
+export const useActivitySharingOptions = (isLoggedIn,  props = {})  => {
+
+    const queryKey = ['upload-options', props];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled: !!isLoggedIn,
+        queryFn: () => APIClient.api.get(`/activity/upload-options`, { params: props})
+    })
+
+
+}
 export const useActivitiesStatsByUser = (userId,  props = {})  => {
 
     const queryKey = ['stats', userId, props];
