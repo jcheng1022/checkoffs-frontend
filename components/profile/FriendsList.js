@@ -9,7 +9,6 @@ import EmptyContent from "@/components/EmptyContent";
 
 
 const FriendsList = () => {
-    // const { data: user } = useCurrentUser();
     const isLoggedIn = useUserIsLoggedIn();
     const { user:userId } = useParams();
 
@@ -17,18 +16,10 @@ const FriendsList = () => {
         userId
     })
     const router = useRouter();
-
-    let isMobile = false;
-
-    if (window) {
-        isMobile = window.matchMedia("(max-width: 600px)").matches;
-
-    }
-
-
+    
 
     return (
-        <Container direction={'column'} align={'flex-start'} justify={'flex-start'} isMobile={isMobile} >
+        <Container direction={'column'} align={'flex-start'} justify={'flex-start'} >
             {(isFetching || isLoading) ?
                 <FlexBox style={{height: '100%'}} justify={'center'} align={'center'}>
                     <Spin tip={<div> Fetching your friends...</div>} />
@@ -48,13 +39,6 @@ const FriendsList = () => {
                 </>
             }
 
-           {/*<Spin spinning={isFetching || isLoading} tip={'Fetching your friends'}>*/}
-           {/*    {friends?.map((friend, index) => {*/}
-           {/*        return (*/}
-           {/*            <FriendItem key={index} friend={friend} />*/}
-           {/*        )*/}
-           {/*    })}*/}
-           {/*</Spin>*/}
         </Container>
     )
 }
@@ -63,12 +47,19 @@ const FriendsList = () => {
 export default FriendsList;
 
 const Container = styled(FlexBox)`
-  min-width: ${props => props.isMobile ? '100%' : '300px'};
+  min-width: 300px;
   margin: 24px 24px;
   height: 300px;
   padding: 24px;
   border-radius: 12px;
   background-color: ${theme.WHITE};
+
+  @media only screen and (max-width: 600px) {
+    min-width: 100%;
+
+  }
+
+
 
 
 

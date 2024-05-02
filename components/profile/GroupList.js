@@ -9,7 +9,6 @@ import {FlexBox} from "@/components/core";
 
 const GroupList = () => {
 
-    const isEmpty = true;
     const isLoggedIn = useUserIsLoggedIn();
     const { user:userId } = useParams();
     const router = useRouter();
@@ -27,7 +26,6 @@ const GroupList = () => {
                 )
             }) : <EmptyContent title={'No groups...yet!'} subtitle={'Create or join a group'} route={'/groups/create'} />}
 
-            {/*{ isEmpty && <EmptyContent title={'No groups...yet!'} subtitle={'Create or join a group'} route={'/groups/create'} /> }*/}
 
 
         </Container>

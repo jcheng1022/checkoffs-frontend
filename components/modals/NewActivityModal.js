@@ -27,22 +27,23 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
     const {data: user} = useCurrentUser()
     const { data: options} = useActivitySharingOptions(!!user)
 
-    // const {user } = useAuthContext();
     const pathname = usePathname();
     const params = useParams();
-    const {user: userId, groupId} = params;
+    const {user: userId, groupId, goalId} = params;
     useEffect(() => {
-        if (groupId) {
-            // If groupId exists, set the default value of the destination select to the groupId
+        if ( goalId && groupId) {
+            const defaultDestination = `group=${groupId}&goal=${goalId}`;
+            setValue('destination', defaultDestination);
+        } else if (groupId) {
             const defaultDestination = `group=${groupId}`;
-            setValue('destination', defaultDestination); // Assuming you are using react-hook-form's setValue method
+            setValue('destination', defaultDestination);
         }
+
+
     }, [groupId, setValue])
 
     const [loading, setLoading] = useState(false)
-    const router = useRouter();
 
-    console.log(pathname, 232)
     const [image, setImage] = useState(null);
 
 
@@ -64,12 +65,16 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
         }).then(() => {
             setLoading(false)
 
-            console.log(user?.id)
-            // if (pathname === '/feed') {
-            // }
 
 
-            if (user?.id === userId) {
+             if (!!goalId && !!groupId) {
+
+                client.refetchQueries({queryKey: ['group-goal', groupId, goalId]})
+            }  else if (pathname.includes('group')){
+                const {groupId} = params;
+
+                client.refetchQueries({queryKey: ['group-feed', params?.groupId]})
+            } else if (user?.id === userId) {
                 // user is viewing their own profile
                 client.refetchQueries({queryKey: ['activities', {
                     dateOnly: true,
@@ -81,27 +86,18 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
 
             } else if (pathname.includes('feed')) {
                 client.refetchQueries({queryKey: ['feed', user?.id]})
-            } else if (pathname.includes('group')){
-                const {groupId} = params;
-
-                client.refetchQueries({queryKey: ['group-feed', params?.groupId]})
             }
 
 
-            // client.refetchQueries({queryKey: ['activities', {
-            //         dateOnly: true
-            //     }]})
             onCancel();
-            // router.push(`/feed`)
         })
 
 
     };
 
-    // Callback function to update formData with the uploaded image file
     const handleFileUpload  = (file) => {
 
-        setImage(file); // Update formData with the uploaded image file
+        setImage(file);
     };
     const SHARING_OPTIONS = {
         ALL: 'ALL',
@@ -148,12 +144,11 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
     return (
         <ModalContainer width={1000} open={open} onCancel={onCancel} footer={[]}>
            <Spin spinning={loading}>
-               {/*<div> Create </div>*/}
 
                <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
 
                    <Controller
-                       defaultValue={SHARING_OPTIONS.ALL} // Provide defaultValue here
+                       defaultValue={SHARING_OPTIONS.ALL}
 
                        control={control}
                        name='destination'
@@ -170,7 +165,7 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
                    />
 
                    <Controller
-                       defaultValue={dayjs()} // Provide defaultValue here
+                       defaultValue={dayjs()}
 
                        control={control}
                        name='date'

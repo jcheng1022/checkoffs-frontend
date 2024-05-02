@@ -66,7 +66,6 @@ export default PeopleItem;
 
 const Container = styled(FlexBox)`
     width: 100%;
-    //width: 90%;
     margin: 12px 0px;
     padding: 12px;
     height: 50px;

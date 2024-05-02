@@ -111,9 +111,7 @@ const ActivityItem = ({activity, type = 'image'}) => {
         }
     ]
     const {data: user} = useCurrentUser();
-    // const {user} = useAuthContext();
     const isOwner = user?.id === activity?.userId;
-    let likedPost = activity?.likedPost
 
     const actionProps = {
         size: 18,
@@ -195,7 +193,6 @@ const ActivityItem = ({activity, type = 'image'}) => {
                         <Input allowClear
                                ref={inputRef}
                                onPressEnter={handleSubmitComment}
-                            // suffix={comment.length > 0 ? <CornerDownLeft color={'grey'} /> : null}
                                placeholder={'Press enter to send comment'}
                                value={comment}
                                onChange={handleCommentInput} />
@@ -219,8 +216,6 @@ export default ActivityItem
 const Container = styled.div`
   min-width: 400px;
   max-width: 400px;
-  // height: ${props => props.type === 'image' ? '450px' : '100px'};
-  // max-height: ${props => props.type === 'image' ? '450px' : '100px'};
   width: 400px;
   background-color: #fafafa;
   margin: 10px 0px;
@@ -231,9 +226,7 @@ const Container = styled.div`
   .activity-meta {
     padding: 12px 8px;
   }
-  //.name {
-  //  padding: 12px 8px;
-  //}
+
   .date {
     
   }
@@ -254,10 +247,15 @@ const Container = styled.div`
     height: 100%;
     object-fit:cover;
   }
+
+  @media only screen and (max-width: 600px) {
+    min-width: 350px;
+    max-width:  350px;
+    width:  350px;
+  }
 `
 
 const ItemFooterContainer = styled.div`
-  //max-height: 200px;
   padding: 12px;
   text-align: start;
   .actions {

@@ -9,7 +9,6 @@ export const useGroupById = ( groupId, props = {})  => {
     return useQuery({
         queryKey,
         ...defaultQueryProps,
-        // enabled: !!isLoggedIn,
         retry: 5,
         queryFn: () => APIClient.api.get(`/groups/${groupId}`, { params: props})
     })

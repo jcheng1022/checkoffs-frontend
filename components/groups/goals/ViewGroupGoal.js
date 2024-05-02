@@ -3,23 +3,42 @@ import React, {useMemo} from 'react';
 import styled from "styled-components";
 import {useGroupGoalById} from "@/hooks/groups.hook";
 import {useParams} from "next/navigation";
-import {Spin} from "antd";
+import {Avatar, Button, Spin} from "antd";
 import {FlexBox} from "@/components/core";
 import dayjs from "dayjs";
 import {theme} from "@/styles/themes";
 import ActivityGraph from "@/components/ActivityGraph";
 import ActivityList from "@/components/feed/ActivityList";
 
+const removeDuplicates = (array) => {
+    const uniqueIds = {};
+    return array?.filter(obj => {
+        if (!uniqueIds[obj?.user?.id]) {
+            uniqueIds[obj?.user?.id] = true;
+            return true;
+        }
+        return false;
+    });
+};
+
 function ViewGroupGoal(props) {
     const { groupId, goalId } = useParams();
-    console.log(groupId, goalId, 2444)
     const  {data: goal, isFetching, isLoading} = useGroupGoalById(groupId, goalId, {
         withFeed: true
     });
 
-    const graphData = useMemo(() => {
-        return goal?.posts?.map(o => o.date)
+    const {graphData, users} = useMemo(() => {
+
+        const posts = goal?.posts?.map(o => o.date);
+        const users = goal?.posts.map(o => o.user)
+        return {
+            graphData: posts,
+            users: removeDuplicates(users)
+        }
     }, [goal])
+
+
+
     return (
        <Spin spinning={isFetching || isLoading}>
            <Container>
@@ -35,12 +54,40 @@ function ViewGroupGoal(props) {
 
                </TopSection>
 
-               <FlexBox>
-                   <div style={{minWidth: 100, maxWidth: 800, padding: 24}}>
+                   <div style={{minWidth: 100, padding: 24}}>
                        <ActivityGraph activity={graphData} />
                    </div>
-                   <ActivityList list={goal?.posts} />
-               </FlexBox>
+
+               <BottomSection gap={10} align={'flex-start'} >
+                   <div className={'participant-container'}>
+                       <div className={'participant-count'}>
+                           <span className={'count-number'}>{users?.length}</span> {users?.length > 1 ? 'people have' : 'person has'} participated in this goal
+                       </div>
+                       {users?.map((user, index) => {
+                            return (
+                                <div key={index} className={'goal-user-participant'}>
+                                    <Avatar
+                                        className={'user-avatar'}
+                                    >
+                                        {user.username[0].toUpperCase()}
+                                    </Avatar>
+                                    <span className={'participant-username'}> {user.username} </span>
+                                </div>
+                            )
+                       })
+                       }
+
+                       <div className={'nudge-section'}>
+                           <Button className={'nudge-button'}>
+                               Nudge a Group Member
+                           </Button>
+                       </div>
+                   </div>
+                   <div className={'list-scrolling-container'}>
+                       <ActivityList maxHeight={100} list={goal?.posts} />
+                   </div>
+               </BottomSection>
+
            </Container>
        </Spin>
     );
@@ -50,12 +97,11 @@ export default ViewGroupGoal;
 
 const TopSection = styled(FlexBox)`
   background-color: #73b8ba;
-  height: 250px;
+  height: 300px;
   .goal-base-info {
     display: flex;
     flex-direction: column;
     width: 100%;
-    //width: 400px;
     height: 150px;
     padding: 24px;
     margin: 0px 24px;
@@ -69,7 +115,6 @@ const TopSection = styled(FlexBox)`
     font-size: 26px;
     font-weight: 500;
     margin-bottom: 12px;
-    // color: ${theme.SNOW};
   }
   .goal-start-date {
     font-size: 14px;
@@ -83,7 +128,7 @@ const TopSection = styled(FlexBox)`
   }
   
   .goal-description {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
     letter-spacing: 1.5px;
     width: 100%;
@@ -91,7 +136,8 @@ const TopSection = styled(FlexBox)`
     text-align: center;
   }
 
-  @media screen and (max-width: 992px) {
+
+  @media only screen and (max-width: 600px) {
     
     & {
       height: 250px;
@@ -110,7 +156,6 @@ const TopSection = styled(FlexBox)`
       font-size: 18px;
       font-weight: 500;
       margin-bottom: 12px;
-        // color: ${theme.SNOW};
     }
     .goal-start-date {
       font-size: 12px;
@@ -133,6 +178,85 @@ const TopSection = styled(FlexBox)`
 
 `
 
+const BottomSection = styled(FlexBox)`
+  width: 100%;
+  margin: 24px;
+  flex-wrap: nowrap;
+
+
+ 
+  .user-avatar {
+    width: 35px;
+    height: 35px;
+    background-color: #1677ff;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .participant-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    min-height: 300px;
+    min-width: 350px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  .participant-count {
+    padding: 12px;
+    font-size: 16px
+  }
+
+  .nudge-section {
+    margin-top: auto; /* Push this section to the bottom */
+
+  }
+  .nudge-button {
+    width: 100%;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1.1px;
+    background-color: ${theme.softBlue_2};
+  }
+  
+  .count-number {
+    font-weight: 600;
+  }
+  .participant-username {
+    margin-left: 12px;
+  }
+  
+  .list-scrolling-container {
+    width: 100%;
+    max-height: 100px;
+  }
+  
+  .goal-user-participant {
+     border-radius: 12px;
+    padding: 12px;
+  }
+  
+  .goal-user-participant:hover {
+    background-color: ${theme.softBlue_2};
+    cursor: pointer;
+  }
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+    margin: 0px;
+    
+    .list-scrolling-container {}
+
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+    }
+  }
+  
+`
 
 const Container = styled.div`
 
