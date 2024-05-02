@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {useUserFriends, useUserIsLoggedIn} from "@/hooks/user.hook";
 import FriendItem from "@/components/profile/FriendItem";
 import {theme} from "@/styles/themes";
-import {Spin} from "antd";
+import {Spin, Button} from "antd";
 import {FlexBox} from "@/components/core";
 import {useParams, useRouter} from 'next/navigation';
 import EmptyContent from "@/components/EmptyContent";
@@ -37,6 +37,9 @@ const FriendsList = () => {
                     <EmptyContent title={'No Friends...yet!'} subtitle={'Find people'} route={'/people'} />
                     :
                 <>
+                    <FlexBox justify={'flex-end'}>
+                        <Button onClick={() => router.push('/people')}  type={'primary'}> Create Group </Button>
+                    </FlexBox>
                     {friends?.map((friend, index) => {
                         return (
                             <FriendItem key={index} friend={friend} />

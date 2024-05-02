@@ -24,7 +24,7 @@ function ViewGroupGoal(props) {
        <Spin spinning={isFetching || isLoading}>
            <Container>
 
-               <TopSection gap={100}>
+               <TopSection >
                    <div className={'goal-base-info'}>
                        <div className={'goal-name'}> {goal?.name}</div>
                        <div className={'goal-start-date'}> Created {dayjs(goal?.createdAt).format('MMMM DD YYYY')}</div>
@@ -52,10 +52,13 @@ const TopSection = styled(FlexBox)`
   background-color: #73b8ba;
   height: 250px;
   .goal-base-info {
-    width: 400px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    //width: 400px;
     height: 150px;
     padding: 24px;
-    margin-left: 48px;
+    margin: 0px 24px;
     background-color:#7cbdbf;
     border: 2px solid ${theme.softBlue_2};
     border-radius: 12px;
@@ -83,6 +86,48 @@ const TopSection = styled(FlexBox)`
     font-size: 20px;
     font-weight: 400;
     letter-spacing: 1.5px;
+    width: 100%;
+    margin: 0px 24px;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 992px) {
+    
+    & {
+      height: 250px;
+    }
+
+    .goal-base-info {
+      width: 400px;
+      height: 125px;
+      text-align: center;
+      margin: 0px 12px; 
+
+
+    }
+
+    .goal-name {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 12px;
+        // color: ${theme.SNOW};
+    }
+    .goal-start-date {
+      font-size: 12px;
+      font-weight: 400;
+      color: ${theme.SNOW};
+    }
+    .goal-end-date {
+      font-size: 12px;
+      font-weight: 400;
+      color: ${theme.SNOW};
+    }
+
+    .goal-description { 
+      font-size: 12px;
+      margin: 0px 24px;
+      text-align: center;
+    }
   }
 
 

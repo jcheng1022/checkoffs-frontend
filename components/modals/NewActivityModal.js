@@ -5,7 +5,7 @@ import {Controller, useForm} from "react-hook-form";
 import ImageUploader from "@/components/ImageUploader";
 import {Gap} from "@/components/core";
 import dayjs from "dayjs";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import APIClient from '../../services/api'
 import {useParams, usePathname, useRouter} from 'next/navigation';
@@ -20,6 +20,7 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
         handleSubmit,
         watch,
         control,
+        setValue,
         formState: { errors },
     } = useForm()
     const client = useQueryClient();
@@ -29,7 +30,14 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
     // const {user } = useAuthContext();
     const pathname = usePathname();
     const params = useParams();
-    const {user: userId} = params;
+    const {user: userId, groupId} = params;
+    useEffect(() => {
+        if (groupId) {
+            // If groupId exists, set the default value of the destination select to the groupId
+            const defaultDestination = `group=${groupId}`;
+            setValue('destination', defaultDestination); // Assuming you are using react-hook-form's setValue method
+        }
+    }, [groupId, setValue])
 
     const [loading, setLoading] = useState(false)
     const router = useRouter();
@@ -145,7 +153,7 @@ const NewActivityModal = ({open = false, onCancel = () => {}}) => {
                <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
 
                    <Controller
-                       // defaultValue={} // Provide defaultValue here
+                       defaultValue={SHARING_OPTIONS.ALL} // Provide defaultValue here
 
                        control={control}
                        name='destination'

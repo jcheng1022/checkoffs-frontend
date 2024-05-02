@@ -130,6 +130,7 @@ const UserActivity = () => {
                     items={tabOptions}
                 />
 
+
                 <UserActivityGraph />
 
                 <Gap gap={24}/>
