@@ -96,7 +96,7 @@ const Header = () => {
                     { !!user && !isMobile && <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>}
 
 
-                     <NotificationsList  />
+                    { !!user && <NotificationsList  />}
 
                     {   fetchingUser ?
                         <div>Loading...</div> :
