@@ -8,16 +8,19 @@ import {useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import NewActivityModal from "@/components/modals/NewActivityModal";
 import styled from 'styled-components'
-import {useCurrentUser} from "@/hooks/user.hook";
+import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
 import {Menu, X} from "react-feather";
 import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
 import MobileMenu from "@/components/navigation/MobileMenu";
 import NotificationsList from "@/components/NotificationsList";
+import {auth} from "@/lib/firebase/firebase";
 
 const Header = () => {
-    const { data: user, isFetching, isLoading } = useCurrentUser();
+    const { data: user, isFetching, isLoading,  } = useCurrentUser();
     const fetchingUser = isFetching || isLoading;
+    const userUid = useUserIsLoggedIn()
+
     const { mobileMenuIsOpen, setMobileMenuIsOpen, setOpenUserSettings } = useAppContext();
     const {logOut, handleSignIn } = useAuthContext()
     const router = useRouter();
@@ -70,6 +73,28 @@ const Header = () => {
         onClick: () => setMobileMenuIsOpen(prev => !prev)
     }
 
+    const endSection = () => {
+        console.log(userUid, user, fetchingUser, 'checking')
+        if (userUid && !user && fetchingUser) {
+            return <div>Loading...</div>
+        }
+        if (!userUid && !user) {
+            return <Button className={'sign-in-btn'} onClick={() => handleSignIn()}>
+                Sign in
+            </Button>
+        }
+        if (userUid && user && !fetchingUser) {
+            return <Dropdown
+                trigger={['hover']}
+                className={'header-user-dropdown'}
+                menu={{
+                    items
+                }}
+            >
+                <div className={'username'}  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>
+            </Dropdown>
+        }
+    }
     return (
         <>
             <Container justify={'space-between'}>
@@ -97,34 +122,37 @@ const Header = () => {
 
 
                     { !!user && <NotificationsList  />}
-
-                    {   fetchingUser ?
-                        <div>Loading...</div> :
-                        (!isMobile && user) ?
-
-                            <Dropdown
-                                trigger={['hover']}
-                                className={'header-user-dropdown'}
-                                menu={{
-                                    items
-                                }}
-                            >
-                                <div className={'username'}  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>
-                            </Dropdown>
+                    {endSection()}
 
 
+                    {/*{*/}
+                    {/*    (!!userSignedIn && (fetchingUser && !user)) ?*/}
+                    {/*    <div>Loading...</div> :*/}
+                    {/*    (!!user) ?*/}
 
-                            : ( !!user) ?
-                                <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>
-                                :
+                    {/*        <Dropdown*/}
+                    {/*            trigger={['hover']}*/}
+                    {/*            className={'header-user-dropdown'}*/}
+                    {/*            menu={{*/}
+                    {/*                items*/}
+                    {/*            }}*/}
+                    {/*        >*/}
+                    {/*            <div className={'username'}  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>*/}
+                    {/*        </Dropdown>*/}
 
-                                (
-                                    <Button className={'sign-in-btn'} onClick={() => handleSignIn()}>
-                                        Sign in
-                                    </Button>
 
-                            )
-                    }
+
+                    {/*        : ( !!user) ?*/}
+                    {/*            <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>*/}
+                    {/*            :*/}
+
+                    {/*            (*/}
+                    {/*                <Button className={'sign-in-btn'} onClick={() => handleSignIn()}>*/}
+                    {/*                    Sign in*/}
+                    {/*                </Button>*/}
+
+                    {/*        )*/}
+                    {/*}*/}
                 </FlexBox>
 
                 {!!creatingNewActivity && <NewActivityModal open={creatingNewActivity} onCancel={() => setCreatingNewActivity(false)}/> }
