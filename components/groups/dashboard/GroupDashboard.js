@@ -10,8 +10,7 @@ import GroupMembersSection from "@/components/groups/dashboard/sections/GroupMem
 import GroupGoalsSection from "@/components/groups/dashboard/sections/GroupGoalsSection";
 import GroupNotificationsSection from "@/components/groups/dashboard/sections/GroupNotificationsSection";
 import GroupSettingsSection from "@/components/groups/dashboard/sections/GroupSettingsSection";
-import {useSearchParams} from "next/navigation";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 
 function getItem(label, key, icon, children, type) {
     return {

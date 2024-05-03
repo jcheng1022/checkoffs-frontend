@@ -6,7 +6,7 @@ import {FlexBox} from "@/components/core";
 import {useAuthContext} from "@/context/AuthContext";
 import {useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
-import NewActivityModal from "@/components/modals/NewActivityModal";
+import InitialCreateActivityModal from "@/components/modals/creatingActivity/InitialCreateActivityModal";
 import styled from 'styled-components'
 import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
 import {Menu, X} from "react-feather";
@@ -14,7 +14,6 @@ import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
 import MobileMenu from "@/components/navigation/MobileMenu";
 import NotificationsList from "@/components/NotificationsList";
-import {auth} from "@/lib/firebase/firebase";
 
 const Header = () => {
     const { data: user, isFetching, isLoading,  } = useCurrentUser();
@@ -155,7 +154,7 @@ const Header = () => {
                     {/*}*/}
                 </FlexBox>
 
-                {!!creatingNewActivity && <NewActivityModal open={creatingNewActivity} onCancel={() => setCreatingNewActivity(false)}/> }
+                {!!creatingNewActivity && <InitialCreateActivityModal open={creatingNewActivity} onCancel={() => setCreatingNewActivity(false)}/> }
             </Container>
             <MobileMenu />
         </>

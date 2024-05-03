@@ -3,10 +3,11 @@ import {Gap} from "@/components/core";
 import styled from "styled-components";
 import {useState} from "react";
 import dayjs from "dayjs";
-const {TextArea} = Input;
 import APIClient from '@/services/api'
 import {useParams} from "next/navigation";
 import {useQueryClient} from "@tanstack/react-query";
+
+const {TextArea} = Input;
 const CreateGroupGoal = ({onClose}) => {
     const {groupId} = useParams();
     const [form, setForm] = useState({

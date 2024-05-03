@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled from "styled-components";
-import { useGroupGoals} from "@/hooks/groups.hook";
+import {useGroupGoals} from "@/hooks/groups.hook";
 import {useParams} from "next/navigation";
 import GroupGoalsList from "@/components/groups/tabs/GroupGoalsList";
 

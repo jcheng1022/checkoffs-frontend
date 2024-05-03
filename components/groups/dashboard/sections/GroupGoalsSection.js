@@ -3,13 +3,9 @@ import {DashboardSection} from "@/components/groups/dashboard/shared/DashboardSe
 import {useDashboardGroupGoals} from "@/hooks/dashboard";
 import {useState} from "react";
 import {useParams, useRouter} from "next/navigation";
-import {UserPlusIcon} from "lucide-react";
 import {Plus} from "react-feather";
-import InviteGroupMemberForm from "@/components/groups/dashboard/drawers/InviteGroupMemberForm";
 import CreateGroupGoal from "@/components/groups/dashboard/drawers/CreateGroupGoal";
 import {DashboardTable} from "@/components/groups/dashboard/shared/DashboardTable";
-import {getTagColorByRole, STATUS} from "@/constants";
-import {Tag} from "antd";
 import dayjs from "dayjs";
 
 const SIZE_PER_PAGE = 10;

@@ -6,11 +6,10 @@ import dayjs from "dayjs";
 import {Crown} from "lucide-react";
 import {FlexBox} from "@/components/core";
 import GroupMemberCarousel from "@/components/groups/GroupMemberCarousel";
-import {Activity,List, Mail, Settings, Users} from "react-feather";
+import {Activity, List, Settings, Users} from "react-feather";
 import {useCurrentUser} from "@/hooks/user.hook";
 import {Menu} from "antd";
 import {useEffect, useState} from "react";
-import ActivityList from "@/components/feed/ActivityList";
 import GroupFeed from "@/components/groups/tabs/GroupFeed";
 import GroupGoals from "@/components/groups/tabs/GroupGoals";
 

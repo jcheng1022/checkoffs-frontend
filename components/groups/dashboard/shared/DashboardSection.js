@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 import {FlexBox} from "@/components/core";
-import {Button, Drawer, Tooltip} from "antd";
+import {Drawer, Tooltip} from "antd";
 import {theme} from "@/styles/themes";
 import {ArrowLeft} from "react-feather";
 

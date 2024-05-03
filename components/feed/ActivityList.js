@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import {FlexBox} from "@/components/core";
 import ActivityItem from "@/components/feed/ActivityItem";
-import {DEFAULT_FEED_INCREMENTS} from "@/constants";
 
 const ActivityList = ({ maxHeight = null, list = [], amount = 3, setAmount}) => {
 

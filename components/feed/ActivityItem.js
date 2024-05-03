@@ -20,7 +20,7 @@ const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
 
 
-const ActivityItem = ({activity, type = 'image'}) => {
+const ActivityItem = ({activity, type = 'image', isPreview =false}) => {
 
     const [isLoading, setIsLoading] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
@@ -120,7 +120,17 @@ const ActivityItem = ({activity, type = 'image'}) => {
     const convertToNumber = (val) => {
         return typeof val === 'string' ? parseInt(val) : val
     }
+    const toggleComments = () => {
+        if (isPreview) return;
+
+        setShowCommentInput(prev => !prev)
+    }
     const toggleLiked = async () => {
+        if (isPreview) {
+            // simulate the like action but dont do anything
+            setIsLiked(prev => !prev)
+            return;
+        }
         if (isLiked) {
             setLikeCount(prev => convertToNumber(prev) -1)
         } else {
@@ -136,7 +146,7 @@ const ActivityItem = ({activity, type = 'image'}) => {
             <Spin spinning={isLoading}>
 
                 <FlexBox justify={'space-between'} className={'activity-meta'}>
-                    <div className={'name'}> {activity?.user?.username ? activity.user.username : user?.name}</div>
+                    <div className={'name'}> {(isPreview) ? user?.username :(activity?.user?.username) ? activity.user.username : user?.name}</div>
 
                     <FlexBox justify={'flex-end'} gap={8}>
                         <div className={'date'}> {dayjs(activity?.date).format('MMM Do YYYY')}</div>
@@ -163,9 +173,9 @@ const ActivityItem = ({activity, type = 'image'}) => {
                 <ItemFooterContainer>
                     <FlexBox gap={12} className={'actions'}>
                             <img  className={'action-icon'} width={18} onClick={toggleLiked}  src={`/icons/${isLiked? 'like' : 'empty-heart'}.png`}/>
-                        <div> {likeCount}</div>
+                        <div> {likeCount || 1}</div>
 
-                        <MessageCircle onClick={() => setShowCommentInput(prev => !prev)}  className={'action-icon'} {...actionProps} />
+                        <MessageCircle onClick={toggleComments}  className={'action-icon'} {...actionProps} />
                         {activity?.goal?.id && (
                             <FlexBox justify={'flex-end'} onClick={() => router.push(`/group/${groupId}/goal/${activity.goal.id}`)}>
                                 <Tag color={'blue'} style={{fontWeight: 500}} > {activity.goal.name}</Tag>
@@ -177,7 +187,7 @@ const ActivityItem = ({activity, type = 'image'}) => {
                     <div className={'comments-container'}
                         style={{maxHeight: 150, overflowY: "auto"}}
                     >
-                        {userComments.map((comment, index) => {
+                        {userComments?.map((comment, index) => {
                             return (
                                 <Comment key={`activity-${activity.id}-comment-${index}`} comment={comment}/>
                             )

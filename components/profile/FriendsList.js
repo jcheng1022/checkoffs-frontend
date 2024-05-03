@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {useUserFriends, useUserIsLoggedIn} from "@/hooks/user.hook";
 import FriendItem from "@/components/profile/FriendItem";
 import {theme} from "@/styles/themes";
-import {Spin, Button} from "antd";
+import {Spin} from "antd";
 import {FlexBox} from "@/components/core";
 import {useParams, useRouter} from 'next/navigation';
 import EmptyContent from "@/components/EmptyContent";

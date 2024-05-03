@@ -16,5 +16,13 @@ export const theme = {
     steel20: '#BEC2D9',
     steel40: '#999EBA',
     steel60: '#7c81a2',
+    primary: '#213ED3',
+
+    secondary: '#52e8a4',
+
+    darkOcean: '#172B92',
+
+    darkBlue: '#060F40',
+
 
 }

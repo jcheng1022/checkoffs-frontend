@@ -5,26 +5,53 @@ import {Button} from "antd";
 import {useRef, useState} from "react";
 import {EmptyImage} from "@/components/EmptyImage";
 import {Gap} from "@/components/core";
+import {getOrientation} from 'get-orientation/browser'
+import {getRotatedImage} from "@/utils/canvasUtils";
 
-const ImageUploader = ({ register, onFileUpload }) => {
+
+function readFile(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader()
+        reader.addEventListener('load', () => resolve(reader.result), false)
+        reader.readAsDataURL(file)
+    })
+}
+
+const ORIENTATION_TO_ANGLE = {
+    '3': 180,
+    '6': 90,
+    '8': -90,
+}
+
+
+const ImageUploader = ({ image, setImage,  register, onFileUpload }) => {
     const hiddenInputRef = useRef();
 
 
     const [preview, setPreview] = useState();
-    const [uploadedFile, setUploadedFile] = useState(null);
+    // const [imageSrc, setImageSrc] = useState(null);
+    // const [uploadedFile, setUploadedFile] = useState(null);
 
 
-    const handleUploadedFile = (event) => {
-        const file = event.target.files[0];
+    const handleUploadedFile = async (e) => {
 
-        const urlImage = URL.createObjectURL(file);
+        if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0]
+            let imageDataUrl = await readFile(file)
 
-        console.log(urlImage, 'urlImage')
-        setPreview(urlImage);
+            try {
+                // apply rotation if needed
+                const orientation = await getOrientation(file)
+                const rotation = ORIENTATION_TO_ANGLE[orientation]
+                if (rotation) {
+                    imageDataUrl = await getRotatedImage(imageDataUrl, rotation)
+                }
+            } catch (e) {
+                console.warn('failed to detect the orientation')
+            }
 
-        setUploadedFile(file)
-        onFileUpload(file)
-
+            setImage(imageDataUrl)
+        }
 
     };
 
@@ -45,6 +72,9 @@ const ImageUploader = ({ register, onFileUpload }) => {
         preview ? "Change image" : "Upload image";
 
     const {ref : registerRef, ...rest} = inputReg;
+
+
+
 
     return (
         <Container>
@@ -71,16 +101,18 @@ const ImageUploader = ({ register, onFileUpload }) => {
                 />
 
 
-            { preview ?
+            { image ?
                 <div className={'image-container'}>
-                    <img src={preview}  className={'image'} />
+                    <img src={image}  className={'image'} />
                 </div>
                 : <EmptyImage upload={onUpload}/>}
 
             <Gap gap={12}/>
-            <Button variant="text" onClick={onUpload}>
-                {uploadButtonLabel}
-            </Button>
+            { preview && (
+                <Button variant="text" onClick={onUpload}>
+                    {uploadButtonLabel}
+                </Button>
+            )}
 
         </Container>
     );
