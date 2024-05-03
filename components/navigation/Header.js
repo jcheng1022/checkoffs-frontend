@@ -16,8 +16,8 @@ import MobileMenu from "@/components/navigation/MobileMenu";
 import NotificationsList from "@/components/NotificationsList";
 
 const Header = () => {
-    const { data: user } = useCurrentUser();
-
+    const { data: user, isFetching, isLoading } = useCurrentUser();
+    const fetchingUser = isFetching || isLoading;
     const { mobileMenuIsOpen, setMobileMenuIsOpen, setOpenUserSettings } = useAppContext();
     const {logOut, handleSignIn } = useAuthContext()
     const router = useRouter();
@@ -98,7 +98,8 @@ const Header = () => {
 
                      <NotificationsList  />
 
-                    {
+                    {   fetchingUser ?
+                        <div>Loading...</div> :
                         (!isMobile && user) ?
 
                             <Dropdown

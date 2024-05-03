@@ -21,24 +21,13 @@ export const useUserIsLoggedIn = () => {
 export const useCurrentUser = ( props = {})  => {
 
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-
 
 
     const queryKey = ['currentUser', props];
-    // console.log(auth.currentUser, 'user')
-    // const uid = auth.currentUser?.uid
-    // console.log(uid, 'uid')
+
     const uid = auth.currentUser?.uid
 
 
-    // // let isLoggedIn;
-    // onAuthStateChanged(auth,  (user) => {
-    //     if (user) {
-    //         setIsLoggedIn(true)
-    //     } else {
-    //         return;
-    //     }})
     return useQuery({
         queryKey,
         ...defaultQueryProps,
