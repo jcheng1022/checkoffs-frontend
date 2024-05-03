@@ -9,6 +9,12 @@ export const theme = {
     darkBlue_1:"#7392b7",
     softBlue_1:"#b3c5d7",
     softBlue_2:"#d8e1e9",
-    skeleton: 'rgba(0, 0, 0, 0.06)'
+    skeleton: 'rgba(0, 0, 0, 0.06)',
+    steel10: '#ECEFFF',
+    steel10_20: 'rgba(236, 239, 255, 0.2)',
+    steel10_20a: 'rgb(252 251 255)',
+    steel20: '#BEC2D9',
+    steel40: '#999EBA',
+    steel60: '#7c81a2',
 
 }

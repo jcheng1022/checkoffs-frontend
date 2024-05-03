@@ -16,7 +16,8 @@ const FriendsList = () => {
         userId
     })
     const router = useRouter();
-    
+
+    console.log(friends?.length, 'length')
 
     return (
         <Container direction={'column'} align={'flex-start'} justify={'flex-start'} >
@@ -24,13 +25,13 @@ const FriendsList = () => {
                 <FlexBox style={{height: '100%'}} justify={'center'} align={'center'}>
                     <Spin tip={<div> Fetching your friends...</div>} />
             </FlexBox> :
-                friends?.length > 0 ?
+                friends?.length === 0 ?
                     <EmptyContent title={'No Friends...yet!'} subtitle={'Find people'} route={'/people'} />
                     :
                 <>
-                    <FlexBox justify={'flex-end'}>
-                        <Button onClick={() => router.push('/people')}  type={'primary'}> Create Group </Button>
-                    </FlexBox>
+                    {/*<FlexBox justify={'flex-end'}>*/}
+                    {/*    <Button onClick={() => router.push('/people')}  type={'primary'}> Create Group </Button>*/}
+                    {/*</FlexBox>*/}
                     {friends?.map((friend, index) => {
                         return (
                             <FriendItem key={index} friend={friend} />

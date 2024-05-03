@@ -47,7 +47,7 @@ const CreateGroupForm = () => {
             {/*<div className={'section-title'}> Members </div>*/}
             {/*<div className={'section-subtitle'}> Add members to the group.</div>*/}
 
-            <Button onClick={handleSubmit}>
+            <Button onClick={handleSubmit} loading={loading} disabled={loading}>
                 Create Group
             </Button>
 

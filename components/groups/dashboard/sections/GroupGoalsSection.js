@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {DashboardSection} from "@/components/groups/dashboard/shared/DashboardSection";
 import {useDashboardGroupGoals} from "@/hooks/dashboard";
 import {useState} from "react";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {UserPlusIcon} from "lucide-react";
 import {Plus} from "react-feather";
 import InviteGroupMemberForm from "@/components/groups/dashboard/drawers/InviteGroupMemberForm";
@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 const SIZE_PER_PAGE = 10;
 const GroupGoalsSection = () => {
     const {groupId} = useParams();
+    const router = useRouter();
     const [page, setPage] = useState(1)
     const {data: goals} = useDashboardGroupGoals(groupId, {
         page,
@@ -66,8 +67,8 @@ const GroupGoalsSection = () => {
     return (
         <DashboardSection
             title={'Goals'}
-            subtitle={'Group Members'}
-            description={'View and manage group members'}
+            // subtitle={'Group Members'}
+            description={'Manage goals for your group members to participate in'}
             openDrawer={showDrawer}
             drawerContent={ <CreateGroupGoal onClose={handleCloseDrawer}/>}
             onDrawerClose={handleCloseDrawer}
@@ -75,6 +76,12 @@ const GroupGoalsSection = () => {
         >
             <Container>
                 <DashboardTable data={goals?.results}
+                                onRow={(entry, index) => ({
+                                    onClick: () => {
+                                        console.log(`hit`)
+                                        router.push(`/group/${groupId}/goal/${entry.id}`)
+                                    },
+                                })}
                                 columns={columns}
                                 paginationOptions={{
                                     total: goals?.total,

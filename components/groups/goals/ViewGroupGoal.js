@@ -13,8 +13,8 @@ import ActivityList from "@/components/feed/ActivityList";
 const removeDuplicates = (array) => {
     const uniqueIds = {};
     return array?.filter(obj => {
-        if (!uniqueIds[obj?.user?.id]) {
-            uniqueIds[obj?.user?.id] = true;
+        if (!uniqueIds[obj?.id]) {
+            uniqueIds[obj?.id] = true;
             return true;
         }
         return false;
@@ -27,11 +27,14 @@ function ViewGroupGoal(props) {
         withFeed: true
     });
 
-    const {graphData, users} = useMemo(() => {
+    const {graphData, users, duration} = useMemo(() => {
 
         const posts = goal?.posts?.map(o => o.date);
         const users = goal?.posts.map(o => o.user)
+
+        const duration = dayjs(goal?.endDate).diff(dayjs(goal?.createdAt), 'days');
         return {
+            duration,
             graphData: posts,
             users: removeDuplicates(users)
         }
@@ -55,7 +58,7 @@ function ViewGroupGoal(props) {
                </TopSection>
 
                    <div style={{minWidth: 100, padding: 24}}>
-                       <ActivityGraph activity={graphData} />
+                       <ActivityGraph type={'group'} activity={graphData} duration={duration} />
                    </div>
 
                <BottomSection gap={10} align={'flex-start'} >
