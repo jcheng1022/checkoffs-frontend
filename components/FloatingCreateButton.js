@@ -14,10 +14,11 @@ const FloatingCreateButton = ({ onClick }) => {
             icon={<PlusIcon/>}
             type="primary"
             style={{
-                width: 75,
-                height: 75,
+                width: 50,
+                height: 50,
                 display:'flex',
                 justifyContent:'center',
+                zIndex: 99999
                 // right: 24,
             }}
         />
