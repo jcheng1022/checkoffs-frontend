@@ -7,6 +7,7 @@ import {CookiesProvider} from 'next-client-cookies/server';
 import {AppContextProvider} from "@/context/AppContext";
 import {theme} from "@/styles/themes";
 import './globals.css'
+import FloatingCreateButton from "@/components/FloatingCreateButton";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
@@ -34,6 +35,7 @@ export default function AuthedLayout({ children }) {
                            {/*<NavigationProgressBar />*/}
                            <Header />
                            {children}
+                           <FloatingCreateButton/>
                        </AppContextProvider>
 
                     </AuthContextProvider>

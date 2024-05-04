@@ -24,7 +24,7 @@ const Header = () => {
     const {logOut, handleSignIn } = useAuthContext()
     const router = useRouter();
     const pathname = usePathname()
-    const [creatingNewActivity, setCreatingNewActivity] = useState(false)
+    const {creatingNewActivity, setCreatingNewActivity} = useAppContext();
 
     let isMobile = window?.matchMedia("(max-width: 600px)")?.matches;
 
@@ -154,7 +154,6 @@ const Header = () => {
                     {/*}*/}
                 </FlexBox>
 
-                {!!creatingNewActivity && <InitialCreateActivityModal open={creatingNewActivity} onCancel={() => setCreatingNewActivity(false)}/> }
             </Container>
             <MobileMenu />
         </>

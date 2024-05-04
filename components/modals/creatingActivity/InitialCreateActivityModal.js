@@ -437,7 +437,16 @@ const ModalContainer = styled(Modal)`
     height: 50px;
     font-weight: 600;
   }
-  
+  .create-activity-btn{
+    background-color: ${theme.steel10};
+    color: black;
+    border-radius: 12px;
+
+    height: 50px;
+    width: 150px;
+    font-weight: 600;
+    font-size: 16px;
+  }
 
   .action-container-create-activity {
     margin: 48px 0px;
@@ -486,16 +495,7 @@ const FinalizeContainer = styled(FlexBox)`
     height: 500px;
   }
 
-  .create-activity-btn{
-    background-color: ${theme.steel10};
-    color: black;
-    border-radius: 12px;
 
-    height: 50px;
-    width: 150px;
-    font-weight: 600;
-    font-size: 16px;
-  }
   
   .go-back-btn {
     
