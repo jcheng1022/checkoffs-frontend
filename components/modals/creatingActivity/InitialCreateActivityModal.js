@@ -79,10 +79,10 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
         // const {date, description} = data;
         const { date, description, destination } = getValues()
 
-        if (!date || !description ) {
+        if (!description ) {
             notification.error({
                 message: 'Please fill in the required fields',
-                description: 'Date and description are required',
+                description: 'Description are required',
                 duration: 5
             })
             return;
@@ -94,7 +94,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
         formData.append("image", croppedImage)
         formData.set("image", croppedImage)
         formData.set('data', JSON.stringify({
-            date,
+            date : date ?? dayjs().format('YYYY-MM-DD'),
             description,
             destination,
             mediaUrl: croppedImage
@@ -208,14 +208,14 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
                 <div className={'input-label'}> Activity date</div>
 
                 <Controller
-                    defaultValue={dayjs()}
+                    // defaultValue={dayjs().format('YYYY-MM-DD')} // Set defaultValue to today's date
 
                     control={control}
                     name='date'
                     render={({ field }) => (
                         <DatePicker
                             placeholderText='Select date'
-
+                            defaultValue={dayjs()}
                             onChange={(date) => field.onChange(date)}
                             selected={field.value}
                             {...field}
@@ -242,10 +242,18 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
 
 
                <FlexBox justify={'flex-start'} className={'action-container-create-activity'}>
-                   <Button className={'next-step-btn'}
-                           onClick={() => setUploadStep(prev => prev + 1)}
-                       // onClick={handleSubmit(onSubmit)}
-                   > Next</Button>
+                   { (!image) ? (
+                       <Button className={'create-activity-btn'} onClick={handleSubmit(onSubmit)}>
+                           Create
+                       </Button>
+                   ) :
+                       (
+                           <Button className={'next-step-btn'}
+                                   onClick={() => setUploadStep(prev => prev + 1)}
+                               // onClick={handleSubmit(onSubmit)}
+                           > Next</Button>
+                       )}
+
                </FlexBox>
                 </form>
             </>
@@ -372,11 +380,12 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
                 <Gap gap={24}/>
 
                 <FlexBox justify={'center'} gap={12} className={'action-container-create-activity'}>
-                    <Button className={'create-activity-btn'} onClick={handleSubmit(onSubmit)}>
-                        Create
-                    </Button>
+
                     <Button className={'go-back-btn'} onClick={() => setUploadStep(prev => prev - 1)}>
                         Back
+                    </Button>
+                    <Button className={'create-activity-btn'} onClick={handleSubmit(onSubmit)}>
+                        Create
                     </Button>
                 </FlexBox>
             </FinalizeContainer>

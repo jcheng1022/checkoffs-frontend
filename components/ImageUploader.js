@@ -108,9 +108,9 @@ const ImageUploader = ({ image, setImage,  register, onFileUpload }) => {
                 : <EmptyImage upload={onUpload}/>}
 
             <Gap gap={12}/>
-            { preview && (
-                <Button variant="text" onClick={onUpload}>
-                    {uploadButtonLabel}
+            { image && (
+                <Button className={'change-image-btn'} onClick={onUpload}>
+                    Change Image
                 </Button>
             )}
 
@@ -124,6 +124,14 @@ const Container = styled.div`
   
   .hidden-input {
     display: none;
+  }
+  .change-image-btn {
+    width: 200px;
+    height: 50px;
+    border-radius: 12px;
+    background-color: #1890ff;
+    color: white;
+    font-weight: 600;
   }
 
   .image-container {
