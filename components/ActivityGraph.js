@@ -25,6 +25,7 @@ const ActivityGraph = ({ type = 'user', activity = [], duration = BASE_DURATION}
     //     }
     //     return monthHeaders;
     // };
+
     for (let i = 0; i < duration; i++) {
         let dayGridDate = dayjs()
             .subtract(i, "days").format()
@@ -73,7 +74,7 @@ const ActivityGraph = ({ type = 'user', activity = [], duration = BASE_DURATION}
             return 'large'
         }
     }
-    console.log(getSize(), 'size')
+    console.log(getSize(), 'size', dayGrids)
     return (
         <Container size={getSize()}  ref={containerRef}>
 

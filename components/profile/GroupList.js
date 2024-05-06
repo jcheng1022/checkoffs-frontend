@@ -38,6 +38,8 @@ export default GroupList;
 const Container = styled.div`
   margin: 24px 24px;
   height: 300px;
+  max-height: 300px;
+  overflow-y: auto;
   padding: 24px;
   border-radius: 12px;
   background-color: ${theme.WHITE};

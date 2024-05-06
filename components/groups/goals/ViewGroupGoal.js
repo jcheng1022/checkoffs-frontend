@@ -32,13 +32,17 @@ function ViewGroupGoal(props) {
         const posts = goal?.posts?.map(o => o.date);
         const users = goal?.posts.map(o => o.user)
 
-        const duration = dayjs(goal?.endDate).diff(dayjs(goal?.createdAt), 'days');
+
+        const duration = goal?.endDate ? dayjs(goal?.endDate).diff(dayjs(goal?.createdAt), 'days') : 364
+
         return {
             duration,
             graphData: posts,
             users: removeDuplicates(users)
         }
     }, [goal])
+
+    console.log(duration, 'duration')
 
 
 

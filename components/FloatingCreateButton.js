@@ -11,14 +11,14 @@ const FloatingCreateButton = ({ onClick }) => {
      return (
         <StyledFloatButton
             onClick={() => setCreatingNewActivity(true)}
-            icon={<PlusIcon/>}
+            icon={<span className={'add-icon'}>+</span>}
             type="primary"
             style={{
                 width: 50,
                 height: 50,
                 display:'flex',
                 justifyContent:'center',
-                zIndex: 99999
+                zIndex: 2
                 // right: 24,
             }}
         />
@@ -30,8 +30,11 @@ export default FloatingCreateButton;
 const StyledFloatButton = styled(FloatButton)`
 
 
-  @media only screen and (max-width: 600px) {
-    //display: none;
-
+  .add-icon {
+    font-size: 30px;
+    margin-bottom: 5px;
+  }
+  @media only screen and (max-width: 650px) {
+    display: none;
   }
 `
