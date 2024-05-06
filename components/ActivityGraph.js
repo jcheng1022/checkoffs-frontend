@@ -39,7 +39,7 @@ const ActivityGraph = ({ type = 'user', activity = [], duration = BASE_DURATION}
                         <div>
                             {dayjs(dayGridDate).format('MMMM Do YYYY')}
                         </div>
-                        <div>{participants} {participants === 1 ? 'member has' : 'members have'} participated</div>
+                        <div>{participants} entries</div>
                     </>
                 );
             }else {

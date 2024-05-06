@@ -56,3 +56,4 @@ export const RESOURCE_TYPES = {
     GROUP_GOAL: 'GROUP_GOAL',
     ALL: 'ALL'
 }
+

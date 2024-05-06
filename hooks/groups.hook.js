@@ -69,4 +69,21 @@ export const useGroupGoalById = (  groupId, goalId,  props = {})  => {
 
 };
 
+export const useViewGroupPermission = (isLoggedIn,  groupId, type = 'VIEW_PAGE', props = {})  => {
+
+    const queryKey = ['group', 'permission', groupId, type];
+
+    return useQuery({
+        queryKey,
+        ...defaultQueryProps,
+        enabled:  !!isLoggedIn ,
+        retry: 5,
+        queryFn: () => APIClient.api.get(`/collections/${groupId}/permissions`, { params: {
+            ...props,
+                type
+            }})
+    })
+
+};
+
 

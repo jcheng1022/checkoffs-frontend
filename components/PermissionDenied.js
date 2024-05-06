@@ -9,7 +9,7 @@ const PermissionDenied = () => {
     return (
         <Container justify={'center'} align={'center'} direction={'column'}>
             <div >
-                {`Sorry, this user's profile is private`}
+                {`Sorry, you do not have access to view this resource`}
             </div>
 
             <Gap gap={24}/>

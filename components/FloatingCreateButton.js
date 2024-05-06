@@ -1,9 +1,7 @@
 'use client';
 
 import {FloatButton} from "antd";
-import {Plus} from "react-feather";
 import styled from "styled-components";
-import {PlusIcon} from "lucide-react";
 import {useAppContext} from "@/context/AppContext";
 
 const FloatingCreateButton = ({ onClick }) => {

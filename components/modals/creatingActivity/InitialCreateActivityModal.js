@@ -50,6 +50,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
     const client = useQueryClient();
     const {data: user} = useCurrentUser()
     const { data: options} = useActivitySharingOptions(!!user)
+    console.log(options, 'options2')
     const [uploadStep, setUploadStep] = useState(MODAL_STEPS.INITIAL)
     const router = useRouter();
 
@@ -494,7 +495,7 @@ const ModalContainer = styled(Modal)`
     //height: calc(100vh - 110px);
     
   width: 100%;
-    height: 600px;
+    //height: 600px;
   }
   
   .ant-modal-content {

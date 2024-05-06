@@ -1,8 +1,11 @@
 import GroupDashboard from "@/components/groups/dashboard/GroupDashboard";
+import GroupPagePermissionWrapper from "@/components/permissionWrappers/GroupPagePermissionWrapper";
 
 const GroupDashboardPage = () => {
     return (
-        <GroupDashboard/>
+        <GroupPagePermissionWrapper type={'DASHBOARD'}>
+            <GroupDashboard/>
+        </GroupPagePermissionWrapper>
     )
 }
 

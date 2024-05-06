@@ -6,15 +6,13 @@ import {FlexBox} from "@/components/core";
 import {useAuthContext} from "@/context/AuthContext";
 import {useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
-import InitialCreateActivityModal from "@/components/modals/creatingActivity/InitialCreateActivityModal";
 import styled from 'styled-components'
 import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
 import {Menu, X} from "react-feather";
 import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
-import MobileMenu from "@/components/navigation/MobileMenu";
-import NotificationsList from "@/components/NotificationsList";
 import HamburgerMenu from "@/components/navigation/MobileMenu";
+import NotificationsList from "@/components/NotificationsList";
 
 const Header = () => {
     const { data: user, isFetching, isLoading,  } = useCurrentUser();
