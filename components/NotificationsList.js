@@ -77,7 +77,7 @@ const NotificationsList = ({}) => {
                 })
 
         } else if ( type === NOTIFICATION_TYPES.GROUP_INVITE ) {
-            return APIClient.api.patch(`/groups/${item?.body?.group?.id}/invite`, {
+            return APIClient.api.patch(`/collections/${item?.body?.group?.id}/invite`, {
                 notificationId: item?.id,
                 userId: user?.id,
                 status: response,

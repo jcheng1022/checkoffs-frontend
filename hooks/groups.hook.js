@@ -10,7 +10,7 @@ export const useGroupById = ( groupId, props = {})  => {
         queryKey,
         ...defaultQueryProps,
         retry: 5,
-        queryFn: () => APIClient.api.get(`/groups/${groupId}`, { params: props})
+        queryFn: () => APIClient.api.get(`/collections/${groupId}`, { params: props})
     })
 
 };
@@ -23,7 +23,7 @@ export const useGroupMembers = ( groupId, props = {})  => {
         queryKey,
         ...defaultQueryProps,
         retry: 5,
-        queryFn: () => APIClient.api.get(`/groups/${groupId}/members`, { params: props})
+        queryFn: () => APIClient.api.get(`/collections/${groupId}/members`, { params: props})
     })
 
 };
@@ -37,7 +37,7 @@ export const useGroupFeed = ( isLoggedIn, groupId, props = {})  => {
         ...defaultQueryProps,
         enabled: !!isLoggedIn,
         retry: 5,
-        queryFn: () => APIClient.api.get(`/groups/${groupId}/feed`, { params: props})
+        queryFn: () => APIClient.api.get(`/collections/${groupId}/feed`, { params: props})
     })
 
 };
@@ -50,7 +50,7 @@ export const useGroupGoals = (  groupId,  props = {})  => {
         ...defaultQueryProps,
         enabled: !!groupId ,
         retry: 5,
-        queryFn: () => APIClient.api.get(`/groups/${groupId}/goals`, { params: props})
+        queryFn: () => APIClient.api.get(`/collections/${groupId}/goals`, { params: props})
     })
 
 };
@@ -64,7 +64,7 @@ export const useGroupGoalById = (  groupId, goalId,  props = {})  => {
         ...defaultQueryProps,
         enabled: !!groupId && !!goalId,
         retry: 5,
-        queryFn: () => APIClient.api.get(`/groups/${groupId}/goals/${goalId}`, { params: props})
+        queryFn: () => APIClient.api.get(`/collections/${groupId}/goals/${goalId}`, { params: props})
     })
 
 };

@@ -24,7 +24,7 @@ const CreateGroupForm = () => {
         e.preventDefault();
         console.log('submit', form)
         setLoading(true)
-        return APIClient.api.post('/groups/', form).then((data) => {
+        return APIClient.api.post('/collections/', form).then((data) => {
             setLoading(false)
             router.push(`/group/${data?.id}`)
         })
@@ -44,7 +44,7 @@ const CreateGroupForm = () => {
 
             <Gap gap={24}/>
 
-          
+
             <Button onClick={handleSubmit} loading={loading} disabled={loading}>
                 Create Group
             </Button>

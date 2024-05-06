@@ -19,7 +19,7 @@ const InviteGroupMemberForm = ({open, onClose}) => {
 
 
     const handleSendInvite = async () => {
-        return APIClient.api.post(`/groups/${groupId}/invite`, {
+        return APIClient.api.post(`/collections/${groupId}/invite`, {
             users: form?.invitedUsers
         }).then(() => {
              client.refetchQueries({queryKey:  ['group-members', 'dashboard', groupId, {page: 1, size: 10}]})

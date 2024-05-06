@@ -25,7 +25,7 @@ const CreateGroupGoal = ({onClose}) => {
 
     const handleSubmit = async () => {
         console.log(form, 'formmm')
-        return APIClient.api.post(`/groups/${groupId}/goals`, form).then(() => {
+        return APIClient.api.post(`/collections/${groupId}/goals`, form).then(() => {
             onClose();
             client.refetchQueries({queryKey:  ['group-goals', 'dashboard', groupId, {page: 1, size: 10}]})
         })
@@ -37,6 +37,13 @@ const CreateGroupGoal = ({onClose}) => {
 
             <TextArea placeholder="Goal Description (optional)" onChange={handleInputChange('description')} />
 
+
+            <Gap gap={12}/>
+            <DatePicker onChange={(date) => setForm({
+                ...form,
+                startDate: dayjs(date).format('YYYY-MM-DD')
+            })} />
+            <Gap gap={12}/>
             <DatePicker onChange={(date) => setForm({
                 ...form,
                 endDate: dayjs(date).format('YYYY-MM-DD')

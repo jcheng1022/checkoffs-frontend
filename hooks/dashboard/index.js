@@ -11,7 +11,7 @@ export const useDashboardGroupMembers = ( groupId, props = {})  => {
         ...defaultQueryProps,
         // enabled: !!isLoggedIn,
         retry: 5,
-        queryFn: () => APIClient.api.get(`/groups/${groupId}/dashboard/MEMBERS`, { params: props})
+        queryFn: () => APIClient.api.get(`/collections/${groupId}/dashboard/MEMBERS`, { params: props})
     })
 
 };
@@ -25,7 +25,7 @@ export const useDashboardGroupGoals = ( groupId, props = {})  => {
         ...defaultQueryProps,
         // enabled: !!isLoggedIn,
         retry: 5,
-        queryFn: () => APIClient.api.get(`/groups/${groupId}/dashboard/GOALS`, { params: props})
+        queryFn: () => APIClient.api.get(`/collections/${groupId}/dashboard/GOALS`, { params: props})
     })
 
 };
