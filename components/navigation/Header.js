@@ -14,13 +14,16 @@ import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
 import MobileMenu from "@/components/navigation/MobileMenu";
 import NotificationsList from "@/components/NotificationsList";
+import HamburgerMenu from "@/components/navigation/MobileMenu";
 
 const Header = () => {
     const { data: user, isFetching, isLoading,  } = useCurrentUser();
     const fetchingUser = isFetching || isLoading;
     const userUid = useUserIsLoggedIn()
 
-    const { mobileMenuIsOpen, setMobileMenuIsOpen, setOpenUserSettings } = useAppContext();
+    const { setOpenUserSettings } = useAppContext();
+    const [openMenu, setOpenMenu] = useState(false)
+
     const {logOut, handleSignIn } = useAuthContext()
     const router = useRouter();
     const pathname = usePathname()
@@ -68,8 +71,7 @@ const Header = () => {
 
     const menuProps = {
         color: 'black',
-        className: 'menu-icon',
-        onClick: () => setMobileMenuIsOpen(prev => !prev)
+        onClick: () => setOpenMenu(prev => !prev)
     }
 
     const endSection = () => {
@@ -99,9 +101,12 @@ const Header = () => {
             <Container justify={'space-between'}>
                 <FlexBox justify={'flex-start'} gap={18} wrap={'no-wrap'}>
 
-                    {isMobile && (
-                        mobileMenuIsOpen ? <X {...menuProps} /> : <Menu {...menuProps} />
-                    )}
+                    {openMenu ? <X className={'menu-icon close-mobile-menu'} {...menuProps} /> :
+                        <Menu className={'menu-icon open-mobile-menu'} {...menuProps} />
+                    }
+                    {/*{isMobile && (*/}
+                    {/*    mobileMenuIsOpen ? <X className={'menu-icon close-mobile-menu'} {...menuProps} /> : <Menu className={'menu-icon open-mobile-menu'} {...menuProps} />*/}
+                    {/*)}*/}
                     <div className={'app-name'}  onClick={handleRouterPush(`/`)}>Checkoff</div>
 
                     {!isMobile && pathname !== '/feed' && !!user && (
@@ -155,7 +160,7 @@ const Header = () => {
                 </FlexBox>
 
             </Container>
-            <MobileMenu />
+            <HamburgerMenu open={openMenu} closeMenu={() => setOpenMenu(false)} />
         </>
     )
 }
@@ -179,6 +184,7 @@ const Container = styled(FlexBox)`
   
   .menu-icon {
     margin: 8px;
+    cursor: pointer;
   }
   
   // .app-name:hover {
@@ -229,4 +235,6 @@ const Container = styled(FlexBox)`
   .ant-dropdown-menu-item {
     min-width: 500px;
   }
+  
+  
 `

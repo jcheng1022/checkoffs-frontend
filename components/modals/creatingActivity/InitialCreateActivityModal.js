@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import {useEffect, useMemo, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import APIClient from '../../../services/api'
-import {useParams, usePathname} from 'next/navigation';
+import {useParams, usePathname, useRouter} from 'next/navigation';
 import {useCurrentUser} from "@/hooks/user.hook";
 import {useActivitySharingOptions} from "@/hooks/activity.hook";
 import {theme} from "@/styles/themes";
@@ -16,6 +16,8 @@ import {X} from "react-feather";
 import Cropper from "react-easy-crop";
 import {getCroppedImg} from "@/utils/canvasUtils";
 import ActivityItem from "@/components/feed/ActivityItem";
+import {extractGroupAndGoalId} from "@/utils";
+import {RESOURCE_TYPES} from "@/constants";
 
 const {TextArea} = Input;
 
@@ -28,6 +30,13 @@ function readFile(file) {
     })
 }
 
+const MODAL_STEPS = {
+    INITIAL: 'INITIAL',
+    IMAGE_ADJUSTOR: 'IMAGE_ADJUSTOR',
+    FINALIZE_UPLOAD: 'FINALIZE_UPLOAD',
+    PUBLISHED: 'PUBLISHED'
+}
+const STEP_ORDER = [MODAL_STEPS.INITIAL, MODAL_STEPS.IMAGE_ADJUSTOR, MODAL_STEPS.FINALIZE_UPLOAD, MODAL_STEPS.PUBLISHED]
 const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
     const {
         register,
@@ -41,7 +50,8 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
     const client = useQueryClient();
     const {data: user} = useCurrentUser()
     const { data: options} = useActivitySharingOptions(!!user)
-    const [uploadStep, setUploadStep] = useState(1)
+    const [uploadStep, setUploadStep] = useState(MODAL_STEPS.INITIAL)
+    const router = useRouter();
 
     const pathname = usePathname();
     const params = useParams();
@@ -59,10 +69,10 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
 
     useEffect(() => {
         if ( goalId && groupId) {
-            const defaultDestination = `group=${groupId}&goal=${goalId}`;
+            const defaultDestination = `collection=${groupId}&goal=${goalId}`;
             setValue('destination', defaultDestination);
         } else if (groupId) {
-            const defaultDestination = `group=${groupId}`;
+            const defaultDestination = `collection=${groupId}`;
             setValue('destination', defaultDestination);
         }
 
@@ -131,7 +141,9 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
             }
 
 
-            onCancel();
+             // setUploadStep(prev => prev + 1)
+            setUploadStep(MODAL_STEPS.PUBLISHED)
+            // onCancel();
         })
 
 
@@ -165,7 +177,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
             personalizedOptions = options?.map(option => {
                 base[0].options?.push(   {
                     label: `Group - ${option.name}`,
-                    value: `group=${option.groupId}`
+                    value: `collection=${option.groupId}`
                 })
                return {
                    label: <span> Group - {option.name}</span>,
@@ -173,7 +185,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
                    options: option.goals?.map(goal => {
                            return {
                                label: goal.name,
-                               value: `group=${option.groupId}&goal=${goal.id}`
+                               value: `collection=${option.groupId}&goal=${goal.id}`
                            }
                        })
                }
@@ -198,7 +210,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
                         <Select
                             placeholderText='Select date'
                             options={selectOptions}
-                            style={{width: '100%'}}
+                            style={{maxWidth: '100%', minWidth: '100%'}}
                             onChange={(val) => field.onChange(val)}
                             selected={field.value}
                             {...field}
@@ -249,7 +261,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
                    ) :
                        (
                            <Button className={'next-step-btn'}
-                                   onClick={() => setUploadStep(prev => prev + 1)}
+                                   onClick={() => setUploadStep(MODAL_STEPS.IMAGE_ADJUSTOR)}
                                // onClick={handleSubmit(onSubmit)}
                            > Next</Button>
                        )}
@@ -274,7 +286,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
                     rotation
                 )
                 setCroppedImage(croppedImage)
-                setUploadStep(prev => prev + 1)
+                setUploadStep(MODAL_STEPS.FINALIZE_UPLOAD)
             } catch (e) {
                 notification.error({
                     message: 'Error cropping image',
@@ -392,13 +404,73 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
         )
     }
 
+    const PublishedStep = () => {
+        const {description, destination} = getValues()
+        const {collectionId, goalId, type} = extractGroupAndGoalId(destination)
+
+        const handleNavigation = () => {
+
+
+
+
+            if (type === RESOURCE_TYPES.ALL) {
+                router.push(`/feed`)
+            } else if (type === RESOURCE_TYPES.COLLECTION) {
+                router.push(`/group/${collectionId}/?tab=feed`)
+            } else if (type === RESOURCE_TYPES.GROUP_GOAL) {
+                router.push(`/group/${collectionId}/goal/${goalId}`)
+            }
+            onCancel();
+        }
+        const activityDraft = {
+            id: 1, // idk
+
+            mediaUrl: croppedImage ?? null,
+            description,
+
+        }
+        let content = {
+            title: '',
+            btnContent: ''
+        }
+
+        if (type === RESOURCE_TYPES.ALL ) {
+            content.title = "Your activity has been shared to the feed"
+            content.btnContent = 'View Feed'
+        } else if (type === RESOURCE_TYPES.COLLECTION) {
+            content.title = "Your activity has been shared to the group"
+            content.btnContent = 'View Group'
+        } else if (type === RESOURCE_TYPES.GROUP_GOAL) {
+            content.title = "Your activity has been shared to the goal feed"
+            content.btnContent = 'View Group Goal'
+        }
+        return (
+            <PublishedStepContainer align={'center'} justify={'center'} direction={'column'}>
+
+                <div className={'published-title'}> Woo!</div>
+                <div className={'published-description'}> {content.title}</div>
+
+                <ActivityItem type={'image'} activity={activityDraft} isPreview={true} />
+
+                <Gap gap={24}/>
+
+                <Button className={'navigate-to-activity-btn'} onClick={handleNavigation}>
+                    {content.btnContent}
+                </Button>
+
+
+            </PublishedStepContainer>
+        )
+    }
+
     return (
-        <ModalContainer closeIcon={<X/>} width={1000} open={open} onCancel={onCancel} footer={[]}>
+        <ModalContainer centered closeIcon={<X/>} width={1000} open={open} onCancel={onCancel} footer={[]}>
            <Spin spinning={loading}>
 
-               {uploadStep === 1 && initialStep()}
-               {uploadStep === 2 && imageAdjustorStep()}
-                {uploadStep === 3 && finalizeUploadStep()}
+               {uploadStep === MODAL_STEPS.INITIAL && initialStep()}
+               {uploadStep === MODAL_STEPS.IMAGE_ADJUSTOR && imageAdjustorStep()}
+                {uploadStep === MODAL_STEPS.FINALIZE_UPLOAD && finalizeUploadStep()}
+                {uploadStep === MODAL_STEPS.PUBLISHED && PublishedStep()}
 
            </Spin>
         </ModalContainer>
@@ -408,15 +480,21 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
 export default InitialCreateActivityModal;
 
 const ModalContainer = styled(Modal)`
-  //padding: 24px;
-  .ant-modal, .ant-modal-content {
+  display: flex;
+  align-items: center;
+   .ant-modal-content {
     height: 100%;
-    width: 100%;
+
+    max-width: 100%;
+
     margin: 0;
     top: 0;
   }
   .ant-modal-body {
-    height: calc(100vh - 110px);
+    //height: calc(100vh - 110px);
+    
+  width: 100%;
+    height: 600px;
   }
   
   .ant-modal-content {
@@ -502,4 +580,27 @@ const FinalizeContainer = styled(FlexBox)`
   }
 
 
+`
+
+const PublishedStepContainer = styled(FlexBox)`
+  .published-title {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  
+  .published-description {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+  
+  .navigate-to-activity-btn {
+    background-color: ${theme.steel10};
+    color: black;
+    border-radius: 12px;
+    height: 50px;
+    width: 200px;
+    font-weight: 600;
+  }
 `

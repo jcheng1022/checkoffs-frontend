@@ -164,7 +164,7 @@ const ActivityItem = ({activity, type = 'image', isPreview =false}) => {
                     </FlexBox>
                 </FlexBox>
 
-                {type === 'image' && (
+                {(type === 'image' && activity?.mediaUrl) && (
                     <div className={'image-container'}>
                         <img src={activity?.mediaUrl}  className={'image'} />
                     </div>

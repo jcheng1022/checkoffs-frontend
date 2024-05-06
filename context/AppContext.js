@@ -22,7 +22,7 @@ export const AppContextProvider = ({
     const [openUserSettings, setOpenUserSettings] = useState(false)
     const [creatingNewActivity, setCreatingNewActivity] = useState(false)
 
-    const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
+    // const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
 
     // const {user} = useAuthContext();
 
@@ -75,8 +75,8 @@ export const AppContextProvider = ({
 
 
     const settings = {
-        mobileMenuIsOpen,
-        setMobileMenuIsOpen,
+        // mobileMenuIsOpen,
+        // setMobileMenuIsOpen,
         openUserSettings,
         setOpenUserSettings,
         creatingNewActivity,

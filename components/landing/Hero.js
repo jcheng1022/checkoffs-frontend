@@ -5,9 +5,21 @@ import {FlexBox} from "@/components/core";
 import {Button} from "antd";
 import {theme} from "@/styles/themes";
 import {useAuthContext} from "@/context/AuthContext";
+import {useCurrentUser} from "@/hooks/user.hook";
+import {useRouter} from "next/navigation";
 
 const Hero = () => {
     const { logOut, handleSignIn } = useAuthContext();
+    const {data: user} = useCurrentUser();
+    const router = useRouter();
+
+    const handleGetStarted = () => {
+        if (user) {
+            router.push(`/user/${user?.id}`)
+        } else {
+            handleSignIn();
+        }
+    }
 
     return (
         <Container justify={'space-between'}>
@@ -16,7 +28,7 @@ const Hero = () => {
                     A more visually appealing way of getting things done
                 </div>
                 <FlexBox className={'btn-container'} justify={'center'}>
-                    <Button className={'get-started-btn'} onClick={handleSignIn}>
+                    <Button className={'get-started-btn'} onClick={handleGetStarted}>
                         Get Started
                     </Button>
                 </FlexBox>

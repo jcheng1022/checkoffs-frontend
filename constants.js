@@ -6,6 +6,12 @@ export const PRIVACY_OPTIONS = {
 
 export const DEFAULT_FEED_INCREMENTS = 10
 
+export const TIME_PERIOD = {
+    HOUR: 'hour',
+    DAY: 'day',
+    WEEK: 'week',
+    MONTH: 'month'
+}
 
 export const NOTIFICATION_TYPES = {
     FRIEND_REQUEST: 'FRIEND_REQUEST',
@@ -42,4 +48,11 @@ export const getTagColorByRole = (role) => {
                 color: 'black'
             }
     }
+}
+
+export const RESOURCE_TYPES = {
+    COLLECTION: 'COLLECTION',
+    GOAL: 'GOAL',
+    GROUP_GOAL: 'GROUP_GOAL',
+    ALL: 'ALL'
 }

@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {theme} from "@/styles/themes";
 import ActivityGraph from "@/components/ActivityGraph";
 import ActivityList from "@/components/feed/ActivityList";
+import {getCountdown} from "@/utils";
 
 const removeDuplicates = (array) => {
     const uniqueIds = {};
@@ -42,7 +43,7 @@ function ViewGroupGoal(props) {
         }
     }, [goal])
 
-    console.log(duration, 'duration')
+    console.log(getCountdown(goal?.endDate), goal?.endDate, 323232)
 
 
 

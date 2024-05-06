@@ -6,13 +6,19 @@ import {useCurrentUser} from "@/hooks/user.hook";
 import {useAuthContext} from "@/context/AuthContext";
 import {Activity, BarChart, LogOut, Settings, Users} from "react-feather";
 import {FlexBox} from "@/components/core";
+import {useEffect} from "react";
 
-const MobileMenu = () => {
-    const { mobileMenuIsOpen, setMobileMenuIsOpen, setOpenUserSettings } = useAppContext()
+const HamburgerMenu = ({open = false, closeMenu = () => {}}) => {
+    const { setOpenUserSettings } = useAppContext()
     const { logOut, handleSignIn } = useAuthContext();
     const  router = useRouter()
     const { data: user } = useCurrentUser()
     let menuItems;
+    useEffect(() => {
+        if (open){
+            closeMenu();
+        }
+    }, [router])
 
 
 
@@ -31,7 +37,7 @@ const MobileMenu = () => {
                 label: 'Feed',
                 onClick: () => {
                     router.push('/feed')
-                    setMobileMenuIsOpen(false)
+                    closeMenu();
                 }
             },
             {
@@ -40,7 +46,7 @@ const MobileMenu = () => {
                 icon: <Users {...iconProps} />,
                 onClick: () => {
                     router.push('/people')
-                    setMobileMenuIsOpen(false)
+                    closeMenu();
                 }
             },
             {
@@ -49,7 +55,7 @@ const MobileMenu = () => {
                 icon: <BarChart {...iconProps} />,
                 onClick: () => {
                     router.push(`/user/${user?.id}`)
-                    setMobileMenuIsOpen(false)
+                    closeMenu();
 
                 }
             },
@@ -68,7 +74,7 @@ const MobileMenu = () => {
                 icon: <LogOut {...iconProps} />,
                 onClick: () => {
                     logOut()
-                    setMobileMenuIsOpen(false)
+                    closeMenu();
                 }
             },
         ]
@@ -79,13 +85,14 @@ const MobileMenu = () => {
                 label: 'Sign In',
                 onClick: () => {
                     handleSignIn();
-                    setMobileMenuIsOpen(false)
+
+                    closeMenu();
                 }
             }
         ]
     }
 
-    if (!mobileMenuIsOpen || !menuItems) return null;
+    if (!open || !menuItems) return null;
 
 
     return (
@@ -108,7 +115,7 @@ const MobileMenu = () => {
 }
 
 
-export default MobileMenu;
+export default HamburgerMenu;
 
 const Container = styled.div`
 
