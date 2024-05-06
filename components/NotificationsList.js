@@ -9,14 +9,17 @@ import {doc} from "firebase/firestore";
 import {firestoreClient} from "@/lib/firebase/firebase";
 import {Globe} from "react-feather";
 import {useQueryClient} from "@tanstack/react-query";
+import {useRouter} from "next/navigation";
+import styled from "styled-components";
 
 const NotificationsList = ({}) => {
     const [props, setProps] = useState({
         lastUpdated: null
     })
     const [showNotifications, setShowNotifications] = useState(false)
-
+    const router = useRouter()
     const {data: user} = useCurrentUser()
+
 
     const { data: notifications, isLoading, isFetching, refetch: refetchNotifcations  } = useNotificationsByUser(!!user, showNotifications,  props);
     const [newNotifications, setNewNotifications] = useState(false)
@@ -53,6 +56,10 @@ const NotificationsList = ({}) => {
         return notifications?.filter(notification => {
             if (notification?.type === NOTIFICATION_TYPES.FRIEND_REQUEST || notification?.type === NOTIFICATION_TYPES.GROUP_INVITE) {
                return  !notification?.body.status || notification?.body?.status === 'PENDING'
+            }
+
+            if (notification?.type === NOTIFICATION_TYPES.NEW_COLLECTIONS_POST ) {
+                return  notification
             }
         })
     }, [notifications])
@@ -93,7 +100,7 @@ const NotificationsList = ({}) => {
         }
     }
     return (
-        <>
+        <Container>
 
             <div style={{ position: 'relative' }}>
                 <Globe
@@ -145,7 +152,16 @@ const NotificationsList = ({}) => {
                                 itemLayout="horizontal"
                                 dataSource={notificationList}
                                 renderItem={(item, index) => {
-                                    const message = item?.type === NOTIFICATION_TYPES.FRIEND_REQUEST ? `You have a friend request from ${item?.body?.sender?.username}` : `You have been invited to join ${item?.body?.group?.name} group`
+
+                                    let message;
+                                    if (item?.type === NOTIFICATION_TYPES.FRIEND_REQUEST) {
+                                        message = `You have a friend request from ${item?.body?.sender?.username}`
+                                    } else if (item?.type === NOTIFICATION_TYPES.GROUP_INVITE) {
+                                        message = `You have been invited to join ${item?.body?.group?.name} group`
+
+                                    } else if (item?.type === NOTIFICATION_TYPES.NEW_COLLECTIONS_POST) {
+                                        message = `${item?.body?.sender?.username} has recently posted in your shared group!`
+                                    }
 
                                     return (
                                         <List.Item>
@@ -153,18 +169,27 @@ const NotificationsList = ({}) => {
                                                 <div style={{color: 'black'}} className={'buddy-name'}> {message}</div>
                                             </FlexBox>
 
-                                            <FlexBox justify={'flex-end'} wrap={'no-wrap'} gap={6}>
-                                                <Button className={'invite-accept-btn'}
+                                            {(item?.type === NOTIFICATION_TYPES.FRIEND_REQUEST || item?.type === NOTIFICATION_TYPES.GROUP_INVITE) && (
+                                                <FlexBox justify={'space-between'}>
+                                                    <Button
                                                         onClick={handleRespond(item?.type, item, STATUS.ACCEPTED)}
-                                                        type={'primary'}>
-                                                    Accept
+                                                        style={{backgroundColor: 'green', color: 'white'}}
+                                                    >
+                                                        Accept
+                                                    </Button>
+                                                    <Button
+                                                        onClick={handleRespond(item?.type, item, STATUS.DECLINED)}
+                                                        style={{backgroundColor: 'red', color: 'white'}}
+                                                    >
+                                                        Decline
+                                                    </Button>
+                                                </FlexBox>)}
+
+                                            {item?.type === NOTIFICATION_TYPES.NEW_COLLECTIONS_POST && (
+                                                <Button onClick={() => router.push(`/group/${item?.body?.collectionId}`)}>
+                                                    View
                                                 </Button>
-                                                <Button
-                                                    onClick={handleRespond(item?.type, item, STATUS.DECLINED)}
-                                                >
-                                                    Decline
-                                                </Button>
-                                            </FlexBox>
+                                            )}
 
                                         </List.Item>
                                     )
@@ -181,8 +206,15 @@ const NotificationsList = ({}) => {
             </div>
 
 
-        </>
+        </Container>
     )
 }
 
 export default NotificationsList;
+
+
+const Container = styled.div`
+  .buddy-name {
+    max-width: 250px;
+  }
+`
