@@ -30,7 +30,7 @@ export const AppContextProvider = ({
         if (user && !user?.username) {
             setUserModal(true)
         }
-        const userStatusPath = `/user/${user?.id}/status`
+        const userStatusPath = `/user/${user?.firebaseUuid}/status`
 
         const rtdbConnect = () => {
 
