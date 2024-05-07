@@ -105,7 +105,7 @@ const Header = () => {
                     {/*{isMobile && (*/}
                     {/*    mobileMenuIsOpen ? <X className={'menu-icon close-mobile-menu'} {...menuProps} /> : <Menu className={'menu-icon open-mobile-menu'} {...menuProps} />*/}
                     {/*)}*/}
-                    <div className={'app-name'}  onClick={handleRouterPush(`/`)}>Checkoff</div>
+                    <div className={'app-name'}  onClick={handleRouterPush(`/`)}>Checkoffs</div>
 
                     {!isMobile && pathname !== '/feed' && !!user && (
                         <div className={'feature-link'} onClick={handleRouterPush('/feed')}>
