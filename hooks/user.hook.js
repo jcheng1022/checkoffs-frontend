@@ -135,7 +135,7 @@ export const useUserMenuData = (user,  props = {})  => {
 
 export const usePeopleSearch = (userId,   props = {})  => {
 
-    const queryKey = ['search'];
+    const queryKey = ['search', userId];
 
     return useQuery({
         queryKey,

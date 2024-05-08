@@ -3,11 +3,14 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import FinishUserInfoModal from "@/components/modals/FinishUserInfoModal";
 import {useCurrentUser} from "@/hooks/user.hook";
+import Knock from "@knocklabs/client";
 
 import {getDatabase, onDisconnect, onValue, ref, set} from "firebase/database";
 import dayjs from "dayjs";
 import UserSettingsModal from "@/components/modals/UserSettingsModal";
 import InitialCreateActivityModal from "@/components/modals/creatingActivity/InitialCreateActivityModal";
+
+const knockClient = new Knock(process.env.NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY);
 
 
 export const AppContext = createContext({});
@@ -19,6 +22,7 @@ export const AppContextProvider = ({
                                     }) => {
     const [userModal, setUserModal] = useState(false)
     const {data: user} = useCurrentUser();
+    const [notifications, setNotifications] = useState([])
     const [openUserSettings, setOpenUserSettings] = useState(false)
     const [creatingNewActivity, setCreatingNewActivity] = useState(false)
 
@@ -27,11 +31,15 @@ export const AppContextProvider = ({
     // const {user} = useAuthContext();
 
     useEffect(() => {
+        if (user?.firebaseUuid && user?.knockToken) {
+            knockClient.authenticate(user?.firebaseUuid, user?.knockToken)
+        }
+
         if (user && !user?.username) {
             setUserModal(true)
         }
-        const userStatusPath = `/user/${user?.firebaseUuid}/status`
 
+        const userStatusPath = `/user/${user?.firebaseUuid}/status`
         const rtdbConnect = () => {
 
             if (!user?.id) return;// [START rtdb_presence]
@@ -81,6 +89,8 @@ export const AppContextProvider = ({
         setOpenUserSettings,
         creatingNewActivity,
         setCreatingNewActivity,
+        notifications,
+        setNotifications
 
     }
     return (

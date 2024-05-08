@@ -13,6 +13,16 @@ import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
 import HamburgerMenu from "@/components/navigation/MobileMenu";
 import NotificationsList from "@/components/NotificationsList";
+import {
+    KnockProvider,
+    KnockFeedProvider,
+    NotificationIconButton,
+    NotificationFeedPopover,
+} from "@knocklabs/react";
+
+// Required CSS import, unless you're overriding the styling
+import "@knocklabs/react/dist/index.css";
+import KnockNotificationList from "@/components/KnockNotificationList";
 
 const Header = () => {
     const { data: user, isFetching, isLoading,  } = useCurrentUser();
@@ -73,7 +83,6 @@ const Header = () => {
     }
 
     const endSection = () => {
-        console.log(userUid, user, fetchingUser, 'checking')
         if (userUid && !user && fetchingUser) {
             return <div>Loading...</div>
         }
@@ -123,7 +132,9 @@ const Header = () => {
                     { !!user && !isMobile && <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>}
 
 
-                    { !!user && <NotificationsList  />}
+                    {/*{ !!user && <NotificationsList  />}*/}
+                    { !!user?.firebaseUuid && <KnockNotificationList uuid={user?.firebaseUuid}  />}
+
                     {endSection()}
 
 

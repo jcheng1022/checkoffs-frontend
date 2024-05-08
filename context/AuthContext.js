@@ -58,7 +58,7 @@ export const AuthContextProvider = ({
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
-                window.location.href = window.location.href
+                // window.location.href = window.location.href
 
             }).catch((error) => {
             console.log(`Error signing in: ${error}`)
