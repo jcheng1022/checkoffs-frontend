@@ -32,7 +32,11 @@ export const AppContextProvider = ({
 
     useEffect(() => {
         if (user?.firebaseUuid && user?.knockToken) {
-            knockClient.authenticate(user?.firebaseUuid, user?.knockToken)
+            console.log(`authenticating user with knock`)
+            const authenticated = knockClient.authenticate(user?.firebaseUuid, user?.knockToken, {
+
+            })
+            console.log(authenticated, 23245, 'idkkkkk')
         }
 
         if (user && !user?.username) {
