@@ -72,6 +72,7 @@ const Container = styled(FlexBox)`
     font-size: 3rem;
     font-weight: 700;
     color: white;
+    line-height: 1;
     //margin-bottom: 12px;
     
   }
@@ -97,8 +98,7 @@ const Container = styled(FlexBox)`
 
 
   .img-container {
-    width: 100%;
-    max-width: 50%;
+    width: 60%;
     //height: 300px;
     //padding: 0px 24px;
 
@@ -113,4 +113,10 @@ const Container = styled(FlexBox)`
 
   }
 
+  @media only screen and (max-width: 650px) {
+    .image-container {
+      width: 100%;
+    }
+  }
+  
 `

@@ -46,8 +46,9 @@ const FeatureList = () => {
 export default FeatureList;
 
 const Container = styled(FlexBox)`
-  margin: 48px 24px;
-  height: 300px;
+  margin: 100px 24px;
+  min-height: 300px;
+  //height: 300px;
   
   .feature {
     text-align: center;
@@ -77,6 +78,5 @@ const Container = styled(FlexBox)`
     font-size: 12px;
     color: grey;
     max-width: 200px;
-    height: 200px;
   }
 `
