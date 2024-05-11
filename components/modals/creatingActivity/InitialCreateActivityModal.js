@@ -492,6 +492,7 @@ const ModalContainer = styled(Modal)`
     margin: 0;
     top: 0;
      background-color: ${theme.jetGrey};
+color: white;
 
    }
   .ant-modal-body {

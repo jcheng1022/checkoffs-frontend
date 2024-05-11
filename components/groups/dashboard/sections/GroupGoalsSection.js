@@ -22,7 +22,7 @@ const GroupGoalsSection = () => {
     const actions = [
         {
             label: 'New Goal',
-            icon: <Plus size={20}/>,
+            icon: <Plus size={20} color={'black'}/>,
             onClick: () => setShowDrawer(true)
         }
     ]

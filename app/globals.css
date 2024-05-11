@@ -75,7 +75,7 @@ body {
 }
 
 .ant-btn[disabled] {
-    background-color: #ECEFFF !important;
+    background-color: #3a3937 !important;
     color:white !important;
 }
 

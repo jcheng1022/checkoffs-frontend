@@ -22,7 +22,7 @@ const GroupMembersSection = () => {
     const actions = [
         {
             label: 'Add Member',
-            icon: <UserPlusIcon size={20}/>,
+            icon: <UserPlusIcon color={'black'} size={20}/>,
             onClick: () => setShowDrawer(true)
         }
     ]
