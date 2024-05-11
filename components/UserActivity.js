@@ -97,7 +97,7 @@ const UserActivity = () => {
     return (
         <ProfilePermissionWrapper>
             <Container>
-                <UserHeaderContainer justify={'center'} direction={'column'} bgColor={profile?.settings?.profileColor}>
+                <UserHeaderContainer justify={'flex-start'} align={'flex-start'} direction={'column'} bgColor={profile?.settings?.profileColor}>
                     <Spin spinning={(isFetching || isLoading)}>
                         <div className={'username'}>
                             {profile?.username}
@@ -124,14 +124,17 @@ const UserActivity = () => {
 
 
                 </UserHeaderContainer>
-                <Tabs
-                    defaultActiveKey="1"
-                    centered
-                    items={tabOptions}
-                />
+                <MidSection wrap={'no-wrap'}  align={'flex-end'}>
+                    <Tabs
+                        defaultActiveKey="1"
+                        centered
+                        items={tabOptions}
+                    />
 
 
-                <UserActivityGraph />
+                            <UserActivityGraph />
+
+                </MidSection>
 
                 <Gap gap={24}/>
 
@@ -147,10 +150,41 @@ const UserActivity = () => {
 
 export default UserActivity;
 
+const MidSection = styled(FlexBox)`
+  //max-height: 500px;
+  
+  margin: 0px 24px;
+
+  @media only screen and (max-width: 900px) {
+    & {
+      display: block;
+      margin-right: 64px;
+      //margin-right: 50px;
+      //flex-wrap: wrap;
+    }
+    
+    .graph-side {
+      width: 100%;
+    }
+  }
+`
 const Container = styled.div`
     .top-section {
       margin: 24px;
     }
+  
+  .ant-tabs-nav-wrap {
+    background-color: ${theme.backgroundBlack};
+    color: ${theme.secondaryPink};
+    border: none;
+  }
+  
+  .ant-tabs-tab-btn {
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    //letter-spacing: 2px;
+  }
   
 `
 
@@ -174,14 +208,15 @@ const PrivateModal = styled(Modal)`
 
 const UserHeaderContainer = styled(FlexBox)`
   height: 200px;
-  background-color: ${props =>  props.bgColor ? `#${props?.bgColor}` : theme.lightBlue_1};
-  margin:24px;
-  border-radius: 12px;
+  padding: 24px 48px;
+  
+  background-color: ${props =>  props.bgColor ? `#${props?.bgColor}` : theme.jetGrey};
+  //margin:24px;
 
   .username {
-    font-size: 24px;
+    font-size: 40px;
     font-weight: 500;
-    padding: 24px;
+    //padding: 24px;
   }
 
   .add-btn {

@@ -74,6 +74,7 @@ const Container = styled.div`
   .d-section-title {
     font-size: 30px;
     font-weight: 600;
+    color: black;
     //margin-bottom: 10px;
   }
   .d-section-subtitle {

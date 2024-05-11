@@ -22,12 +22,14 @@ const Container = styled(FlexBox)`
   width: 100%;
 
   .empty-title {
-    font-size: 20px;
+    font-size: 26px;
+    color: white;
+    margin-bottom: 12px;
   }
 
   .empty-desc {
     color: #1890ff;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
   }
 

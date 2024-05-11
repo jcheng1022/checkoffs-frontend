@@ -17,16 +17,21 @@ const FriendItem = ({friend}) => {
         const getStatus = () => {
 
             const db = getDatabase()
+            console.log(friend, 2)
 
-            const path = `/user/${friend.friendId}/status`
+            const path = `/user/${friend?.firebaseUuid}/status`
+            console.log(path, 'friend paths')
             onValue(ref(db, path), snapshot => {
+                console.log(snapshot.val(), 'snapshot YO HERE')
                 if (snapshot.val() == false) {
                     return;
                 }
 
                 if (snapshot.val()?.state === 'online') {
+                    console.log(`online 222`)
                     setIsOnline(true)
                 } else {
+                    console.log(`is foflienr`)
                     setIsOnline(false)
                 }
 

@@ -28,11 +28,13 @@ import {NOTIFICATION_TYPES, STATUS} from "@/constants";
 import APIClient from "@/services/api";
 import {notification} from "antd";
 import {useQueryClient} from "@tanstack/react-query";
+import {useRouter} from "next/navigation";
 
 const KnockNotificationList = () => {
     const [isVisible, setIsVisible] = useState(false);
     const notifButtonRef = useRef(null);
     const {data: user} = useCurrentUser()
+    const router = useRouter();
     const [respondedNotifications, setRespondedNotifications] = useState([]);
 
     const client = useQueryClient();
@@ -92,11 +94,11 @@ const KnockNotificationList = () => {
 
     return (
         <KnockProvider userToken={user?.knockToken} apiKey={process.env.NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY} userId={user?.firebaseUuid}>
-            <KnockFeedProvider feedId={process.env.NEXT_PUBLIC_KNOCK_FEED_ID} >
+            <KnockFeedProvider colorMode="dark"  feedId={process.env.NEXT_PUBLIC_KNOCK_FEED_ID} >
                 <div>
                     <NotificationIconButton
                         ref={notifButtonRef}
-                        badgeCountType="unread"
+                        badgeCountType="unseen"
                         onClick={(e) => setIsVisible(!isVisible)}
                     />
                     <NotificationFeedPopover
@@ -106,6 +108,14 @@ const KnockNotificationList = () => {
                             return (
                                 <NotificationCell
                                     {...props}
+                                    onItemClick={() => {
+                                        console.log(`clicked`)
+                                        console.log(item, props)
+                                        if (item?.source?.key === 'new-group-goal') {
+                                            router.push(`/group/${item?.data?.goal?.group?.id}/goal/${item?.data?.goal.id}`)
+                                        }
+                                    }
+                                    }
                                     item={item}
                                     // You can use any properties available on the `actor` for the name and avatar
                                     avatar={item?.actors.length > 0 ?<Avatar name={item.actors[0].name} src={item.actors[0].avatar} /> : null}

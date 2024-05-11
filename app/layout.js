@@ -7,7 +7,10 @@ import {CookiesProvider} from 'next-client-cookies/server';
 import {AppContextProvider} from "@/context/AppContext";
 import {theme} from "@/styles/themes";
 import './globals.css'
+import "animate.css/animate.compat.css"
+
 import FloatingCreateButton from "@/components/FloatingCreateButton";
+// import { ThemeProvider } from 'next-themes'
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
@@ -20,8 +23,10 @@ export const metadata = {
 export default function AuthedLayout({ children }) {
 
     return (
-        <html>
+        <html >
         <head>
+            {/*<meta name="viewport" content="initial-scale=1.0, width=device-width"/>*/}
+
             <meta name='viewport' content='width=device-width, initial-scale=1.0, viewport-fit=cover' />
             <meta name='theme-color' content={theme.TIMBERWOLF} />
             <meta name='apple-mobile-web-app-status-bar-style' content={theme.TIMBERWOLF} />
@@ -32,10 +37,12 @@ export default function AuthedLayout({ children }) {
                 <CookiesProvider>
                     <AuthContextProvider>
                        <AppContextProvider>
-                           {/*<NavigationProgressBar />*/}
-                           <Header />
-                           {children}
-                           <FloatingCreateButton/>
+                          {/*<ThemeProvider>*/}
+                              {/*<NavigationProgressBar />*/}
+                              <Header />
+                              {children}
+                              <FloatingCreateButton/>
+                          {/*</ThemeProvider>*/}
                        </AppContextProvider>
 
                     </AuthContextProvider>

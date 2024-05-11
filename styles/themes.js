@@ -1,4 +1,11 @@
 export const theme = {
+    secondaryPink: '#FF6ED5',
+    primaryBlue: '#5CC8FF',
+    backgroundBlack: "#1D1B1A",
+    jetGrey:"#3a3937",
+    battleshipGrey:"#858585",
+    silver:"#cdc6c1",
+    whiteSmoke:"#f3f3f3",
     SNOW:"#fffbfe",
     GREY:"#7a7d7d",
     TIMBERWOLF:"#d0cfcf",

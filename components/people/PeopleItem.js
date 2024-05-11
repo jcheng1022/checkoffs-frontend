@@ -80,9 +80,14 @@ const Container = styled(FlexBox)`
   .username{
     font-size: 14px;
     padding: 0px 8px;
+    color: ${theme.primaryBlue};
+    font-weight: 600;
+    letter-spacing: 1.1px;
+
   }
 
   .action {
     cursor: pointer;
+    color: black;
   }
 `

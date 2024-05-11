@@ -9,6 +9,7 @@ import {getDatabase, onDisconnect, onValue, ref, set} from "firebase/database";
 import dayjs from "dayjs";
 import UserSettingsModal from "@/components/modals/UserSettingsModal";
 import InitialCreateActivityModal from "@/components/modals/creatingActivity/InitialCreateActivityModal";
+import {message} from "antd";
 
 const knockClient = new Knock(process.env.NEXT_PUBLIC_KNOCK_PUBLIC_API_KEY);
 
@@ -25,7 +26,12 @@ export const AppContextProvider = ({
     const [notifications, setNotifications] = useState([])
     const [openUserSettings, setOpenUserSettings] = useState(false)
     const [creatingNewActivity, setCreatingNewActivity] = useState(false)
-
+    const [messageApi, contextHolder] = message.useMessage();
+    const messageNotification = (props) => {
+        messageApi.open({
+            ...props
+        })
+    }
     // const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false)
 
     // const {user} = useAuthContext();
@@ -94,12 +100,13 @@ export const AppContextProvider = ({
         creatingNewActivity,
         setCreatingNewActivity,
         notifications,
-        setNotifications
+        setNotifications,
+        messageNotification
 
     }
     return (
         <AppContext.Provider value={settings}>
-
+            {contextHolder}
             {children}
             { userModal && <FinishUserInfoModal open={userModal} onCancel={() => setUserModal(false)} />}
             { openUserSettings && <UserSettingsModal open={openUserSettings} onCancel={() => setOpenUserSettings(false)}/>}

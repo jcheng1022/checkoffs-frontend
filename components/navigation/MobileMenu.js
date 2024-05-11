@@ -119,7 +119,8 @@ export default HamburgerMenu;
 
 const Container = styled.div`
 
-  background-color: ${theme.WHITE};
+  background-color: ${theme.backgroundBlack};
+  border-bottom: 1px solid ${theme.jetGrey};
   position: absolute;
   top: 50px;
   right: 0;

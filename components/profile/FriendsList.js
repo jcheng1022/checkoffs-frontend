@@ -15,9 +15,7 @@ const FriendsList = () => {
     const {data: friends, isFetching, isLoading} = useUserFriends(isLoggedIn, 'ACCEPTED', {
         userId
     })
-    const router = useRouter();
 
-    console.log(friends?.length, 'length')
 
     return (
         <Container direction={'column'} align={'flex-start'} justify={'flex-start'} >
@@ -53,10 +51,14 @@ const Container = styled(FlexBox)`
   height: 300px;
   padding: 24px;
   border-radius: 12px;
-  background-color: ${theme.WHITE};
+  color: white;
+  background-color: ${theme.jetGrey};
 
   @media only screen and (max-width: 600px) {
     min-width: 100%;
+    width: 100%;
+    
+    
 
   }
 

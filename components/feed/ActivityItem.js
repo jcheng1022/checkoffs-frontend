@@ -115,7 +115,7 @@ const ActivityItem = ({activity, type = 'image', isPreview =false}) => {
 
     const actionProps = {
         size: 18,
-        color: '#000'
+        color: 'black'
     }
     const convertToNumber = (val) => {
         return typeof val === 'string' ? parseInt(val) : val
@@ -229,7 +229,8 @@ const Container = styled.div`
   width: 400px;
   background-color: #fafafa;
   margin: 10px 0px;
-  
+  color: black;
+  border-radius: 2px;
   .more-icon {
     cursor: pointer;
   }
@@ -237,6 +238,9 @@ const Container = styled.div`
     padding: 12px 8px;
   }
 
+  .name {
+    color: black;
+  }
   .date {
     
   }
@@ -245,6 +249,7 @@ const Container = styled.div`
       text-align: left;
         padding: 8px;
       font-size: 14px;
+      color: black;
     }
 
   .image-container {

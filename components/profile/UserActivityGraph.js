@@ -24,11 +24,11 @@ const UserActivityGraph = () => {
 
     return (
         <Container>
-            <div style={{
-                marginLeft: 24,
-                marginBottom: 12,
-                fontWeight: 500
-            }}> My Activity</div>
+            {/*<div style={{*/}
+            {/*    marginLeft: 24,*/}
+            {/*    marginBottom: 12,*/}
+            {/*    fontWeight: 500*/}
+            {/*}}> My Activity</div>*/}
             {(isFetching || isLoading) ?
                 <ActivityGraphSkeleton /> :
                 <ActivityGraph activity={graphData}/>
@@ -41,7 +41,16 @@ export default UserActivityGraph;
 
 
 const Container = styled.div`
-  
-  background-color: ${theme.WHITE};
+
+  min-height: 300px;
+  background-color: ${theme.backgroundBlack};
   padding: 24px;
+  max-width: 100%;
+  
+  @media only screen and (max-width: 600px) {
+    padding: 0;
+    margin: 0px 12px 0px 24px;
+  }
+  
+
 `

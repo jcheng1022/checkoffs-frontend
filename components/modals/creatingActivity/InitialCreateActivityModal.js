@@ -218,6 +218,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
                         />
                     )}
                 />
+                    <Gap gap={12}/>
                 <div className={'input-label'}> Activity date</div>
 
                 <Controller
@@ -236,7 +237,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
                     )}
                 />
 
-                <Gap gap={24}/>
+                <Gap gap={12}/>
                 <div className={'input-label'}> Description (optional)</div>
 
                 <Controller
@@ -247,11 +248,11 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
 
                     )}
                 />
-                <Gap gap={24}/>
+                <Gap gap={12}/>
                 <div className={'input-label'}> Image (optional)</div>
 
                 <ImageUploader image={image} setImage={setImage} register={register} onFileUpload={handleFileUpload}  />
-                <Gap gap={24}/>
+                <Gap gap={12}/>
 
 
                <FlexBox justify={'flex-start'} className={'action-container-create-activity'}>
@@ -448,7 +449,7 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
         return (
             <PublishedStepContainer align={'center'} justify={'center'} direction={'column'}>
 
-                <div className={'published-title'}> Woo!</div>
+                <div className={'published-title'}> 🎉 Wooo! 🎉</div>
                 <div className={'published-description'}> {content.title}</div>
 
                 <ActivityItem type={'image'} activity={activityDraft} isPreview={true} />
@@ -490,22 +491,26 @@ const ModalContainer = styled(Modal)`
 
     margin: 0;
     top: 0;
-  }
+     background-color: ${theme.jetGrey};
+
+   }
   .ant-modal-body {
+    
     //height: calc(100vh - 110px);
     
   width: 100%;
     //height: 600px;
   }
   
+  
   .ant-modal-content {
     padding-top: 36px;
   }
   .input-label {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 4px;
-    color: ${theme.steel40};
+    color: ${theme.primaryBlue};
   }
   
   .next-step-btn {
@@ -517,8 +522,8 @@ const ModalContainer = styled(Modal)`
     font-weight: 600;
   }
   .create-activity-btn{
-    background-color: ${theme.steel10};
-    color: black;
+    background-color: ${theme.primaryBlue};
+    color: white;
     border-radius: 12px;
 
     height: 50px;
@@ -597,10 +602,11 @@ const PublishedStepContainer = styled(FlexBox)`
   }
   
   .navigate-to-activity-btn {
-    background-color: ${theme.steel10};
-    color: black;
+    background-color: ${theme.primaryBlue};
+    color: white;
+    font-size: 16px;
     border-radius: 12px;
-    height: 50px;
+    height: 60px;
     width: 200px;
     font-weight: 600;
   }

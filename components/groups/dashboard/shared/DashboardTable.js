@@ -113,7 +113,7 @@ export const StyledTable = styled(Table)`
   }
 
   .ant-pagination-item-active {
-    background-color: ${theme.lightBlue_2};
+    // background-color: ${theme.lightBlue_2};
   }
 
 

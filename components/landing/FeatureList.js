@@ -2,7 +2,7 @@
 
 import {FlexBox} from "@/components/core";
 import styled from "styled-components";
-
+import ScrollAnimation from 'react-animate-on-scroll';
 const FeatureList = () => {
 
     const features = [
@@ -20,8 +20,9 @@ const FeatureList = () => {
         }
     ]
     return (
-        <Container justify={'center'} gap={48}>
-               {features.map((feature, index) => (
+        <ScrollAnimation duration={2} animateIn={'fadeIn'}>
+            <Container justify={'center'} gap={48}>
+                {features.map((feature, index) => (
                     <div className={'feature'} key={index}>
                         <div className={'count-container'}>
                             <span className={'count'}>
@@ -36,7 +37,8 @@ const FeatureList = () => {
                         </div>
                     </div>
                 ))}
-        </Container>
+            </Container>
+        </ScrollAnimation>
     )
 }
 

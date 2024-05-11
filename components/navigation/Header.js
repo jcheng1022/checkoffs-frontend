@@ -78,7 +78,7 @@ const Header = () => {
     }
 
     const menuProps = {
-        color: 'black',
+        color: 'white',
         onClick: () => setOpenMenu(prev => !prev)
     }
 
@@ -94,6 +94,7 @@ const Header = () => {
         if (userUid && user && !fetchingUser) {
             return <Dropdown
                 trigger={['hover']}
+                overlayClassName={'header-user-dropdown-overlay'}
                 className={'header-user-dropdown'}
                 menu={{
                     items
@@ -179,15 +180,19 @@ export default Header
 
 const Container = styled(FlexBox)`
   width: 100%;
-  background-color: ${theme.WHITE};
+  height: 75px;
+  // background-color: ${theme.WHITE};
   padding: 8px;
   margin: 0px;
+  position: relative;
+
+
   .app-name {
     margin: 0px 6px;
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
-    color: ${theme.darkBlue_1};
+    // color: ${theme.darkBlue_1};
     letter-spacing: 1.1px;
   }
   
@@ -195,6 +200,8 @@ const Container = styled(FlexBox)`
     margin: 8px;
     cursor: pointer;
   }
+
+  
   
   // .app-name:hover {
   //   color: ${theme.lightBlue_1};
@@ -204,17 +211,20 @@ const Container = styled(FlexBox)`
     font-size: 16px;
     cursor: pointer;
     //height: 100%;
-    color: ${theme.lightBlue_2};
+    // color: ${theme.lightBlue_2};
   }
   
   .feature-link:hover {
     color: ${theme.softBlue_1};
   }
+
   
   .new-btn {
-    background-color: ${theme.lightBlue_2};
+    background-color: ${theme.secondaryPink};
     color: white;
     font-weight: 600;
+    width: 100px;
+    margin: 0px 12px;
     height: 36px;
   }
   

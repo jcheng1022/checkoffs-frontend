@@ -24,7 +24,8 @@ function getItem(label, key, icon, children, type) {
 // const levelKeys = getLevelKeys(items);
 
 const iconProps = {
-    width: 18
+    width: 20,
+
 }
 const menuItems = [
     {
@@ -37,16 +38,16 @@ const menuItems = [
         icon: <Activity {...iconProps}  />,
         label: 'Goals'
     },
-    {
-        key: 'notifications',
-        icon: <Mail {...iconProps}  />,
-        label: 'Notifications'
-    },
-    {
-        key: 'settings',
-        icon: <Settings {...iconProps}  />,
-        label: 'Settings'
-    },
+    // {
+    //     key: 'notifications',
+    //     icon: <Mail {...iconProps}  />,
+    //     label: 'Notifications'
+    // },
+    // {
+    //     key: 'settings',
+    //     icon: <Settings {...iconProps}  />,
+    //     label: 'Settings'
+    // },
 
 ]
 const MENU_ITEMS = {
@@ -102,7 +103,7 @@ const GroupDashboard = () => {
 export default GroupDashboard;
 
 const Container = styled(FlexBox)`
-
+  background-color: white;
   .mobile-dashboard-menu {
     position: fixed;
     bottom: 0;
@@ -122,11 +123,16 @@ const Container = styled(FlexBox)`
     height: 100vh;
   }
    .ant-menu-item {
+     width: 100%;
+     height: 55px;
     border-radius: 0;
     margin: 0px;
     color: white;
+     
     letter-spacing: 1.01px;
-    font-weight: 500;
+    font-weight: 600;
+     font-size: 16px;
+     
 
     //padding: 0px;
     max-width: ${props => props.isMobile ? '25%' : '100%'};
@@ -134,6 +140,7 @@ const Container = styled(FlexBox)`
 
   .ant-menu-title-content {
     display: ${props => props.isMobile ? 'none': 'block'};
+    padding-left: ${props => !props.isMobile  && '12px'};
   }
 
   .ant-menu-overflow-item {
@@ -143,7 +150,7 @@ const Container = styled(FlexBox)`
 
   .ant-menu-item-selected {
     width: ${props => props.isMobile ? '100%' : '200px'};
-    color: black;
+    color: ${theme.secondaryPink};
   }
 
 

@@ -16,9 +16,9 @@ const GroupList = () => {
     const {data: groups, isFetching, isLoading} = useGroupsByUserId(isLoggedIn, userId, {})
     return (
         <Container>
-                <FlexBox justify={'flex-end'}>
-                    <Button onClick={() => router.push(`/groups/create`)}  type={'primary'}> Create Group </Button>
-                </FlexBox>
+                {/*<FlexBox justify={'flex-end'}>*/}
+                {/*    <Button onClick={() => router.push(`/groups/create`)}  className={'create-group-btn'}> Create Group </Button>*/}
+                {/*</FlexBox>*/}
 
             {(isFetching || isLoading) ? <Spin /> : groups?.length > 0 ? groups.map((groupItem, index) => {
                 return (
@@ -38,10 +38,20 @@ export default GroupList;
 const Container = styled.div`
   margin: 24px 24px;
   height: 300px;
+  min-width: 300px;
   max-height: 300px;
   overflow-y: auto;
-  padding: 24px;
+  padding: 12px;
   border-radius: 12px;
-  background-color: ${theme.WHITE};
+  background-color: ${theme.jetGrey};
 
+  
+  .create-group-btn {
+    background-color: ${theme.primaryBlue};
+    color: white;
+    font-weight: 600;
+    width: 175px;
+    height: 50px;
+    border-radius: 12px;
+  }
 `

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import {useRef} from "react";
 import {Tooltip} from "antd";
+import {theme} from "@/styles/themes";
 
 const BASE_DURATION = 365 -1 // subtract by 1 to account for indexing
 
@@ -96,6 +97,10 @@ const Container = styled.div`
   width: 100%;
   
   
+  background-color: ${theme.jetGrey};
+  border-radius: 16px;
+  min-height: 300px;
+  
   overflow-x: auto;
   box-shadow: 0 15px 35px 0 rgba(42, 51, 83, 0.12),
   0 5px 15px rgba(0, 0, 0, 0.06);
@@ -118,14 +123,21 @@ const Container = styled.div`
   
 
   .learn-more {
-    font-size: 12px;
+    font-size: 14px;
     margin: 12px 24px;
     padding: 8px;
+    color: ${theme.primaryBlue};
+    font-weight: 500;
+
   }
 
   .days {
     margin: 24px;
     padding: 12px;
+    width: 1000px;
+    min-width: 200px;
+    max-width: 99%;
+    overflow-x: auto;
     display: grid;
     //grid-template-rows: repeat(7, 1fr); /* Set minimum rows to 7 */
     //grid-auto-flow: column;
@@ -180,4 +192,6 @@ const Container = styled.div`
   .day--active {
     background-color: #0aebff;
   }
+  
+ 
 `
