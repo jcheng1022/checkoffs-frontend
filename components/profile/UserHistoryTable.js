@@ -5,7 +5,6 @@ import CoreTable from "@/components/CoreTable";
 import {useMemo, useState} from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";
-import {createColumnHelper} from "@tanstack/react-table";
 import ImageViewerModal from "@/components/modals/ImageViewerModal";
 import {useUserIsLoggedIn} from "@/hooks/user.hook";
 import {theme} from "@/styles/themes";

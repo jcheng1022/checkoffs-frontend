@@ -41,6 +41,8 @@ export default UserActivityGraph;
 
 
 const Container = styled.div`
+  min-width: 0; /* Ensure the graph container can shrink */
+  flex: ${(props) => props.flex || 1};
 
   min-height: 300px;
   background-color: ${theme.backgroundBlack};

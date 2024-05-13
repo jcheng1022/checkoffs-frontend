@@ -142,11 +142,11 @@ export const StyledTable = styled(Table)`
   }
 
   .hold-row, .hold-row:hover {
-    background-color: ${theme.steel10} !important;
+    // background-color: ${theme.steel10} !important;
   }
 
   .cancelled-row, .cancelled-row:hover {
-    background-color: rgba(255, 183, 169, 0.19) !important;
+    //background-color: rgba(255, 183, 169, 0.19) !important;
   }
 
   .ant-table-container {
@@ -178,11 +178,15 @@ export const StyledTable = styled(Table)`
           //   font-weight: 400;
           //   line-height: 18px;
           // }
-
+          .ant-table-cell-row-hover {
+            background-color: transparent;
+            
+          }
           &:hover {
-            box-shadow: 0px 4px 4px rgba(190, 194, 217, 0.5);
-            background-color: white !important;
-            cursor: pointer;
+            //box-shadow: 0px 4px 4px rgba(190, 194, 217, 0.5);
+            color: ${theme.primaryBlue};
+            //background-color: white !important;
+            //cursor: pointer;
           }
         }
 

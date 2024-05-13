@@ -2,25 +2,15 @@
 
 import {useRef, useState} from "react";
 import {
-    KnockProvider,
-    KnockFeedProvider,
-    NotificationIconButton,
-    NotificationFeedPopover,
     Avatar,
-    ButtonGroup,
     Button,
-    NotificationFeed,
+    KnockFeedProvider,
+    KnockProvider,
     NotificationCell,
+    NotificationFeedPopover,
+    NotificationIconButton,
 } from "@knocklabs/react";
 
-// import {
-//     ButtonGroup,
-//     Button,
-//     NotificationFeed,
-//     NotificationCell,
-// } from "@knocklabs/react";
-
-// Required CSS import, unless you're overriding the styling
 import "@knocklabs/react/dist/index.css";
 import {useCurrentUser} from "@/hooks/user.hook";
 import {FlexBox} from "@/components/core";

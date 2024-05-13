@@ -67,6 +67,8 @@ const FriendItem = ({friend}) => {
             <FlexBox gap={8} align={'center'}>
                 <Avatar
                     style={{
+                        width: 35,
+                        height: 35,
                         backgroundColor: '#1677ff',
                     }}
                 >
@@ -100,8 +102,7 @@ export default FriendItem;
 const Container = styled(FlexBox)`
   //border: 1px solid black;
   width: 100%;
-  margin: 12px 0px;
-  //padding: 12px;
+  margin: 0px 0px 18px 0px;
   max-height: 30px;
   
   .username {

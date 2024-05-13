@@ -6,19 +6,48 @@ import {useCurrentUser} from "@/hooks/user.hook";
 import {useAuthContext} from "@/context/AuthContext";
 import {Activity, BarChart, LogOut, Settings, Users} from "react-feather";
 import {FlexBox} from "@/components/core";
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 
 const HamburgerMenu = ({open = false, closeMenu = () => {}}) => {
     const { setOpenUserSettings } = useAppContext()
     const { logOut, handleSignIn } = useAuthContext();
     const  router = useRouter()
     const { data: user } = useCurrentUser()
+    const menuRef = useRef(null);
+
     let menuItems;
     useEffect(() => {
         if (open){
             closeMenu();
         }
     }, [router])
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                closeMenu();
+            }
+        };
+
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                closeMenu();
+            }
+        };
+
+        if (open) {
+            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener("keydown", handleKeyDown);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleKeyDown);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [open]);
 
 
 
@@ -96,7 +125,7 @@ const HamburgerMenu = ({open = false, closeMenu = () => {}}) => {
 
 
     return (
-        <Container>
+        <Container ref={menuRef}>
 
             {
                 menuItems.map((navItem, index) => {

@@ -3,9 +3,8 @@ import {theme} from "@/styles/themes";
 import EmptyContent from "@/components/EmptyContent";
 import {useGroupsByUserId, useUserIsLoggedIn} from "@/hooks/user.hook";
 import {useParams, useRouter} from "next/navigation";
-import {Button, Spin} from "antd";
+import {Spin} from "antd";
 import GroupItem from "@/components/profile/GroupItem";
-import {FlexBox} from "@/components/core";
 
 const GroupList = () => {
 

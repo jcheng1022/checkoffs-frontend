@@ -134,10 +134,9 @@ const Container = styled.div`
   .days {
     margin: 24px;
     padding: 12px;
-    width: 1000px;
+    //width: 1000px;
     min-width: 200px;
-    max-width: 99%;
-    overflow-x: auto;
+    //overflow-x: auto;
     display: grid;
     //grid-template-rows: repeat(7, 1fr); /* Set minimum rows to 7 */
     //grid-auto-flow: column;

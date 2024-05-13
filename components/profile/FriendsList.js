@@ -4,7 +4,7 @@ import FriendItem from "@/components/profile/FriendItem";
 import {theme} from "@/styles/themes";
 import {Spin} from "antd";
 import {FlexBox} from "@/components/core";
-import {useParams, useRouter} from 'next/navigation';
+import {useParams} from 'next/navigation';
 import EmptyContent from "@/components/EmptyContent";
 
 
@@ -18,7 +18,7 @@ const FriendsList = () => {
 
 
     return (
-        <Container direction={'column'} align={'flex-start'} justify={'flex-start'} >
+        <Container>
             {(isFetching || isLoading) ?
                 <FlexBox style={{height: '100%'}} justify={'center'} align={'center'}>
                     <Spin tip={<div> Fetching your friends...</div>} />
@@ -27,9 +27,7 @@ const FriendsList = () => {
                     <EmptyContent title={'No Friends...yet!'} subtitle={'Find people'} route={'/people'} />
                     :
                 <>
-                    {/*<FlexBox justify={'flex-end'}>*/}
-                    {/*    <Button onClick={() => router.push('/people')}  type={'primary'}> Create Group </Button>*/}
-                    {/*</FlexBox>*/}
+
                     {friends?.map((friend, index) => {
                         return (
                             <FriendItem key={index} friend={friend} />
@@ -45,7 +43,9 @@ const FriendsList = () => {
 
 export default FriendsList;
 
-const Container = styled(FlexBox)`
+const Container = styled.div`
+  flex: ${(props) => props.flex || 1};
+
   min-width: 300px;
   margin: 24px 24px;
   height: 300px;

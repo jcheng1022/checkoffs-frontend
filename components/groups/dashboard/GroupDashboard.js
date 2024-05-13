@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import {Menu, Spin} from "antd";
 import {useEffect, useState} from "react";
-import {Activity, Mail, Settings, Users} from "react-feather";
+import {Activity, Users} from "react-feather";
 import {theme} from "@/styles/themes";
 import {FlexBox} from "@/components/core";
 import GroupMembersSection from "@/components/groups/dashboard/sections/GroupMembersSection";

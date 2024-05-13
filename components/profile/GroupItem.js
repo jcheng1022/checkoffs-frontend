@@ -1,7 +1,6 @@
 'use client'
 
 import styled from "styled-components";
-import {FlexBox} from "@/components/core";
 import {useRouter} from "next/navigation";
 import {theme} from "@/styles/themes";
 

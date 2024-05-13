@@ -1,6 +1,6 @@
 'use client'
 
-import {Button, Dropdown} from "antd";
+import {Button, Dropdown, Menu} from "antd";
 // import {googleAuthProvider} from "@/app/firebase";
 import {FlexBox} from "@/components/core";
 import {useAuthContext} from "@/context/AuthContext";
@@ -8,18 +8,10 @@ import {useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import styled from 'styled-components'
 import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
-import {Menu, X} from "react-feather";
+import {X} from "react-feather";
 import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
 import HamburgerMenu from "@/components/navigation/MobileMenu";
-import NotificationsList from "@/components/NotificationsList";
-import {
-    KnockProvider,
-    KnockFeedProvider,
-    NotificationIconButton,
-    NotificationFeedPopover,
-} from "@knocklabs/react";
-
 // Required CSS import, unless you're overriding the styling
 import "@knocklabs/react/dist/index.css";
 import KnockNotificationList from "@/components/KnockNotificationList";
@@ -35,9 +27,8 @@ const Header = () => {
     const {logOut, handleSignIn } = useAuthContext()
     const router = useRouter();
     const pathname = usePathname()
-    const {creatingNewActivity, setCreatingNewActivity} = useAppContext();
+    const { setCreatingNewActivity} = useAppContext();
 
-    let isMobile = window?.matchMedia("(max-width: 600px)")?.matches;
 
 
 
@@ -46,27 +37,30 @@ const Header = () => {
     const items = [
         {
             key: 'account',
+            onClick: () => router.push(`/user/${user?.id}`),
             label: (
-                <div onClick={() => router.push(`/user/${user?.id}`)}>
-                    My Account
-                </div>
+                // <div onClick={() => router.push(`/user/${user?.id}`)}>
+                    'My Account'
+                // </div>
             ),
         },
         {
             key: 'settings',
+            onClick: () => setOpenUserSettings(true),
             label: (
-                <div onClick={() => setOpenUserSettings(true)}>
-                    Settings
-                </div>
+                // <div onClick={() => setOpenUserSettings(true)}>
+                    'Settings'
+                // </div>
             ),
         },
         {
             key: 'sign-out',
+            onClick: logOut,
             label: (
 
-                <div onClick={logOut} >
-                    Sign Out
-                </div>
+                // <div onClick={logOut} >
+                    'Sign Out'
+                // </div>
 
             ),
         }
@@ -92,13 +86,37 @@ const Header = () => {
             </Button>
         }
         if (userUid && user && !fetchingUser) {
+
+            const menu = (
+                <Menu
+                    style={{
+                        minWidth: 500,
+                        backgroundColor: theme.jetGrey
+                    }}
+                >
+                    {items.map((item, index) => {
+                        return (
+                            <Menu.Item
+                                style={{
+                                    color: theme.SNOW,
+                                    fontSize: 18,
+                                    width: 200
+                                }}
+                                className={'menu-item'} key={`acc-menu-${index}`} onClick={ item?.onClick} >
+                                {item.label}
+                            </Menu.Item>
+                        )
+                    })}
+                </Menu>
+            )
             return <Dropdown
-                trigger={['hover']}
+                trigger={['click']}
                 overlayClassName={'header-user-dropdown-overlay'}
                 className={'header-user-dropdown'}
-                menu={{
-                    items
-                }}
+                overlay={menu}
+                // menu={{
+                //     items
+                // }}
             >
                 <div className={'username'}  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>
             </Dropdown>
@@ -112,25 +130,23 @@ const Header = () => {
                     {openMenu ? <X className={'menu-icon close-mobile-menu'} {...menuProps} /> :
                         <Menu className={'menu-icon open-mobile-menu'} {...menuProps} />
                     }
-                    {/*{isMobile && (*/}
-                    {/*    mobileMenuIsOpen ? <X className={'menu-icon close-mobile-menu'} {...menuProps} /> : <Menu className={'menu-icon open-mobile-menu'} {...menuProps} />*/}
-                    {/*)}*/}
+
                     <div className={'app-name'}  onClick={handleRouterPush(`/`)}>Checkoffs</div>
 
-                    {!isMobile && pathname !== '/feed' && !!user && (
-                        <div className={'feature-link'} onClick={handleRouterPush('/feed')}>
+                    { pathname !== '/feed' && !!user && (
+                        <div className={`feature-link ${pathname === '/feed' && 'hide-link-on-mobile'} `} onClick={handleRouterPush('/feed')}>
                             Feed
                         </div>
                     )}
 
-                    {!isMobile && pathname !== '/people' && (
-                        <div className={'feature-link'} onClick={handleRouterPush('/people')}>
+                    { pathname !== '/people' && (
+                        <div className={`feature-link ${pathname === '/people' && 'hide-link-on-mobile'}`} onClick={handleRouterPush('/people')}>
                             People
                         </div>
                     )}
                 </FlexBox>
                 <FlexBox justify={'flex-end'} gap={18}>
-                    { !!user && !isMobile && <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>}
+                    { !!user &&  <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>}
 
 
                     {/*{ !!user && <NotificationsList  />}*/}
@@ -186,6 +202,17 @@ const Container = styled(FlexBox)`
   margin: 0px;
   position: relative;
 
+  .menu-container {
+    background-color: ${theme.darkBlue} !important;
+  }
+  .ant-dropdown {
+    padding: 0px;
+    background-color: red;
+  }
+
+  .hide-link-on-mobile {
+    display: none;
+  }
 
   .app-name {
     margin: 0px 6px;
@@ -253,6 +280,16 @@ const Container = styled(FlexBox)`
   
   .ant-dropdown-menu-item {
     min-width: 500px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .feature-link {
+      display: none;
+    }
+    
+    .new-btn {
+        display: none;
+    }
   }
   
   

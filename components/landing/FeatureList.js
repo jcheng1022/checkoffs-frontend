@@ -3,6 +3,7 @@
 import {FlexBox} from "@/components/core";
 import styled from "styled-components";
 import ScrollAnimation from 'react-animate-on-scroll';
+
 const FeatureList = () => {
 
     const features = [
