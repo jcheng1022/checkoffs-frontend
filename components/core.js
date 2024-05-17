@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+export const ContentGutters = styled.div`
+padding: 0 ${props => props.gutters || 24}px;`
 export const FlexBox  = styled.div`
   display: flex;
   

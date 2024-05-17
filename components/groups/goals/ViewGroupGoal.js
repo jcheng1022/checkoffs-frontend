@@ -1,5 +1,5 @@
 'use client'
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import styled from "styled-components";
 import {useGroupGoalById} from "@/hooks/groups.hook";
 import {useParams} from "next/navigation";
@@ -10,6 +10,7 @@ import {theme} from "@/styles/themes";
 import ActivityGraph from "@/components/ActivityGraph";
 import ActivityList from "@/components/feed/ActivityList";
 import {getCountdown} from "@/utils";
+import ViewGroupMembers from "@/components/modals/ViewGroupMembers";
 
 const removeDuplicates = (array) => {
     const uniqueIds = {};
@@ -24,9 +25,11 @@ const removeDuplicates = (array) => {
 
 function ViewGroupGoal(props) {
     const { groupId, goalId } = useParams();
+    const [openViewGroupMembersModal, setOpenViewGroupMembersModal] = useState(false)
     const  {data: goal, isFetching, isLoading} = useGroupGoalById(groupId, goalId, {
         withFeed: true
     });
+
 
     const {graphData, users, duration} = useMemo(() => {
 
@@ -87,7 +90,7 @@ function ViewGroupGoal(props) {
 
                        <div className={'nudge-section'}>
                            <Tooltip title={'Coming Soon'}>
-                               <Button disabled className={'nudge-button'}>
+                               <Button onClick={() => setOpenViewGroupMembersModal(true)} className={'nudge-button'}>
                                    Nudge a Group Member
                                </Button>
                            </Tooltip>
@@ -97,7 +100,7 @@ function ViewGroupGoal(props) {
                        <ActivityList maxHeight={100} list={goal?.posts} />
                    </div>
                </BottomSection>
-
+               { !!openViewGroupMembersModal && <ViewGroupMembers groupId={groupId} open={openViewGroupMembersModal} onClose={() => setOpenViewGroupMembersModal(false)}/> }
            </Container>
        </Spin>
     );

@@ -14,7 +14,7 @@ const InDepthFeatureView = () => {
             title:<div className={'step-title'}> Logging in seconds </div>,
             subTitle: <div className={'step-subtitle'}> We keep it simple. You already did the hard part, creating a post should feel like a reward </div>,
             description: <div className={'img-container'}>
-                <img className={'feature-img'} src={'create-activity-modal.png'} />
+                <img className={'feature-img'} src={'post_image_creation.jpg'} />
             </div>,
         },
         {
@@ -159,6 +159,7 @@ const Container = styled(FlexBox)`
   
   .feature-img {
     width: 100%;
+    max-width: 400px;
     height: 100%;
     object-fit: cover;
     border-radius: 4px

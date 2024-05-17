@@ -1,14 +1,13 @@
 'use client'
 
 import {Button, Dropdown, Menu} from "antd";
-// import {googleAuthProvider} from "@/app/firebase";
 import {FlexBox} from "@/components/core";
 import {useAuthContext} from "@/context/AuthContext";
 import {useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import styled from 'styled-components'
 import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
-import {X} from "react-feather";
+import {X, Menu as MenuIcon} from "react-feather";
 import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
 import HamburgerMenu from "@/components/navigation/MobileMenu";
@@ -90,7 +89,8 @@ const Header = () => {
             const menu = (
                 <Menu
                     style={{
-                        minWidth: 500,
+                        width: 200,
+                        borderRadius: 'none',
                         backgroundColor: theme.jetGrey
                     }}
                 >
@@ -128,8 +128,9 @@ const Header = () => {
                 <FlexBox justify={'flex-start'} gap={18} wrap={'no-wrap'}>
 
                     {openMenu ? <X className={'menu-icon close-mobile-menu'} {...menuProps} /> :
-                        <Menu className={'menu-icon open-mobile-menu'} {...menuProps} />
+                        <MenuIcon className={'menu-icon open-mobile-menu'} {...menuProps} />
                     }
+
 
                     <div className={'app-name'}  onClick={handleRouterPush(`/`)}>Checkoffs</div>
 
@@ -149,40 +150,11 @@ const Header = () => {
                     { !!user &&  <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>}
 
 
-                    {/*{ !!user && <NotificationsList  />}*/}
                     { !!user?.firebaseUuid && <KnockNotificationList uuid={user?.firebaseUuid}  />}
 
                     {endSection()}
 
 
-                    {/*{*/}
-                    {/*    (!!userSignedIn && (fetchingUser && !user)) ?*/}
-                    {/*    <div>Loading...</div> :*/}
-                    {/*    (!!user) ?*/}
-
-                    {/*        <Dropdown*/}
-                    {/*            trigger={['hover']}*/}
-                    {/*            className={'header-user-dropdown'}*/}
-                    {/*            menu={{*/}
-                    {/*                items*/}
-                    {/*            }}*/}
-                    {/*        >*/}
-                    {/*            <div className={'username'}  > {user?.username ? user.username : user?.name ? user.name : 'No name yet!'} </div>*/}
-                    {/*        </Dropdown>*/}
-
-
-
-                    {/*        : ( !!user) ?*/}
-                    {/*            <Button className={'new-btn'}  onClick={() => setCreatingNewActivity(true)}> New </Button>*/}
-                    {/*            :*/}
-
-                    {/*            (*/}
-                    {/*                <Button className={'sign-in-btn'} onClick={() => handleSignIn()}>*/}
-                    {/*                    Sign in*/}
-                    {/*                </Button>*/}
-
-                    {/*        )*/}
-                    {/*}*/}
                 </FlexBox>
 
             </Container>
@@ -203,12 +175,13 @@ const Container = styled(FlexBox)`
   position: relative;
 
   .menu-container {
-    background-color: ${theme.darkBlue} !important;
+    background-color: ${theme.darkBlue} !important;]
   }
   .ant-dropdown {
     padding: 0px;
     background-color: red;
   }
+ 
 
   .hide-link-on-mobile {
     display: none;

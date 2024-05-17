@@ -59,3 +59,9 @@ export const RESOURCE_TYPES = {
     ALL: 'ALL'
 }
 
+
+export const COLLECTION_TYPES = {
+    GROUP: 'GROUP',
+    USER: 'USER'
+}
+

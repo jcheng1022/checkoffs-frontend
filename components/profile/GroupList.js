@@ -23,7 +23,7 @@ const GroupList = () => {
                 return (
                     <GroupItem key={`group-${index}`} group={groupItem.group}/>
                 )
-            }) : <EmptyContent title={'No groups...yet!'} subtitle={'Create or join a group'} route={'/groups/create'} />}
+            }) : <EmptyContent title={'No groups...yet!'} subtitle={'Create or join a group'} route={'/collections/create?type=GROUP'} />}
 
 
 

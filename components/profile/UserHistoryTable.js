@@ -69,32 +69,9 @@ const UserHistoryTable = () => {
             }
 
         })
-    //
-    //     const columnHelper = createColumnHelper()
-    //
-    //     const columns = [
-    //         columnHelper.accessor('date', {
-    //             header: () => <span>Date</span>,
-    //             cell: info => <div style={{padding: '0px 18px'}}> {info.renderValue()} </div>,
-    //         }),
-    //         columnHelper.accessor('description', {
-    //             id: 'description',
-    //             cell: info => <div  style={{padding: '0px 18px'}}>{info.getValue()}</div>,
-    //             header: () => <span>Description</span>,
-    //         }),
-    //         columnHelper.accessor('image', {
-    //             header: () => 'Image',
-    //             cell: info => !!info.getValue() ? <div onClick={ () => {
-    //                 setOpenImageModal(info.getValue())
-    //             }
-    //             } style={{padding: '0px 18px'}}> View </div> : <div> No media </div>,
-    //         })
-    //     ]
-    //
-    //
+
         return {
             data,
-            // columns
         }
     }, [activities])
     return (
@@ -104,7 +81,6 @@ const UserHistoryTable = () => {
 
                 (tableData?.length === 0) ?
                 <>
-                    <CoreTable initialData={tableData} columns={columns}/>
                     <EmptyTableContainer justify={'center'}>
                         <div className={'text'}>
                             No data yet! Make an entry to get started
@@ -112,12 +88,10 @@ const UserHistoryTable = () => {
                     </EmptyTableContainer>
                 </> :
                     <DashboardTable paginationOptions={false} data={tableData} columns={columns} />
-                    // <CoreTable initialData={tableData} columns={columns}/>
 
 
 
             }
-            {/*<CoreTable initialData={tableData} columns={columns}/>*/}
             {!!openImageModal && <ImageViewerModal image={openImageModal} onCancel={() => setOpenImageModal(null)} open={!!openImageModal} /> }
 
         </Container>
@@ -130,7 +104,6 @@ export default UserHistoryTable;
 const Container = styled.div`
     height: 500px;
     background-color: ${theme.backgroundBlack};
-  padding: 24px 48px;
 
    .ant-table-content {
     background-color: ${theme.jetGrey};

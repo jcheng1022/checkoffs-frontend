@@ -1,7 +1,7 @@
 'use client'
 
 import styled from "styled-components";
-import {FlexBox, Gap} from "@/components/core";
+import {ContentGutters, FlexBox, Gap} from "@/components/core";
 import UserHistoryTable from "@/components/profile/UserHistoryTable"
 import UserActivityGraph from "@/components/profile/UserActivityGraph";
 import FriendsList from "@/components/profile/FriendsList";
@@ -16,6 +16,8 @@ import {useQueryClient} from "@tanstack/react-query";
 import dayjs from "dayjs";
 import ProfilePermissionWrapper from "@/components/ProfilePermissionWrapper";
 import GroupList from "@/components/profile/GroupList";
+import UserProfileSideMenu from "@/components/user/UserGoalSection";
+import UserGoalSection from "@/components/user/UserGoalSection";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
@@ -96,6 +98,7 @@ const UserActivity = () => {
     ]
     return (
         <ProfilePermissionWrapper>
+            {/*<UserProfileSideMenu/>*/}
             <Container>
                 <UserHeaderContainer justify={'flex-start'} align={'flex-start'} direction={'column'} bgColor={profile?.settings?.profileColor}>
                     <Spin spinning={(isFetching || isLoading)}>
@@ -124,24 +127,30 @@ const UserActivity = () => {
 
 
                 </UserHeaderContainer>
-                <MidSection wrap={'no-wrap'}  align={'flex-end'}>
-                    <Tabs
-                        defaultActiveKey="1"
-                        centered
-                        items={tabOptions}
-                    />
+
+                <ContentGutters>
+
+                    <MidSection wrap={'no-wrap'}  align={'flex-end'}>
+                        <Tabs
+                            defaultActiveKey="1"
+                            centered
+                            items={tabOptions}
+                        />
 
 
-                            <UserActivityGraph />
+                        <UserActivityGraph />
 
-                </MidSection>
+                    </MidSection>
 
-                <Gap gap={24}/>
+                    <Gap gap={24}/>
+                    <UserGoalSection/>
 
-                {/*<FlexBox justify={'center'} gap={200}  align={'flex-start'}>*/}
-                {/*    <FriendsList />*/}
-                <UserHistoryTable />
-                {/*</FlexBox>*/}
+                    <Gap gap={24}/>
+
+                    {/*<FlexBox justify={'center'} gap={200}  align={'flex-start'}>*/}
+                    {/*    <FriendsList />*/}
+                    <UserHistoryTable />
+                </ContentGutters>
             </Container>
         </ProfilePermissionWrapper>
     )
@@ -153,7 +162,7 @@ export default UserActivity;
 const MidSection = styled(FlexBox)`
   //max-height: 500px;
   
-  margin: 0px 24px;
+  //margin: 0px 24px;
 
   @media only screen and (max-width: 900px) {
     & {
@@ -169,6 +178,8 @@ const MidSection = styled(FlexBox)`
   }
 `
 const Container = styled.div`
+  
+  
     .top-section {
       margin: 24px;
     }

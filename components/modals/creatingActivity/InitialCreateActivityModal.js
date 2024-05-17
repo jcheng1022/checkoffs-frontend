@@ -17,7 +17,7 @@ import Cropper from "react-easy-crop";
 import {getCroppedImg} from "@/utils/canvasUtils";
 import ActivityItem from "@/components/feed/ActivityItem";
 import {extractGroupAndGoalId} from "@/utils";
-import {RESOURCE_TYPES} from "@/constants";
+import {COLLECTION_TYPES, RESOURCE_TYPES} from "@/constants";
 
 const {TextArea} = Input;
 
@@ -174,21 +174,55 @@ const InitialCreateActivityModal = ({open = false, onCancel = () => {}}) => {
         ]
 
         let personalizedOptions = []
+
        if (options) {
+
+
             personalizedOptions = options?.map(option => {
-                base[0].options?.push(   {
-                    label: `Group - ${option.name}`,
-                    value: `collection=${option.groupId}`
-                })
+                // base[0].options?.push(   {
+                //     label: `Group - ${option.name}`,
+                //     value: `collection=${option.groupId}`
+                // })
+
+                if (option.type === COLLECTION_TYPES.USER) {
+                    return {
+                        label: <span> Personal Collections</span>,
+                        value: option.groupId,
+                        options: [
+                            {
+                                label: option.name,
+                                value: `collection=${option.groupId}`,
+                                children: option.goals?.map(goal => {
+                                    return {
+                                        label: goal.name,
+                                        value: `collection=${option.groupId}&goal=${goal.id}`
+                                    }
+                                })
+                            }
+                        ]
+                    }
+
+                }
+
+                const groupOptions = [{
+
+                            label: `Share to whole group`,
+                            value: `collection=${option.groupId}`
+
+                }]
+                if (option.goals) {
+                    option.goals?.forEach(goal => {
+                        groupOptions.push({
+                            label: goal.name,
+                            value: `collection=${option.groupId}&goal=${goal.id}`
+                        })
+                    })
+
+                }
                return {
-                   label: <span> Group - {option.name}</span>,
-                   value: option.groupId,
-                   options: option.goals?.map(goal => {
-                           return {
-                               label: goal.name,
-                               value: `collection=${option.groupId}&goal=${goal.id}`
-                           }
-                       })
+                   label: <span> Groups- {option.name}</span>,
+                   // value: option.groupId,
+                   options: groupOptions
                }
            })
        }

@@ -2,6 +2,7 @@
 
 
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {AppProgressBar as ProgressBar} from "next-nprogress-bar";
 
 export const defaultQueryProps = {
     retry: false,
@@ -40,6 +41,12 @@ export default function Providers({ children }) {
         <QueryClientProvider client={queryClient}>
 
                     {children}
+            <ProgressBar
+                height="4px"
+                color="#fffd00"
+                options={{ showSpinner: false }}
+                shallowRouting
+            />
 
         </QueryClientProvider>
     )

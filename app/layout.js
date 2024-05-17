@@ -10,6 +10,7 @@ import './globals.css'
 import "animate.css/animate.compat.css"
 
 import FloatingCreateButton from "@/components/FloatingCreateButton";
+
 // import { ThemeProvider } from 'next-themes'
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
@@ -32,6 +33,7 @@ export default function AuthedLayout({ children }) {
             <meta name='apple-mobile-web-app-status-bar-style' content={theme.TIMBERWOLF} />
         </head>
         <body>
+
         <StyledComponentsRegistry>
             <Providers>
                 <CookiesProvider>
@@ -41,6 +43,7 @@ export default function AuthedLayout({ children }) {
                               {/*<NavigationProgressBar />*/}
                               <Header />
                               {children}
+
                               <FloatingCreateButton/>
                           {/*</ThemeProvider>*/}
                        </AppContextProvider>

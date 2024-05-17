@@ -22,7 +22,7 @@ const FeatureList = () => {
     ]
     return (
         <ScrollAnimation duration={2} animateIn={'fadeIn'}>
-            <Container justify={'center'} gap={48}>
+            <Container justify={'center'} gap={60}>
                 {features.map((feature, index) => (
                     <div className={'feature'} key={index}>
                         <div className={'count-container'}>
@@ -52,6 +52,7 @@ const Container = styled(FlexBox)`
   //height: 300px;
   
   .feature {
+    max-height: 100px;
     text-align: center;
   }
 
@@ -71,13 +72,20 @@ const Container = styled(FlexBox)`
 
 
   .label {
+    font-size: 1.2rem;
     font-weight: 600;
   }
   
   .description {
     
-    font-size: 12px;
+    font-size: 1rem;
     color: grey;
     max-width: 200px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .feature {
+      margin: 24px 0px;
+    }
   }
 `

@@ -35,7 +35,7 @@ const Hero = () => {
                 </FlexBox>
             </div>
             <div className={'img-container'}>
-                <img className={'img'} src={'/activity-pic.png'} alt={'hero'} />
+                <img className={'img'} src={'/hero.png'} alt={'hero'} />
             </div>
         </Container>
     )

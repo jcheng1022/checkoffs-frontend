@@ -46,7 +46,7 @@ const Container = styled.div`
 
   min-height: 300px;
   background-color: ${theme.backgroundBlack};
-  padding: 24px;
+  padding: 24px 0px;
   max-width: 100%;
   
   @media only screen and (max-width: 600px) {

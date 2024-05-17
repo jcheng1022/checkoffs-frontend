@@ -1,13 +1,8 @@
 'use client'
 
-// import {getAuth, onAuthStateChanged,} from 'firebase/auth';
 import {createContext, useContext, useState} from "react";
 import {auth} from "@/lib/firebase/firebase";
 import {GoogleAuthProvider, signInWithPopup} from "firebase/auth";
-// import {firebaseApp} from "@/lib/firebase/firebase";
-// import {useCurrentUser} from "@/hooks/user.hook";
-
-// const auth = getAuth(firebaseApp);
 
 export const AuthContext = createContext({});
 
@@ -23,32 +18,9 @@ export const AuthContextProvider = ({
     const logOut = async () => {
         await auth.signOut()
 
-        // await fetch(`/api/auth/logout`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //
-        //         // Authorization: `Bearer ${await auth.currentUser.getIdToken()}`,
-        //     },
-        // })
-        // await auth.signOut()
         return window.location.href = window.location.href
-        // return window.location.reload()
-        }
 
-    //
-    // useEffect(() => {
-    //     const unsubscribe = onAuthStateChanged(auth, (user) => {
-    //         if (user) {
-    //             setUser(user);
-    //         } else {
-    //             setUser(null);
-    //         }
-    //         setLoading(false);
-    //     });
-    //
-    //     return () => unsubscribe();
-    // }, []);
+        }
 
     const handleSignIn = async () => {
         const provider = new GoogleAuthProvider()
