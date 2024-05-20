@@ -3,7 +3,7 @@ import React, {useMemo, useState} from 'react';
 import styled from "styled-components";
 import {useGroupGoalById} from "@/hooks/groups.hook";
 import {useParams} from "next/navigation";
-import {Avatar, Button, Spin, Tooltip} from "antd";
+import {Avatar, Button, Spin} from "antd";
 import {FlexBox} from "@/components/core";
 import dayjs from "dayjs";
 import {theme} from "@/styles/themes";
@@ -89,11 +89,9 @@ function ViewGroupGoal(props) {
                        }
 
                        <div className={'nudge-section'}>
-                           <Tooltip title={'Coming Soon'}>
                                <Button onClick={() => setOpenViewGroupMembersModal(true)} className={'nudge-button'}>
                                    Nudge a Group Member
                                </Button>
-                           </Tooltip>
                        </div>
                    </div>
                    <div className={'list-scrolling-container'}>

@@ -5,7 +5,7 @@ import {COLLECTION_TYPES} from "@/constants";
 
 export const useCollectionsByUserId = ( userId, type = COLLECTION_TYPES.USER, props = {})  => {
 
-    const queryKey = ['collections', userId, props];
+    const queryKey = ['collections', type, userId, props];
 
     return useQuery({
         queryKey,

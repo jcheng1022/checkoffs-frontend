@@ -1,7 +1,6 @@
 'use client'
 
 import {useActivitiesByUser} from "@/hooks/activity.hook";
-import CoreTable from "@/components/CoreTable";
 import {useMemo, useState} from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";

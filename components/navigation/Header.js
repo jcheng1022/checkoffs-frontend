@@ -7,7 +7,7 @@ import {useState} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import styled from 'styled-components'
 import {useCurrentUser, useUserIsLoggedIn} from "@/hooks/user.hook";
-import {X, Menu as MenuIcon} from "react-feather";
+import {Menu as MenuIcon, X} from "react-feather";
 import {theme} from '@/styles/themes'
 import {useAppContext} from "@/context/AppContext";
 import HamburgerMenu from "@/components/navigation/MobileMenu";

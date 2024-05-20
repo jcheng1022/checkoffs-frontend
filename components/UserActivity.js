@@ -16,7 +16,6 @@ import {useQueryClient} from "@tanstack/react-query";
 import dayjs from "dayjs";
 import ProfilePermissionWrapper from "@/components/ProfilePermissionWrapper";
 import GroupList from "@/components/profile/GroupList";
-import UserProfileSideMenu from "@/components/user/UserGoalSection";
 import UserGoalSection from "@/components/user/UserGoalSection";
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')

@@ -1,7 +1,4 @@
 'use client'
-// import styled from "styled-components";
-// import UserActivity from "@/components/UserActivity";
-// import {serverUser} from "@/lib/firebase/firebase-admin";
 
 
 import ActivityFeed from "@/components/feed/ActivityFeed";

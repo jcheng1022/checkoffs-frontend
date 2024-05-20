@@ -2,25 +2,58 @@ import React from 'react';
 import styled from "styled-components";
 import {Avatar, Modal} from "antd";
 import {useGroupMembers} from "@/hooks/groups.hook";
-import PeopleList from "@/components/people/PeopleList";
 import {FlexBox} from "@/components/core";
 import {theme} from "@/styles/themes";
 import {useCurrentUser} from "@/hooks/user.hook";
+import {useParams} from "next/navigation";
+import APIClient from "@/services/api";
+import {useAppContext} from "@/context/AppContext";
+import {X} from "react-feather";
 
 function ViewGroupMembers({open, onClose, groupId}) {
     const {data: user} = useCurrentUser();
-    const {data: members} = useGroupMembers(groupId)
+    const {data: members} = useGroupMembers(!!user, groupId)
+    const {goalId} = useParams()
+    const {messageNotification} = useAppContext()
 
+    const handleNudge = (userId) => () => {
+        const key = `nudge-${userId}`
 
+        messageNotification({
+            key,
+            type: 'loading',
+            content: 'Loading...',
+        });
+
+        return APIClient.api.post(`/activity/${userId}/nudge`, {
+        goalId}).then(() => {
+            messageNotification({
+                key,
+                type: 'success',
+                content: 'Nudged!',
+                duration: 2,
+            });
+        }).catch(e => {
+            console.log(`Error nudging user`, e)
+            messageNotification({
+                key,
+                type: 'error',
+                content: e.message || 'Error nudging user',
+                duration: 2,
+            });
+        })
+    }
 
 
     return (
-        <StyledModal  footer={[]}  closeIcon={null} open={open} onClose={onClose}>
+        <StyledModal  footer={[]} closeIcon={<X/>} open={open} onCancel={onClose}>
+
+            <div className={'text-2xl mb-5'} > Group Members </div>
             {members?.filter(o => o.userId !== user?.id)?.map((member, index) => {
                 const {user} = member
 
                     return (
-                        <FlexBox gap={12}key={index} className={'goal-member'}>
+                        <FlexBox gap={12}key={index} className={'hover:border-b-4 rounded-md p-4 border-blue-50'}>
                             <Avatar
 
                                 className={'goal-user-avatar'}
@@ -30,8 +63,8 @@ function ViewGroupMembers({open, onClose, groupId}) {
                             <span className={'goal-user-username'}> {user.username} </span>
 
                             <FlexBox justify={'flex-end'} >
-                                <div className={'nudge-container'}>
-                                    <span className={'nudge-text'}> Nudge </span>
+                                <div className={'nudge-container'} onClick={handleNudge(user.id)}>
+                                    <span className={'font-extrabold'}> Nudge </span>
                                 </div>
                             </FlexBox>
                         </FlexBox>

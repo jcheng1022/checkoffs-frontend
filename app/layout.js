@@ -11,13 +11,11 @@ import "animate.css/animate.compat.css"
 
 import FloatingCreateButton from "@/components/FloatingCreateButton";
 
-// import { ThemeProvider } from 'next-themes'
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
 
 
-// either Static metadata
 export const metadata = {
     title: 'Checkoffs',
 }
@@ -26,7 +24,6 @@ export default function AuthedLayout({ children }) {
     return (
         <html >
         <head>
-            {/*<meta name="viewport" content="initial-scale=1.0, width=device-width"/>*/}
 
             <meta name='viewport' content='width=device-width, initial-scale=1.0, viewport-fit=cover' />
             <meta name='theme-color' content={theme.TIMBERWOLF} />
@@ -39,13 +36,12 @@ export default function AuthedLayout({ children }) {
                 <CookiesProvider>
                     <AuthContextProvider>
                        <AppContextProvider>
-                          {/*<ThemeProvider>*/}
-                              {/*<NavigationProgressBar />*/}
+
                               <Header />
                               {children}
 
                               <FloatingCreateButton/>
-                          {/*</ThemeProvider>*/}
+
                        </AppContextProvider>
 
                     </AuthContextProvider>

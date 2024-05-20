@@ -15,13 +15,14 @@ export const useGroupById = ( groupId, props = {})  => {
 
 };
 
-export const useGroupMembers = ( groupId, props = {})  => {
+export const useGroupMembers = (isLoggedIn, groupId, props = {})  => {
 
     const queryKey = ['group-members', groupId];
 
     return useQuery({
         queryKey,
         ...defaultQueryProps,
+        enabled: !!isLoggedIn,
         retry: 5,
         queryFn: () => APIClient.api.get(`/collections/${groupId}/members`, { params: props})
     })
