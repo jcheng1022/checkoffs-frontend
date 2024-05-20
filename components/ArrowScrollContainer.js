@@ -60,7 +60,7 @@ function ArrowScrollContainer({list =[], item: renderItem }) {
     }
     const showArrows = list.length > visibleCount;
     return (
-        <Container gap={16} wrap={'no-wrap'}>
+        <Container gap={20} wrap={'no-wrap'}>
             {showArrows && (
                 <div onClick={handleChangeRange('decrease')}> <ChevronLeft/> </div>
 

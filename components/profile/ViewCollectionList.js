@@ -17,7 +17,7 @@ function ViewCollectionList({collections =[]}) {
                         }
                     })
         return (
-            <div  key={item.id} className={'min-h-60 max-h-60 min-w-60 max-w-60 border p-3.5 hover:cursor-pointer hover:scale-105  '} onClick={() => router.push(`/group/${item.id}`)}>
+            <div  key={item.id} className={'min-h-60 max-h-60 min-w-60 max-w-60 border rounded-lg p-3.5 hover:cursor-pointer hover:scale-105  '} onClick={() => router.push(`/group/${item.id}`)}>
                                 <div  >
                                    {item.name}
                                  </div>
