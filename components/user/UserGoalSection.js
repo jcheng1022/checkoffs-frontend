@@ -18,7 +18,7 @@ function UserGoalSection(props) {
     return (
         <Container direction={'column'}>
             <FlexBox justify={'space-between'} className={'w-full'}>
-                <div className={'goal-section-title'}> Your goals</div>
+                <div className={'goal-section-title'}> {`${user?.username}'s goals`}</div>
                 <Button className={'new-collection-btn'} onClick={() => router.push(`/collections/create?type=USER&redirectTo=${encodeURI(`user/${user.id}`)}`)}>
                     <span className={'plus-icon'}> + </span> Collection
                 </Button>

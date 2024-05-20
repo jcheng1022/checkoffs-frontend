@@ -7,6 +7,7 @@ import {MoreVertical} from "react-feather";
 import {useEffect, useState} from "react";
 import {getDatabase, onValue, ref} from "firebase/database";
 import {useRouter} from "next/navigation";
+import {theme} from "@/styles/themes";
 
 
 const FriendItem = ({friend}) => {
@@ -78,7 +79,7 @@ const FriendItem = ({friend}) => {
                     <div className={'username'}>
                         {friend.username}
                     </div>
-                    <div className={'activity-text'}>{isOnline ? 'Active now' : 'Offline'}</div>
+                    <div className={`activity-text ${isOnline && 'online-activity'}`}>{isOnline ? 'Active now' : 'Offline'}</div>
                 </div>
             </FlexBox>
             <FlexBox justify={'flex-end'} align={'center'}>
@@ -112,5 +113,10 @@ const Container = styled(FlexBox)`
     font-size: 12px;
     text-align: start;
     color: #7c81a2;
+  }
+  
+  .online-activity {
+    padding-left: 6px;
+    color: ${theme.secondary};
   }
 `
