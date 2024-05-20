@@ -67,7 +67,7 @@ function ArrowScrollContainer({list =[], item: renderItem }) {
             )}
             {visibleItems?.map((member, index) => {
                 return (
-                    <div ref={itemRef}>
+                    <div key={`scroll-container-item-${index}`} ref={itemRef}>
                         {
                             renderItem({item: member})
                         }
