@@ -7,23 +7,27 @@ import {useCollectionsByUserId} from "@/hooks/collections.hook";
 import {useCurrentUser} from "@/hooks/user.hook";
 import {theme} from "@/styles/themes";
 import {useRouter} from "next/navigation";
+import ViewCollectionList from "@/components/profile/ViewCollectionList";
 
 function UserGoalSection(props) {
     const {data: user} = useCurrentUser();
 
-    const {data: goals} = useCollectionsByUserId(user?.id);
+    const {data: collections} = useCollectionsByUserId(user?.id);
     const router = useRouter();
 
     return (
-        <Container>
-            <FlexBox justify={'space-between'} className={'goal-section-header'}>
+        <Container direction={'column'}>
+            <FlexBox justify={'space-between'} className={'w-full'}>
                 <div className={'goal-section-title'}> Your goals</div>
-                <Button className={'new-collection-btn'} onClick={() => router.push(`/collections/create?type=USER`)}>
+                <Button className={'new-collection-btn'} onClick={() => router.push(`/collections/create?type=USER&redirectTo=${encodeURI(`user/${user.id}`)}`)}>
                     <span className={'plus-icon'}> + </span> Collection
                 </Button>
             </FlexBox>
 
             <Gap gap={12}/>
+
+            <ViewCollectionList collections={collections}/>
+
 
 
 
@@ -36,6 +40,7 @@ export default UserGoalSection;
 
 const Container = styled(FlexBox)`
 
+  
   
     .new-collection-btn {
       background-color: ${theme.primaryBlue};

@@ -10,6 +10,7 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {useAppContext} from "@/context/AppContext";
 import {theme} from "@/styles/themes";
 import {COLLECTION_TYPES} from "@/constants";
+import {useQueryClient} from "@tanstack/react-query";
 
 const { TextArea } = Input;
 
@@ -20,9 +21,11 @@ const CreateCollection = ({type}) => {
     const router = useRouter()
     const { messageNotification } = useAppContext()
     const searchParams = useSearchParams()
+    const client = useQueryClient();
 
     const typeParam = searchParams.get('type')
     const redirectTo = searchParams.get('redirectTo')
+    console.log(redirectTo, 'redirect')
 
     const collectionType = typeParam ? typeParam : !!type ? type:  COLLECTION_TYPES.GROUP
 
@@ -58,7 +61,11 @@ const CreateCollection = ({type}) => {
                 })
 
                 if (redirectTo) {
-                    router.push(redirectTo)
+                    console.log(redirectTo, 23232)
+
+                    client.refetchQueries({queryKey: ['collections', COLLECTION_TYPES.USER, user?.id, {}]})
+
+                    router.push(`/${redirectTo}`)
 
                 }  else {
                     router.push(`/user/${user.id}`)
