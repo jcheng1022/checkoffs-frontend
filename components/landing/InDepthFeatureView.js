@@ -21,14 +21,14 @@ const InDepthFeatureView = () => {
             title:<div className={'step-title'}> Share your post with your friends and/or group </div>,
             subTitle: <div className={'step-subtitle'}> Keep each other accountable with group updates </div>,
             description: <div className={'img-container'}>
-                <img className={'feature-img'} src={'creating-activity.png'} />
+                <img className={'feature-img'} src={'post_image_confirm.png'} />
             </div>,
         },
         {
             title:<div className={'step-title'}> Check in with your friends </div>,
             subTitle: <div className={'step-subtitle'}> We all need a friendly reminder sometimes. Give them a nudge. </div>,
             description: <div className={'img-container'}>
-                <img className={'feature-img'} src={'nudge-action.png'} />
+                <img className={'feature-img'} src={'nudge_example.png'} />
             </div>,
         },
     ]
