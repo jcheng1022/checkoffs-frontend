@@ -129,10 +129,12 @@ const UserActivity = () => {
 
                 <ContentGutters>
 
-                    <MidSection wrap={'no-wrap'}  align={'flex-end'}>
+                    <MidSection wrap={'no-wrap'} gap={24} align={'flex-end'}>
                         <Tabs
+
+                            className={'ant-tabs-component'}
                             defaultActiveKey="1"
-                            centered
+
                             items={tabOptions}
                         />
 
@@ -148,7 +150,7 @@ const UserActivity = () => {
 
                     {/*<FlexBox justify={'center'} gap={200}  align={'flex-start'}>*/}
                     {/*    <FriendsList />*/}
-                    <UserHistoryTable />
+                    <UserHistoryTable title={`${user?.username}'s activities`} />
                 </ContentGutters>
             </Container>
         </ProfilePermissionWrapper>
@@ -160,42 +162,49 @@ export default UserActivity;
 
 const MidSection = styled(FlexBox)`
   //max-height: 500px;
-  
+
   //margin: 0px 24px;
 
+  .ant-tabs-nav-wrap {
+    justify-content: flex-start;
+  }
   @media only screen and (max-width: 900px) {
     & {
       display: block;
-      margin-right: 64px;
+
+      //margin-right: 64px;
       //margin-right: 50px;
       //flex-wrap: wrap;
     }
-    
+
     .graph-side {
+      padding-top: 48px;
       width: 100%;
     }
+
+   
   }
 `
 const Container = styled.div`
-  
-  
+
+
     .top-section {
       margin: 24px;
     }
-  
+
   .ant-tabs-nav-wrap {
     background-color: ${theme.backgroundBlack};
     color: ${theme.secondaryPink};
     border: none;
   }
-  
+
   .ant-tabs-tab-btn {
     color: white;
     font-weight: 600;
     font-size: 16px;
     //letter-spacing: 2px;
   }
-  
+
 `
 
 const ActionContainer = styled(FlexBox)`
@@ -219,7 +228,7 @@ const PrivateModal = styled(Modal)`
 const UserHeaderContainer = styled(FlexBox)`
   height: 200px;
   padding: 24px 48px;
-  
+
   background-color: ${props =>  props.bgColor ? `#${props?.bgColor}` : theme.jetGrey};
   //margin:24px;
 
@@ -238,7 +247,7 @@ const UserHeaderContainer = styled(FlexBox)`
     font-weight: 600;
     border: 2px solid ${theme.SNOW};
   }
-  
+
   .request-sent {
     color: white;
     height: 50px;

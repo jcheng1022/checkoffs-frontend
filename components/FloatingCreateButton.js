@@ -34,5 +34,6 @@ const StyledFloatButton = styled(FloatButton)`
   }
   @media only screen and (max-width: 650px) {
     display: none;
+    bottom: 100px;
   }
 `

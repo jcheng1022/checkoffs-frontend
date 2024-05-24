@@ -47,7 +47,7 @@ const Container = styled.div`
   flex: ${(props) => props.flex || 1};
 
   min-width: 300px;
-  margin: 24px 24px;
+  //margin: 24px 24px;
   height: 300px;
   padding: 24px;
   border-radius: 12px;
@@ -59,6 +59,15 @@ const Container = styled.div`
     width: 100%;
     
     
+    
+
+  }
+
+  @media only screen and (max-width: 900px) {
+    margin-bottom: 24px;
+
+
+
 
   }
 

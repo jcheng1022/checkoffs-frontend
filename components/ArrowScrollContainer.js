@@ -1,7 +1,6 @@
-import React, {useCallback, useMemo, useState, useEffect, useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {ChevronLeft, ChevronRight} from "react-feather";
 import {FlexBox} from "@/components/core";
-import {Avatar} from "antd";
 import styled from "styled-components";
 
 function ArrowScrollContainer({list =[], item: renderItem }) {

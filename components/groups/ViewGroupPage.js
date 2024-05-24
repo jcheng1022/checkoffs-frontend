@@ -85,7 +85,8 @@ const ViewGroupPage = () => {
             </div>
             <FlexBox align={'flex-start'} wrap={'no-wrap'} style={{width: '100%'}}>
                 <Menu
-                    mode={isMobile ? 'horizontal' : 'inline'}
+                    mode={'horizontal'}
+                    // mode={isMobile ? 'horizontal' : 'inline'}
                     defaultSelectedKeys={[tab]}
                     openKeys={openMenuKey}
                     onClick={(val) => {
@@ -97,7 +98,7 @@ const ViewGroupPage = () => {
                     disabledOverflow={true}
                     inlineCollapsed={isMobile}
 
-                    className={isMobile ? 'mobile-view-group-menu' :'view-group-menu'}
+                    className={'view-group-menu'}
                     items={menuItems}
                 />
 
@@ -180,34 +181,41 @@ const Container = styled.div`
     //flex: 1;
 
   }
-  
-  .mobile-view-group-menu {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
 
-    width: 100vw;
-    padding: 8px;
-    z-index: 999; /* Ensure it's above other content */
-  }
-  
   .view-group-menu {
     height: 100vh;
     min-width: 200px;
     width: 200px;
     max-width: 200px;
-    
-  
-    
 
 
-    
+
+
+
+
     .ant-menu-overflow-item {
       text-align: ${props => props.isMobile ? 'center': 'left'};
       width: 25%;
     }
-    
+
   }
+  
+  @media only screen and (max-width: 600px) {
+    .view-group-menu {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      justify-content: space-between;
+      height: fit-content;
+      max-width: none;
+      width: 100%;
+      padding: 8px;
+      z-index: 999; /* Ensure it's above other content */
+    }
+  }
+  
+  
+  
+
 `

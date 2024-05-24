@@ -14,7 +14,7 @@ import {DashboardTable} from "@/components/groups/dashboard/shared/DashboardTabl
 
 const  advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
-const UserHistoryTable = () => {
+const UserHistoryTable = ({title}) => {
     // const { user } = useAuthContext()
     const isLoggedIn = useUserIsLoggedIn();
 
@@ -86,8 +86,11 @@ const UserHistoryTable = () => {
                         </div>
                     </EmptyTableContainer>
                 </> :
+                <>
+                    {!!title && <div className={'section-title'}> {title}</div>}
                     <DashboardTable paginationOptions={false} data={tableData} columns={columns} />
 
+                </>
 
 
             }
@@ -109,6 +112,11 @@ const Container = styled.div`
      color: white;
 
     
+  }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
   }
 
   

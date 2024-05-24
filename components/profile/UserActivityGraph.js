@@ -43,15 +43,15 @@ export default UserActivityGraph;
 const Container = styled.div`
   min-width: 0; /* Ensure the graph container can shrink */
   flex: ${(props) => props.flex || 1};
-
+//margin: 24px 24px;
   min-height: 300px;
   background-color: ${theme.backgroundBlack};
-  padding: 24px 0px;
+  //padding: 24px 0px;
   max-width: 100%;
   
   @media only screen and (max-width: 600px) {
     padding: 0;
-    margin: 0px 12px 0px 24px;
+    //margin: 0px 12px 0px 24px;
   }
   
 

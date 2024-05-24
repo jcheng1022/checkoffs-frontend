@@ -11,6 +11,7 @@ import {useAppContext} from "@/context/AppContext";
 import {theme} from "@/styles/themes";
 import {COLLECTION_TYPES} from "@/constants";
 import {useQueryClient} from "@tanstack/react-query";
+import PostCollectionCreation from "@/components/modals/creatingCollection/PostCollectionCreation";
 
 const { TextArea } = Input;
 
@@ -22,6 +23,7 @@ const CreateCollection = ({type}) => {
     const { messageNotification } = useAppContext()
     const searchParams = useSearchParams()
     const client = useQueryClient();
+    const [postCollectionModal, setPostCollectionModal] = useState(false)
 
     const typeParam = searchParams.get('type')
     const redirectTo = searchParams.get('redirectTo')
@@ -115,6 +117,8 @@ const CreateCollection = ({type}) => {
             <Button className={'create-new-group-btn'} onClick={handleSubmit} loading={loading} disabled={loading}>
                 {createBtnText}
             </Button>
+
+            {postCollectionModal && (<PostCollectionCreation open={!!postCollectionModal} onCancel={() => setPostCollectionModal(false)} type={type} />)}
 
 
         </Container>

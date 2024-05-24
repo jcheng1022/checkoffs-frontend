@@ -16,7 +16,7 @@ function UserGoalSection(props) {
     const router = useRouter();
 
     return (
-        <Container direction={'column'}>
+        <Container direction={'column'} align={'flex-start'}>
             <FlexBox justify={'space-between'} className={'w-full'}>
                 <div className={'goal-section-title'}> {`${user?.username}'s goals`}</div>
                 <Button className={'new-collection-btn'} onClick={() => router.push(`/collections/create?type=USER&redirectTo=${encodeURI(`user/${user.id}`)}`)}>
