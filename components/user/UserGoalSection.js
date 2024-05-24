@@ -8,6 +8,7 @@ import {useCurrentUser} from "@/hooks/user.hook";
 import {theme} from "@/styles/themes";
 import {useRouter} from "next/navigation";
 import ViewCollectionList from "@/components/profile/ViewCollectionList";
+import EmptyContent from "@/components/EmptyContent";
 
 function UserGoalSection(props) {
     const {data: user} = useCurrentUser();
@@ -26,7 +27,12 @@ function UserGoalSection(props) {
 
             <Gap gap={12}/>
 
-            <ViewCollectionList collections={collections}/>
+            {collections?.length > 0 ? (
+                <ViewCollectionList collections={collections}/>
+            ) : (
+                <EmptyContent title={`${user?.username} has no goals yet!`} subtitle={'Check back later for updates'} />
+
+            )}
 
 
 

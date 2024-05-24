@@ -29,6 +29,7 @@ export default GroupFeed;
 
 
 const Container = styled(FlexBox)`
+height: 100vh;
     
 `
 

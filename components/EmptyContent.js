@@ -20,7 +20,7 @@ const EmptyContent = ({ title, subtitle, route}) => {
 
 export default EmptyContent;
 const Container = styled(FlexBox)`
-  height: 100vh;
+  height: 100%;
   width: 100%;
 
   .empty-title {
