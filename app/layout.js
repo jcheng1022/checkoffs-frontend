@@ -25,6 +25,8 @@ export default function AuthedLayout({ children }) {
         <html >
         <head>
 
+            <link rel="icon" href="/favicon.ico" sizes="any" />
+
             <meta name='viewport' content='width=device-width, initial-scale=1.0, viewport-fit=cover' />
             <meta name='theme-color' content={theme.TIMBERWOLF} />
             <meta name='apple-mobile-web-app-status-bar-style' content={theme.TIMBERWOLF} />

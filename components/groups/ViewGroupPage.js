@@ -48,8 +48,17 @@ const ViewGroupPage = () => {
             key: 'goals',
             icon: <Activity {...iconProps}  />,
             label: 'Goals'
-        }
+        },
+
        ]
+
+    if (group?.creatorId === user.id) {
+        menuItems.push({
+            key: 'settings',
+            icon: <Settings {...iconProps} />,
+            label: 'Settings'
+        })
+    }
 
     let isMobile = window?.matchMedia("(max-width: 600px)")?.matches;
 
@@ -91,7 +100,12 @@ const ViewGroupPage = () => {
                     openKeys={openMenuKey}
                     onClick={(val) => {
                         setOpenMenuKey(val.key)
-                        router.push(`?tab=${val.key}`)
+                        if (val.key === 'settings') {
+                            router.push(`/group/${group?.id}/dashboard`)
+                        } else {
+                            router.push(`?tab=${val.key}`)
+
+                        }
 
 
                     }}
